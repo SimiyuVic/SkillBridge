@@ -27,6 +27,9 @@ https://www.tooplate.com/view/2123-simply-amazed
                 <div class="collapse navbar-collapse single-page-nav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
+                            <a class="nav-link" href="#section-1"><span class="icn"><i class="fas fa-2x fa-home"></i></span> Home</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href=""><span class="icn"><i class="fas fa-2x fa-air-freshener"></i></span> Internships</a>
                         </li>
                         <li class="nav-item">
@@ -36,7 +39,7 @@ https://www.tooplate.com/view/2123-simply-amazed
                             <a class="nav-link" href=""><span class="icn"><i class="far fa-2x fa-hand"></i></span> Entry Level</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href=""><span class="icn"><i class="far fa-2x fa-comments"></i></span> Contact</a>
+                            <a class="nav-link" href="#section-4"><span class="icn"><i class="far fa-2x fa-comments"></i></span> Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -58,10 +61,14 @@ https://www.tooplate.com/view/2123-simply-amazed
                         <div class="bg-blue-transparent logo-fa"><span><i class="fas fa-2x fa-road"></i></span> Skill-Bridge</div>
                         <div class="bg-blue-transparent simple"><p>Find Jobs you qualify for from, graduate trainee, internships and attachments.</p></div><br>
                         <div class="btn btn-success my-3">
-                            <h3 class="text-centre">Get Started</h3>
+                            <h3 class="text-center">
+                                <a href="register.php" style="text-decoration: none; color: white;">Get Started</a>
+                            </h3>
                         </div>
                         <div class="btn btn-warning my-3">
-                            <h3 class="text-centre">Latest Vacancies</h3>
+                            <h3 class="text-center">
+                                <a href="#section-3" style="text-decoration: none; color: white;">Latest Jobs</a>
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -95,7 +102,7 @@ https://www.tooplate.com/view/2123-simply-amazed
                 </div>
             </section>
 
-            <section >
+            <section id="section-3">
                 <div class="container my-4">
                     <div class="row">
                         <div class="col">
