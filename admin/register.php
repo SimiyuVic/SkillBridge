@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,11 +11,52 @@
   </head>
   <body>
     
-
+ 
   <div class="container my-5">
+ 
         <div class="row justify-content-center">
+      
             <div class="col-md-6">
                 <div class="card shadow">
+                <?php
+                    if(isset($_SESSION['username_error'])){
+                        ?>
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Heyy ! </strong> Choose A Different Username .
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                    <?php
+                    unset($_SESSION['username_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['email_error'])){
+                        ?>
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Heyy ! </strong> A similar email Already exists .
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                    <?php
+                    unset($_SESSION['email_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['error_message_one'])){
+                        ?>
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Heyy ! </strong> Fill in All the Details.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                    <?php
+                    unset($_SESSION['error_message_one']);
+                    }
+                ?>
                     <div class="card-header">
                         <h3 class="text-center">Register Here !</h3>
                     </div>
