@@ -9,6 +9,56 @@ session_start();
     <title>Skill-Bridge</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   </head>
+  <style>
+    .wrapper
+      {
+          margin : 50px auto;
+          border-radius: 10px;
+          padding-top: 50px;
+          padding-bottom: 50px;
+          box-shadow: 0 0 40px 2px rgba(37,73, 214, 018);
+      }
+      .feature-box
+      {
+        padding: 30px;
+      }
+      .feature-box h1
+      {
+        margin-top: 20%;
+        color: #c200ff;
+      }
+      .feature-box p
+      {
+        color: #555;
+      }
+      .feature-box a 
+      {
+        text-decoration: none !important;
+        background: #a669ce;
+        border-radius: 20px;
+        padding: 10px 20px;
+        margin-right: 30px;
+        border: 2px solid #a669ce !important;
+        color: #fff;
+      }
+      .btn-one:hover
+      {
+        color: #fff;
+      }
+      .btn-two
+      {
+        background: none !important;
+        color: #a669ce !important;
+      }
+      @media only screen and (max-width:990px)
+      {
+        .feature-box a
+        {
+          padding: 5px 8px ;
+          margin-right: 10px;
+        }
+      }
+  </style>
   <body>
   
   <nav class="navbar navbar-expand-lg bg-warning ">
@@ -49,7 +99,7 @@ session_start();
             }
             else {
               ?>
-              <a class="nav-link" href="#">Employers</a>
+              <a class="nav-link" href="employers.php">Employers</a>
               <a class="nav-link" href="login.php"><button class="btn btn-outline-primary" type="submit">Log In</button></a>
               <a class="nav-link" href="register.php"><button class="btn btn-outline-success" type="submit">Sign Up</button></a>
            <?php
