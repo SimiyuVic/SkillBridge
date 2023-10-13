@@ -8,6 +8,6 @@ unset($_SESSION['username']);
 session_destroy();
 
 // Redirect the user to the login page 
-header("location: home.php"); 
+header("location: index.php"); 
 exit;
 ?>
