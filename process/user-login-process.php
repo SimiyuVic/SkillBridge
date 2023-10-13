@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 @require_once "../config/config.php";
 
 // Define the getUserInfo function
@@ -33,6 +35,7 @@ if (isset($_POST['login'])) {
         $userInfo = getUserInfo($email, $connection);
 
         if ($userInfo) {
+            $_SESSION['user_id'] = $userInfo['user_id'];
             $_SESSION['firstname'] = $userInfo['firstname'];
             $_SESSION['lastname'] = $userInfo['lastname'];
         }
@@ -41,7 +44,7 @@ if (isset($_POST['login'])) {
         exit;
     } else {
         header('location: ../user-login.php');
-        $_SESSION['login_error'] = "Invalid email or password.";
+        $_SESSION['login_error'] = "";
     }
 }
 

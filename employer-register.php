@@ -30,6 +30,63 @@
         </div>
       </nav>
       <!---Navbar Ends Here--->
+      <div class="container my-2">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="text-center">CREATE YOUR COMPANY PROFILE</h4>
+          </div>
+          <div class="card-body">
+            <form action="process/employer-register-process.php" method="POST">
+              <div class="row">
+                <div class="col-md-6">
+                        <?php
+                            if(isset($_SESSION['email_error'])){
+                                ?>
+
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Hey ! </strong> Similar Email Already Exists !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            <?php
+                            unset($_SESSION['email_error']);
+                            }
+                        ?>
+                  <div class="mb-3">
+                    <input type="text" name="fullname" class="form-control" placeholder=" FirstName *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="company" class="form-control" placeholder=" Company Name *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="website" class="form-control" placeholder=" Website *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="email" name="email" class="form-control" placeholder=" Email *" required>
+                  </div>
+                  <div class="mb-3">
+                    <textarea name="about_company" class="form-control" id="about_company" cols="80" rows="4" placeholder="Brief info about Your Company"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder=" Password *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="number" name="phone_number" class="form-control" placeholder=" PhoneNumber *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="county" class="form-control" placeholder=" County *" required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="city" class="form-control" placeholder=" City *" required>
+                  </div>
+                </div>
+              </div>
+              <input type="submit" value="Register" name="register" class="btn btn-outline-primary">
+            </form>
+          </div>
+        </div>
+      </div>
 
 
       <!---Footer Section--->

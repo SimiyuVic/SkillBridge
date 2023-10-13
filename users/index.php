@@ -82,6 +82,11 @@ if(!isset($_SESSION['email']))
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="create-portfolio.php">
+                            <i class="fa-brands fa-envira fa-lg"></i> PortFolio
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="settings.php">
                             <i class="fa-solid fa-gear fa-lg"></i> Settings
                             </a>
@@ -97,8 +102,26 @@ if(!isset($_SESSION['email']))
             </div>
             <!-- User Profile Information -->
             <div class="col-md-8">
-                
+            <?php
+                    if(isset($_SESSION['update_success'])){
+                        ?>
+
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <strong>Hurray ! </strong> Profile Updated Successfully .!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['update_success']);
+                    }
+                ?>
                 <!-- Display user information here -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Recent Applications</h4>
+                    <p>Below you will find your recently applied jobs</p>
+                  </div>
+                  <div class="card-body"></div>
+                </div>
             </div>
         </div>
     </div>

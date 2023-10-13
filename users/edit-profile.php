@@ -2,6 +2,8 @@
 
 session_start();
 
+@require_once "../config/config.php";
+
 if(!isset($_SESSION['email']))
 {
   header('location: ../user-login.php');
@@ -82,6 +84,11 @@ if(!isset($_SESSION['email']))
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="create-portfolio.php">
+                            <i class="fa-brands fa-envira fa-lg"></i> PortFolio
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="settings.php">
                             <i class="fa-solid fa-gear fa-lg"></i> Settings
                             </a>
@@ -97,8 +104,85 @@ if(!isset($_SESSION['email']))
             </div>
             <!-- User Profile Information -->
             <div class="col-md-8">
-                
                 <!-- Display user information here -->
+                <h4>Edit Profile</h4>
+                <?php
+                    if(isset($_SESSION['update_success'])){
+                        ?>
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Hurray ! </strong> Profile Updated Successfully .!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['update_success']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['no-data'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops ! </strong> No Data Retrieved . !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['no-data']);
+                    }
+                ?>
+                <?php
+                $currentUser = $_SESSION['firstname'];
+                $sql = "SELECT * FROM candidates WHERE firstname = '$currentUser'";
+                $gotResults = mysqli_query($connection, $sql);
+                if($gotResults)
+                {
+                  if(mysqli_num_rows($gotResults)>0)
+                  {
+                    while($row = mysqli_fetch_assoc($gotResults))
+                    {
+                      ?>
+                      <form action="../process/process-edit.php" method="POST">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="text" name="firstname" class="form-control" placeholder=" First Name *" required value="<?php echo $row['firstname']; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="lastname" class="form-control" placeholder=" Last Name *" required value="<?php echo $row['lastname']; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" name="email" class="form-control" placeholder=" Email *" required value="<?php echo $row['email']; ?>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" name="phone_number" class="form-control" placeholder=" Phone Number *" required value="<?php echo $row['phone_number']; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="qualification" class="form-control" placeholder=" Highest Qualification Highschool/ University Degree *" required value="<?php echo $row['qualification']; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" name="occupation" class="form-control" placeholder=" Current Occupation Student/Graduate *" required value="<?php echo $row['occupation']; ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                                <textarea class="form-control input-lg" rows="4" placeholder="Describe yourself" name="about_me"><?php echo $row['about_me']; ?></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control input-lg" placeholder="Your Skills" rows="4" name="skills"><?php echo $row['skills']; ?></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary" name="update" value="Update">
+                      </form>
+                      <?php
+                    }
+                  }
+                  else {
+                    $_SESSION['no-data'] = "";
+                  }
+                }
+                ?>
+                
             </div>
         </div>
     </div>

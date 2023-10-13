@@ -82,6 +82,11 @@ if(!isset($_SESSION['email']))
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="create-portfolio.php">
+                            <i class="fa-brands fa-envira fa-lg"></i> PortFolio
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="settings.php">
                             <i class="fa-solid fa-gear fa-lg"></i> Settings
                             </a>
@@ -99,6 +104,23 @@ if(!isset($_SESSION['email']))
             <div class="col-md-8">
                 
                 <!-- Display user information here -->
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Change Password</h4>
+                    <p>Type in your New Password</p>
+                  </div>
+                  <div class="card-body">
+                    <form action="">
+                      <div class="mb-3">
+                        <input type="password" name="password" class="form-control" placeholder=" Password *" required>
+                      </div>
+                      <div class="mb-3">
+                        <input type="password" name="c_password" class="form-control" placeholder="Confirm Password *">
+                      </div>
+                      <input type="submit" name="change_password" class="btn btn-outline-primary" value="Change Password">
+                    </form>
+                  </div>
+                </div>
             </div>
         </div>
     </div>

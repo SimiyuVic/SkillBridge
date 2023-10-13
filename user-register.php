@@ -68,7 +68,9 @@
                                 <input type="number" name="phone_number" class="form-control" placeholder=" Phone Number">
                             </div>
                             <div class="mb-3">
-                                <input type="password" name="password" class="form-control" placeholder=" Password *" required>
+                                <<div class="mb-3">
+                                <textarea name="about_me" class="form-control" id="about_me" cols="80" rows="4" required placeholder="Brief description about you *"></textarea>
+                            </div>input type="password" name="password" class="form-control" placeholder=" Password *" required>
                             </div>  
                             <div class="mb-3 form-group checkbox">
                                 <label >
@@ -84,9 +86,7 @@
                             <div class="mb-3">
                                 <input type="text" name="occupation" class="form-control" placeholder=" Current Occupation Student/ Graduate">
                             </div>
-                            <div class="mb-3">
-                                <textarea name="about_me" class="form-control" id="about_me" cols="80" rows="4" required placeholder="Brief description about you *"></textarea>
-                            </div>
+                            
                             <div class="mb-3">
                                 <textarea name="skills" class="form-control" id="skills" cols="80" rows="4" placeholder="Skills"></textarea>
                             </div>

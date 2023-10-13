@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -39,7 +43,7 @@
                     if(isset($_SESSION['register_success'])){
                         ?>
 
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
                         <strong>Hurray ! </strong> Successfully Registered.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -51,8 +55,8 @@
                     if(isset($_SESSION['login_error'])){
                         ?>
 
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Hey ! </strong> Invalid credentials .
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Hey ! </strong> Wrong Email or Password .! 
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php
