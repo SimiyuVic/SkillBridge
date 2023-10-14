@@ -118,8 +118,7 @@ if(!isset($_SESSION['email']))
                 <!-- Display user information here -->
                 <div class="card">
                   <div class="card-header">
-                    <h4>Recent Applications</h4>
-                    <p>Below you will find your recently applied jobs</p>
+                    <h4>Overview</h4>
                   </div>
                   <div class="card-body"></div>
                 </div>

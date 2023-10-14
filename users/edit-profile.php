@@ -141,7 +141,7 @@ if(!isset($_SESSION['email']))
                     while($row = mysqli_fetch_assoc($gotResults))
                     {
                       ?>
-                      <form action="../process/process-edit.php" method="POST">
+                      <form action="../process/candidate-edit-process.php" method="POST">
                         <div class="row">
                           <div class="col-md-6">
                             <div class="mb-3">

@@ -2,6 +2,8 @@
 
 session_start();
 
+@require_once "../config/config.php";
+
 if(!isset($_SESSION['email']))
 {
   header('location: ../employer-login.php');
@@ -118,10 +120,62 @@ if(!isset($_SESSION['email']))
                 <!-- Display user information here -->
                 <div class="card">
                   <div class="card-header">
-                    <h4>Recent Applications</h4>
-                    <p>Below you will find your recently applied jobs</p>
+                    <h4>Edit Company Profile</h4>
                   </div>
-                  <div class="card-body"></div>
+                  <div class="card-body">
+                    <?php 
+                      $currentUser = $_SESSION['company'];
+                      $sql = "SELECT * FROM employers WHERE company = '$currentUser'";
+                      $results = mysqli_query($connection, $sql);
+                      if($results)
+                      {
+                        if(mysqli_num_rows($results)>0)
+                        {
+                          while($row = mysqli_fetch_assoc($results))
+                          { ?>
+                            <!----HTML CODE CAN BE WRITTEN HERE--->
+                              <form action="../process/company-edit-process.php" method="POST">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="mb-3">
+                                      <input type="text" name="fullname" class="form-control" placeholder=" Full Name *" required value="<?php echo $row['fullname']; ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="text" name="company" class="form-control" placeholder=" Company Name *" required value="<?php echo $row['company']; ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="text" name="website" class="form-control" placeholder=" Website *" required value="<?php echo $row['website']; ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="email" name="email" class="form-control" placeholder=" Email *" required value="<?php echo $row['email']; ?>" readonly>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="mb-3">
+                                      <textarea class="form-control input-lg" rows="4" placeholder="Describe yourself" name="about_me"><?php echo $row['about_company']; ?></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="number" name="phone_number" class="form-control" placeholder=" Phone Number *" required value="<?php echo $row['phone_number']; ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="text" name="county" class="form-control" placeholder=" County *" required value="<?php echo $row['county']; ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                      <input type="text" name="city" class="form-control" placeholder=" City *" required value="<?php echo $row['city']; ?>">
+                                    </div>
+                                  </div>
+                                </div>
+                                <input type="submit" value="Update" name="update" class="btn btn-outline-primary">
+                              </form>
+
+                        <?php  }
+                        }
+                      }
+                      else{
+                        //if no retrieved data
+                      }
+                    ?>
+                  </div>
                 </div>
             </div>
         </div>

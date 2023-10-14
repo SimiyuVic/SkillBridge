@@ -52,7 +52,7 @@
                             }
                         ?>
                   <div class="mb-3">
-                    <input type="text" name="fullname" class="form-control" placeholder=" FirstName *" required>
+                    <input type="text" name="fullname" class="form-control" placeholder=" FullName *" required>
                   </div>
                   <div class="mb-3">
                     <input type="text" name="company" class="form-control" placeholder=" Company Name *" required>
