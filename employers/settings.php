@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['company_id']))
 {
   header('location: ../employer-login.php');
   exit;
@@ -102,7 +102,7 @@ if(!isset($_SESSION['email']))
                 </div>
             </div>
             <!-- User Profile Information -->
-            <div class="col-md-8">
+            <div class="col-md-5">
             <?php
                     if(isset($_SESSION['update_success'])){
                         ?>
@@ -118,10 +118,24 @@ if(!isset($_SESSION['email']))
                 <!-- Display user information here -->
                 <div class="card">
                   <div class="card-header">
-                    <h4>Recent Applications</h4>
-                    <p>Below you will find your recently applied jobs</p>
+                    <h4>Settings</h4>
+                    <p>Update Your Account Password.</p>
                   </div>
-                  <div class="card-body"></div>
+                  <div class="card-body">
+                    <form action="">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <div class="mb-3">
+                            <input type="password" name="password" class="form-control" placeholder=" Password *" required>
+                          </div>
+                          <div class="mb-3">
+                            <input type="password" name="confirm_password" class="form-control" placeholder=" Confirm Password *" required>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="submit" value="Change Password" name="change_password" class="btn btn-outline-primary">
+                    </form>
+                  </div>
                 </div>
             </div>
         </div>

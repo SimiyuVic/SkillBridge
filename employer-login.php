@@ -56,7 +56,7 @@ session_start();
                         ?>
 
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Hey ! </strong> Wrong Email or Password .! 
+                        <strong>Oops ! </strong> Wrong Email or Password .!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php

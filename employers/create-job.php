@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['company_id']))
 {
   header('location: ../employer-login.php');
   exit;
@@ -103,18 +103,30 @@ if(!isset($_SESSION['email']))
                     </ul>
                 </div>
             </div>
-            <!-- User Profile Information -->
+            <!-- Create a Job -->
             <div class="col-md-8">
-            <?php
-                    if(isset($_SESSION['update_success'])){
+                <?php
+                    if(isset($_SESSION['post_error_2'])){
                         ?>
 
-                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <strong>Hurray ! </strong> Profile Updated Successfully .!
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops ! </strong> Company id error
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php
-                    unset($_SESSION['update_success']);
+                    unset($_SESSION['post_error_2']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['post_error'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops ! </strong> Could Not Create A Job !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['post_error']);
                     }
                 ?>
                 <!-- Display user information here -->
@@ -123,12 +135,12 @@ if(!isset($_SESSION['email']))
                     <h4>Create Job Post</h4>
                   </div>
                   <div class="card-body">
-                    <form action="">
+                    <form action="../process/create-job-process.php" method="POST">
                       <div class="mb-3">
                         <input type="text" name="job_title" class="form-control" placeholder=" Job Title *" required>
                       </div>
                       <div class="mb-3">
-                        <textarea name="job_decription" class="form-control" id="about_company" cols="80" rows="4"></textarea>
+                        <textarea name="job_description" class="form-control" id="job_description" cols="80" rows="4"></textarea>
                           <script>
                             tinymce.init({
                               selector: 'textarea',

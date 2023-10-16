@@ -4,9 +4,10 @@ session_start();
 
 @require_once "../config/config.php";
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['user_id']))
 {
   header('location: ../user-login.php');
+  $_SESSION['must_login'] = "";
   exit;
 }
 ?>

@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['company_id']))
 {
   header('location: ../employer-login.php');
   exit;

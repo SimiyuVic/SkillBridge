@@ -2,9 +2,10 @@
 
 session_start();
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['user_id']))
 {
   header('location: ../user-login.php');
+  $_SESSION['must_login'] = "";
   exit;
 }
 ?>
@@ -110,7 +111,7 @@ if(!isset($_SESSION['email']))
                     <p>Type in your New Password</p>
                   </div>
                   <div class="card-body">
-                    <form action="">
+                    <form action="settings.php" method="">
                       <div class="mb-3">
                         <input type="password" name="password" class="form-control" placeholder=" Password *" required>
                       </div>

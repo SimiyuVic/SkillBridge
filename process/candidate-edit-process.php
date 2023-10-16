@@ -3,13 +3,6 @@ session_start();
 
 @require_once "../config/config.php";
 
-if(!isset($_SESSION['email']))
-{
-  header('location: ../user-login.php');
-  exit;
-}
-
-
 
 if(isset($_POST['update']))
 {

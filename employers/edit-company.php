@@ -4,7 +4,7 @@ session_start();
 
 @require_once "../config/config.php";
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['company_id']))
 {
   header('location: ../employer-login.php');
   exit;
@@ -152,7 +152,7 @@ if(!isset($_SESSION['email']))
                                   </div>
                                   <div class="col-md-6">
                                     <div class="mb-3">
-                                      <textarea class="form-control input-lg" rows="4" placeholder="Describe yourself" name="about_me"><?php echo $row['about_company']; ?></textarea>
+                                      <textarea class="form-control input-lg" rows="4" placeholder="Describe yourself" name="about_company"><?php echo $row['about_company']; ?></textarea>
                                     </div>
                                     <div class="mb-3">
                                       <input type="number" name="phone_number" class="form-control" placeholder=" Phone Number *" required value="<?php echo $row['phone_number']; ?>">

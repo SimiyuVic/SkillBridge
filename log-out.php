@@ -2,7 +2,7 @@
 // Start the session
 session_start();
 
-unset($_SESSION['username']);
+unset($_SESSION['user_id']);
 
 // Destroy the session data
 session_destroy();

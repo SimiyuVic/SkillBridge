@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['email']))
+if(!isset($_SESSION['company_id']))
 {
   header('location: ../employer-login.php');
   exit;
@@ -32,6 +32,18 @@ if(!isset($_SESSION['email']))
         <div class="row">   
             <!-- User Dashboard -->
             <div class="col-md-4">
+            <?php
+                    if(isset($_SESSION['login_success'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Welcome ! </strong> You Are Logged in 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['login_success']);
+                    }
+                ?>
                 <div class="card">
                     <div class="card-header">
                     <h4>Welcome, <?php echo $_SESSION['company']; ?>!</h4>
@@ -104,6 +116,18 @@ if(!isset($_SESSION['email']))
             <!-- User Profile Information -->
             <div class="col-md-8">
             <?php
+                    if(isset($_SESSION['post_success'])){
+                        ?>
+
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <strong>Hurray ! </strong> Post Created Successfully .!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['post_success']);
+                    }
+                ?>
+                <?php
                     if(isset($_SESSION['update_success'])){
                         ?>
 
@@ -115,6 +139,7 @@ if(!isset($_SESSION['email']))
                     unset($_SESSION['update_success']);
                     }
                 ?>
+                
                 <!-- Display user information here -->
                 <div class="card">
                   <div class="card-header">
