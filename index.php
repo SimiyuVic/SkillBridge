@@ -29,7 +29,7 @@ session_start();
           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item ">
-                <a class="nav-link active fw-bold text-light" aria-current="page" href="#">Home</a>
+                <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Jobs</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
@@ -226,12 +226,13 @@ session_start();
       </div>
       <div class="col-md-6 my-3">
         <p class="lead">
-        SkillBridge is a dynamic and innovative workforce solutions provider dedicated to bridging the gap between exceptional talent 
+        <i class="fw-bold text-primary">Skill-Bridge</i> is a dynamic and innovative workforce solutions provider dedicated to
+         <i class="text-primary">bridging the gap</i> between exceptional talent 
         and organizations seeking to thrive in today's ever-evolving professional landscape. We specialize in connecting top-tier 
         professionals with leading companies, offering a seamless platform where talent meets opportunity.
         Our mission is to empower both individuals and businesses by fostering mutually beneficial relationships. For job seekers, 
-        SkillBridge serves as a gateway to meaningful career opportunities, helping them unlock their full potential. For employers, 
-        we are a trusted partner, delivering tailored staffing solutions that drive growth and success. At SkillBridge, 
+        <i class="fw-bold text-primary">Skill-Bridge</i> serves as a gateway to meaningful career opportunities, helping them unlock their full potential. For employers, 
+        we are a trusted partner, delivering tailored staffing solutions that drive growth and success. At <i class="fw-bold text-primary">Skill-Bridge</i>, 
         we are committed to reshaping the world of work, creating a bridge to success for all those who engage with our platform.
         </p>
       </div>

@@ -25,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="#">Jobs</a>
+                <a class="nav-link fw-bold text-light" href="jobs.php">Jobs</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-light" href="login.php">Log In</a>

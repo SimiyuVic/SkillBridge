@@ -9,6 +9,41 @@ if(!isset($_SESSION['user_id']))
   exit;
 }
 ?>
+<?php
+
+@require_once "../config/config.php";
+
+if(isset($_POST['change_password']))
+{
+  $password = mysqli_real_escape_string($connection, $_POST['password']);
+  $c_password = mysqli_real_escape_string($connection, $_POST['c_password']);
+
+  if($password != $c_password)
+  {
+    $sql = "UPDATE candidates SET password = '$password' WHERE firstname = '$firstname'";
+    $result = mysqli_query($connection, $sql);
+
+    if(!$result)
+    {
+      $_SESSION['update_failed'] = "";
+      header('location: settings.php');
+    }
+    else
+    {
+      $_SESSION['password_success'] = "";
+      header('location: settings.php');
+    }
+  }
+  else 
+  {
+    $_SESSION['password_error'] = "";
+    header('location: settings.php');
+  }
+
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -42,6 +77,18 @@ if(!isset($_SESSION['user_id']))
         <div class="row">   
             <!-- User Dashboard -->
             <div class="col-md-4">
+              <?php
+                      if(isset($_SESSION['password_error'])){
+                          ?>
+
+                          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong>Oops ! </strong> Passwords do not Match .!
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                      <?php
+                      unset($_SESSION['password_error']);
+                      }
+                  ?>
                 <div class="card">
                     <div class="card-header">
                     <h4>Welcome, <?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?>!</h4>
