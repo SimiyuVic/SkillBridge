@@ -6,8 +6,12 @@ session_start();
 
 if (isset($_POST['login'])) {
 
-    $email = mysqli_real_escape_string($connection, $_POST['email']);
-    $password = mysqli_real_escape_string($connection, $_POST['password']);
+    //Escape Special Characters in String
+	$email = mysqli_real_escape_string($connection, $_POST['email']);
+	$password = mysqli_real_escape_string($connection, $_POST['password']);
+
+	//Encrypt Password
+	//$password = base64_encode(strrev(md5($password)));
 
     $sql = "SELECT * FROM employers WHERE email = '$email' && password = '$password'";
     $result = mysqli_query($connection, $sql);

@@ -28,24 +28,55 @@ session_start();
           <a class="navbar-brand fw-bold text-light" href="#">Skill-Bridge</a>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item ">
-                <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Jobs</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="#employers">Employers</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="login.php">Log In</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-light" href="register.php">Sign Up</a>
-              </li>
+              
+             
+
+              <!-------->
+              <?php
+                if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
+                {
+                  ?>
+                    <li class="nav-item ">
+                      <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Vacancies</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#employers">Employers</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="users">
+                        <i class="fa-solid fa-user fa-xl"></i>
+                      </a>
+                    </li>
+               <?php } else
+               { ?>
+                    <li class="nav-item ">
+                      <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Vacancies</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#employers">Employers</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="login.php">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-light" href="register.php">Sign Up</a>
+                    </li>
+              <?php }
+              ?>
+              <!-------->
+
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
