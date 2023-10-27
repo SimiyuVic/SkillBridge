@@ -1,6 +1,9 @@
 
 <?php
 session_start();
+
+@require_once 'config/config.php';
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -164,6 +167,41 @@ session_start();
 <section id="jobs">
   <div class="container my-5">
     <h2 class="text-center text-primary display-4">Latest Vacancies</h2>
+    <?php
+     $sql = "SELECT * FROM vacancies ORDER BY created_at DESC LIMIT 5";
+    $result = mysqli_query($connection, $sql);
+
+    if(mysqli_num_rows($result)>0)
+    {
+      while($row = mysqli_fetch_assoc($result))
+      {
+        $sql_statment = "SELECT * FROM employers WHERE company_id = '$row[company_id]'";
+        $result_statement = mysqli_query($connection, $sql_statment);
+
+        if(mysqli_num_rows($result_statement)>0)
+        {
+          while($row_statement = mysqli_fetch_assoc($result_statement))
+          { ?>
+            <div class="container card shadow my-2">
+              <div class="row my-2">
+                <div class="col-md-2">
+                  <img src="assets/img/jobs.jpg" class="img-fluid rounded" alt="job image" style="">
+                </div>
+                <div class="col-md-6">
+                  <h4><?php echo $row['job_title']; ?></h4>
+                  <p><span class="fw-bold"><?php echo $row_statement['company']; ?></span> | <span class="fw-bold"><?php echo $row_statement['county']; ?></span> | <span class="text-info fw-bold"><?php echo $row['designation']; ?></span></p>
+                  <a href="view-job-post.php?id=<?php echo $row['jobpost_id']; ?>"><button class="btn btn-outline-primary">View Job</button></a>
+                </div>
+                <div class="col-md-4 text-end">
+                  <p class="lead">KES. <?php echo $row['salary']; ?> /MONTH</p>
+                </div>
+              </div>
+            </div>
+        <?php  }
+        }
+      }
+    }
+    ?>
   </div>
 </section>
 

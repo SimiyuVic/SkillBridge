@@ -104,58 +104,41 @@ if(!isset($_SESSION['company_id']))
             </div>
             <!-- User Profile Information -->
             <div class="col-md-8">
-            <?php
-                    if(isset($_SESSION['update_success'])){
-                        ?>
-
-                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <strong>Hurray ! </strong> Profile Updated Successfully .!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php
-                    unset($_SESSION['update_success']);
-                    }
-                ?>
+            
                 <!-- Display user information here -->
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Job Posts</h4>
-                    <p>List of Job Posts Created by you</p>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <table class="table ">
-                          <thead>
-                            <th scope="col">Job Title</th>
-                            <th scope="col">View Post</th>
-                          </thead>
-                          <tbody>
-                            <?php
-                              $sql = "SELECT * FROM vacancies WHERE company_id='$_SESSION[company_id]'";
-                              $result = $connection->query($sql);
+                
+                  <div class="row bg-light">
+                    <div class="col-md-10 mt-3">
+                        <?php
+                            $sql = "SELECT * FROM vacancies WHERE company_id = '$_SESSION[company_id]' AND jobpost_id = '$_GET[id]'";
+                            $result = mysqli_query($connection, $sql);
 
-                              //If job does exist
-                              if($result->num_rows > 0)
-                              {
+                            if(mysqli_num_rows($result)>0)
+                            {
                                 while($row = mysqli_fetch_assoc($result))
                                 { ?>
-                                  <tr>
-                                  <td class="fw-bold"><?php echo $row['job_title']; ?></td>
-                                  <td><a href="view-job-post.php?id=<?php echo $row['jobpost_id']; ?>"><i class="fa-solid fa-book-open-reader fa-lg"></i></a></td>
-                                  </tr>
-                                  
-                               <?php }
-                              }
-                            ?>
-                          </tbody>
-
-
-                        </table>
-                      </div>
+                                     <div class="container border-bottom" style="display: flex; justify-content: space-between;">
+                                        <div class="text-start fw-bold"><i><?php echo $row['job_title']; ?></i></div>
+                                        <div class="btn btn-outline-secondary mb-3"><a href="job-post.php" style="text-decoration: none;"><i class="fa-solid fa-arrow-left fa-xl"></i><span> Back</span></a></div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p>
+                                            <span class="fw-bold">
+                                                <i class="fa-regular fa-circle-check fa-xl"></i> <?php echo $row['designation']; ?> |
+                                                 <i class="fa-solid fa-calendar-check fa-xl"></i> <?php echo date("d-M-Y", strtotime($row['created_at'])); ?>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                    <?php echo stripcslashes($row['job_description']); ?>
+                                    </div>
+                                <?php }
+                            }
+                            
+                        ?>
                     </div>
                   </div>
-                </div>
+                
             </div>
         </div>
     </div>
