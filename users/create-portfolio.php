@@ -8,6 +8,8 @@ if(!isset($_SESSION['user_id']))
   $_SESSION['must_login'] = "";
   exit;
 }
+
+@require_once '../config/config.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -103,8 +105,99 @@ if(!isset($_SESSION['user_id']))
             </div>
             <!-- User Profile Information -->
             <div class="col-md-8">
-                
+            
+                <?php
+                    if(isset($_SESSION['add_project'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Congratulations </strong> That is one more achievement. !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['add_project']);
+                    }
+                ?>
+                <div class="">
+                  <p class="lead my-3 border-bottom">This is your profile, you can Edit or Add a new skill  you have acquired </p>
+                  <?php
+                    $sql = "SELECT * FROM candidates";
+                    $result = mysqli_query($connection, $sql);
+
+                    if($result->num_rows > 0)
+                    {
+                      while($row = mysqli_fetch_assoc($result))
+                      { ?>
+                        <!----HTML code goes here--->
+                        <div class="row border-bottom">
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <span class="fw-bold"><i class="fa-regular fa-envelope fa-xl"></i>  : <?php echo $row['email']; ?></span>
+                            </div>
+                            <div class="mb-3">
+                              <span class="fw-bold"><i class="fa-solid fa-phone fa-xl"></i>  : <?php echo $row['phone_number']; ?></span>
+                            </div>
+                            <div class="mb-2">
+                              <span class="fw-bold"><i class="fa-solid fa-clipboard-check fa-xl"></i>  : <?php echo $row['qualification']; ?></span>
+                            </div>
+                            <a href="add-skill.php" class="btn btn-outline-primary mt-3">ADD SKILL</a>
+                          </div>
+                          <div class="col-md-6">
+                            <div>
+                              <h4 class="text-muted">About Yourself</h4>
+                              <p class="lead"><?php echo $row['about_me']; ?></p>
+                            </div>
+                            <div>
+                              <h4 class="text-muted">Your Skills</h4>
+                              <p class="lead"><?php echo $row['skills']; ?></p>
+                            </div>
+                            <div>
+                              <h4 class="text-muted">Current Occupation</h4>
+                              <p class="lead"><?php echo $row['occupation']; ?></p>
+                            </div>
+                          </div>
+                        </div>
+                     <?php }
+                      
+                    } 
+                  ?>
+                </div>
                 <!-- Display user information here -->
+                <!----------Added Skills will be displayed here for the user------->
+                  <h4 class="text-center  my-3">Your Mile-Stones <i class="fa-solid fa-face-smile-beam fa-xl"></i></h4>
+                            
+                              <?php
+                                $sql = "SELECT * FROM portfolio";
+                                $result = mysqli_query($connection, $sql);
+                                if($result)
+                                {
+                                  while($row = mysqli_fetch_assoc($result))
+                                  { ?>
+                                    <div class="my-2 card shadow">
+                                      <div class="row">
+                                        <div class="col-md-4 ms-2 my-2">
+                                          <img src="../uploads/profile/<?php echo $row['profile']; ?>" class="img-fluid rounded"  alt="">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <p class="lead my-3 text-success fw-bold"><i class="fa-solid fa-laptop-file fa-lg"></i> <?php echo $row['project_info']; ?></p>
+                                          <p class="lead text-primary"><i class="fa-solid fa-globe fa-lg"></i> <?php echo $row['project_link']; ?></p>
+                                        </div>
+                                        <div class="col-md-3 my-5">
+                                          <div class="row">
+                                            <div class="col-md-5 my-2">
+                                              <a href=""><button class="btn btn-outline-primary">Edit</button></a>
+                                            </div>
+                                            <div class="col-md-5 my-2">
+                                              <a href=""><button class="btn btn-outline-danger">Delete</button></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                 <?php }
+                              }
+                            ?>
+                <!----------Added Skills will end  here for the user------->
             </div>
         </div>
     </div>

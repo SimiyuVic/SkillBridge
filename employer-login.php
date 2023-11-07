@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
+{
+  $_SESSION['already_logged'] = "";
+  header('location: index.php');
+}
 ?>
 <html lang="en">
   <head>

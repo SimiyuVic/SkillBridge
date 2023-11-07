@@ -51,11 +51,6 @@ session_start();
                     <li class="nav-item">
                       <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-dark" href="users">
-                        <i class="fa-solid fa-user fa-xl"></i>
-                      </a>
-                    </li>
                <?php } else
                { ?>
                     <li class="nav-item ">
@@ -143,7 +138,31 @@ session_start();
         }
       }
   </style>
-<div class="container">
+<div class="container my-3">
+      <?php
+            if(isset($_SESSION['already_logged']))
+            {
+        ?>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                  <strong>Hello ! </strong> You are already logged in !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+          <?php
+                unset($_SESSION['already_logged']);
+               }
+        ?>
+        <?php
+            if(isset($_SESSION['account_exists']))
+            {
+        ?>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                  <strong>Hello ! </strong> You have to log-out first !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+          <?php
+                unset($_SESSION['account_exists']);
+               }
+        ?>
     <div class="wrapper">
         <div class="row">
             <div class="col-md-6">
@@ -151,8 +170,29 @@ session_start();
                     <h1>Need A Job ?</h1>
                     <p class="my-5">We are here to help you get a place you will comfortably build your skills overtime,
                          this will help you scale up your career, <strong>SELECT</strong> what you qualify for and <strong>MAKE</strong> an application today.</p>
-                         <a href="register.php" class="btn-one">Get Started</a>
-                         <a href="jobs.php" class="btn-two">Available Vacancies</a>
+
+                         <?php
+                            // Start a session if not already started
+                            if(isset($_SESSION['user_id']))
+                            {
+                              // A user is logged in, display the "View Profile" and "Available Vacancies" links.
+                              echo '<a href="users/index.php" class="btn-one">View Profile</a>';
+                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
+                            }
+                            elseif(isset($_SESSION['company_id']))
+                            {
+                              echo '<a href="employers/index.php" class="btn-one">View Profile</a>';
+                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
+                            }
+                            else 
+                            {
+                              // No user is logged in, display the "Get Started" link and "Available Vacancies" link.
+                              echo '<a href="register.php" class="btn-one">Get Started</a>';
+                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
+                            }
+
+                          ?>
+
                 </div>
             </div>
             <div class="col-md-6">
@@ -185,7 +225,7 @@ session_start();
             <div class="container card shadow my-2">
               <div class="row my-2">
                 <div class="col-md-2">
-                  <img src="assets/img/jobs.jpg" class="img-fluid rounded" alt="job image" style="">
+                  <img src="assets/img/jobs.jpg" class="img-fluid rounded" alt="job image" style="">  
                 </div>
                 <div class="col-md-6">
                   <h4><?php echo $row['job_title']; ?></h4>

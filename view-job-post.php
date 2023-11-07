@@ -113,7 +113,7 @@ session_start();
                                 if(isset($_SESSION['user_id']) && empty($_SESSION['company_id']))
                                 { ?>
                                     <div>
-                                        <a href="apply-job.php?=<?php echo $row['jobpost_id']; ?>" class="btn btn-outline-primary">Apply Job</a>
+                                        <a href="process/apply-job-process.php?=<?php echo $row['jobpost_id']; ?>" class="btn btn-outline-primary">Apply Job</a>
                                     </div>
                               <?php  }
                             ?>

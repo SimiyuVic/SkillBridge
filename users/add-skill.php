@@ -8,41 +8,8 @@ if(!isset($_SESSION['user_id']))
   $_SESSION['must_login'] = "";
   exit;
 }
-?>
-<?php
 
-@require_once "../config/config.php";
-
-if(isset($_POST['change_password']))
-{
-  $password = mysqli_real_escape_string($connection, $_POST['password']);
-  $c_password = mysqli_real_escape_string($connection, $_POST['c_password']);
-
-  if($password != $c_password)
-  {
-    $sql = "UPDATE candidates SET password = '$password' WHERE firstname = '$firstname'";
-    $result = mysqli_query($connection, $sql);
-
-    if(!$result)
-    {
-      $_SESSION['update_failed'] = "";
-      header('location: settings.php');
-    }
-    else
-    {
-      $_SESSION['password_success'] = "";
-      header('location: settings.php');
-    }
-  }
-  else 
-  {
-    $_SESSION['password_error'] = "";
-    header('location: settings.php');
-  }
-
-}
-
-
+@require_once '../config/config.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -77,18 +44,6 @@ if(isset($_POST['change_password']))
         <div class="row">   
             <!-- User Dashboard -->
             <div class="col-md-4">
-              <?php
-                      if(isset($_SESSION['password_error'])){
-                          ?>
-
-                          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          <strong>Oops ! </strong> Passwords do not Match .!
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>
-                      <?php
-                      unset($_SESSION['password_error']);
-                      }
-                  ?>
                 <div class="card">
                     <div class="card-header">
                     <h4>Welcome, <?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?>!</h4>
@@ -149,39 +104,53 @@ if(isset($_POST['change_password']))
                 </div>
             </div>
             <!-- User Profile Information -->
-            <div class="col-md-8">
-                
+            <div class="col-md-6">
+            
+                <?php
+                    if(isset($_SESSION['upload_error'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> Error while uploading image !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['upload_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['failed_register'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> Error while adding skill .!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['failed_register']);
+                    }
+                ?>
+                <h4 class="text-muted">Add a new Project or Skill acquired</h4>
+                <form action="../process/add-skill-process.php" method="POST" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <input type="text" name="project_title" class="form-control" placeholder=" Project Title"  required>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="project_info" class="form-control" placeholder=" Simple project description, One sentence"  required>
+                  </div>
+                  <div class="mb-3">
+                    <textarea name="project_description" class="form-control" cols="20" rows="5" placeholder="A detailed description of your project/ skill ..."></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" name="project_link" class="form-control" placeholder="Link to project" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="profile" class="mb-2 fw-bold">Project Picture</label>
+                    <input type="file" name="profile" class="form-control" > 
+                  </div>
+                  <input type="submit" name="add_skill" class="btn btn-outline-primary" value="ADD SKILL">
+                </form>
                 <!-- Display user information here -->
-                <div class="card">
-                  <div class="card-header">
-                    <h4 class="text-muted">Account Settings</h4>
-                    <p class="lead">Change Password or Upload a Profile Picture</p>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <form action="settings.php" method="">
-                          <div class="mb-3">
-                            <input type="password" name="password" class="form-control" placeholder=" Password *" required>
-                          </div>
-                          <div class="mb-3">
-                            <input type="password" name="c_password" class="form-control" placeholder="Confirm Password *">
-                          </div>
-                          <input type="submit" name="change_password" class="btn btn-outline-primary" value="Change Password">
-                        </form>
-                      </div>
-                      <div class="col-md-6">
-                        <form action="">
-                          <div class="mb-3">
-                            <input type="file" name="profile_picture" class="form-control">
-                          </div>
-                          <input type="submit" value="Upload Picture" class="btn btn-outline-primary">
-                        </form>
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
             </div>
         </div>
     </div>
