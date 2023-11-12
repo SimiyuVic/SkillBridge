@@ -12,7 +12,7 @@ if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | Home</title>
+    <title>Skill-Bridge | Login</title>
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -66,6 +66,18 @@ if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
                     }
                 ?>
                 <?php
+                    if(isset($_SESSION['empty_details'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops ! </strong> Details cant't be empty !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['empty_details']);
+                    }
+                ?>
+                <?php
                     if(isset($_SESSION['login_error'])){
                         ?>
 
@@ -99,11 +111,11 @@ if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
                      <form action="process/user-login-process.php" method="POST">
                         <div class="mb-3">
                             <label class="form-label">User Name</label>
-                            <input type="email" name="email" class="form-control" placeholder=" Email *" required>
+                            <input type="email" name="email" class="form-control" placeholder=" Email *" >
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputPassword1"  placeholder=" Password * " required>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1"  placeholder=" Password * " >
                         </div>
                         <input type="submit" name="login" class="btn btn-outline-primary" value="Log In">
                         <p>Don't Have An Account?</p>

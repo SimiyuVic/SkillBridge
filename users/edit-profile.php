@@ -173,7 +173,7 @@ if(!isset($_SESSION['user_id']))
                             </div>
                           </div>
                         </div>
-                        <input type="submit" class="btn btn-primary" name="update" value="Update">
+                        <input type="submit" class="btn btn-outline-primary" name="update" value="Update">
                       </form>
                       <?php
                     }

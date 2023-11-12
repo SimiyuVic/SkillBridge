@@ -38,7 +38,7 @@ if(!isset($_SESSION['user_id']))
       </nav>
 
 
-    <!---Navigatiob Bar Ends Here-->
+    <!---Navigation Bar Ends Here-->
     <!-- Other dashboard content goes here -->
     <div class="container my-3">
         <div class="row">   
@@ -107,21 +107,57 @@ if(!isset($_SESSION['user_id']))
             <div class="col-md-8">
             
                 <?php
-                    if(isset($_SESSION['add_project'])){
+                    if(isset($_SESSION['success'])){
                         ?>
 
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Congratulations </strong> That is one more achievement. !
+                        <strong>Hurray </strong> Updated succesfully !
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php
-                    unset($_SESSION['add_project']);
+                    unset($_SESSION['success']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['failed'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> Update Failed !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['falied']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['deleted'])){
+                        ?>
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Hey </strong> You can always add a new one!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['deleted']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['delete_failed'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> Could not delete skill, Try again !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['delete_failed']);
                     }
                 ?>
                 <div class="">
                   <p class="lead my-3 border-bottom">This is your profile, you can Edit or Add a new skill  you have acquired </p>
                   <?php
-                    $sql = "SELECT * FROM candidates";
+                    $sql = "SELECT * FROM candidates WHERE user_id = '$_SESSION[user_id]'";
                     $result = mysqli_query($connection, $sql);
 
                     if($result->num_rows > 0)
@@ -140,7 +176,7 @@ if(!isset($_SESSION['user_id']))
                             <div class="mb-2">
                               <span class="fw-bold"><i class="fa-solid fa-clipboard-check fa-xl"></i>  : <?php echo $row['qualification']; ?></span>
                             </div>
-                            <a href="add-skill.php" class="btn btn-outline-primary mt-3">ADD SKILL</a>
+                            <a href="add-skill.php" class="btn btn-outline-primary mt-3">ADD PROJECT</a>
                           </div>
                           <div class="col-md-6">
                             <div>
@@ -167,7 +203,7 @@ if(!isset($_SESSION['user_id']))
                   <h4 class="text-center  my-3">Your Mile-Stones <i class="fa-solid fa-face-smile-beam fa-xl"></i></h4>
                             
                               <?php
-                                $sql = "SELECT * FROM portfolio";
+                                $sql = "SELECT * FROM portfolio WHERE user_id = '$_SESSION[user_id]'";
                                 $result = mysqli_query($connection, $sql);
                                 if($result)
                                 {
@@ -180,15 +216,21 @@ if(!isset($_SESSION['user_id']))
                                         </div>
                                         <div class="col-md-4">
                                           <p class="lead my-3 text-success fw-bold"><i class="fa-solid fa-laptop-file fa-lg"></i> <?php echo $row['project_info']; ?></p>
-                                          <p class="lead text-primary"><i class="fa-solid fa-globe fa-lg"></i> <?php echo $row['project_link']; ?></p>
+                                          <a href="<?php echo $row['project_link']; ?>" style="text-decoration: none;"><p class="lead text-primary"><i class="fa-solid fa-globe fa-lg"></i> <?php echo $row['project_link']; ?></p></a>
                                         </div>
                                         <div class="col-md-3 my-5">
                                           <div class="row">
                                             <div class="col-md-5 my-2">
-                                              <a href=""><button class="btn btn-outline-primary">Edit</button></a>
+                                              <form action="edit-portfolio.php" method="GET">
+                                                <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
+                                                <input type="submit" value="Edit" class="btn btn-outline-primary">
+                                              </form>
                                             </div>
                                             <div class="col-md-5 my-2">
-                                              <a href=""><button class="btn btn-outline-danger">Delete</button></a>
+                                              <form action="../process/delete-skill.php" method="GET">
+                                                <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
+                                                <input type="submit" value="Delete" class="btn btn-outline-danger">
+                                              </form>
                                             </div>
                                           </div>
                                         </div>

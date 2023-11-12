@@ -10,8 +10,8 @@ if(isset($_POST['add_skill']) && isset($_FILES['profile']))
         $project_description = mysqli_real_escape_string($connection, $_POST['project_description']);
         $project_link = mysqli_real_escape_string($connection, $_POST['project_link']);
 
-   
-        //upload profile
+    
+        //upload logo
         $img_name = $_FILES['profile']['name'];
         $img_size = $_FILES['profile']['img_size'];
         $tmp_name = $_FILES['profile']['tmp_name'];
@@ -36,9 +36,10 @@ if(isset($_POST['add_skill']) && isset($_FILES['profile']))
                     $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
                     $img_upload_path = '../uploads/profile/'.$new_img_name;
                     move_uploaded_file($tmp_name, $img_upload_path);
+
                     
                     $sql = "INSERT INTO portfolio(user_id, project_title, project_info, project_description, project_link, profile) 
-                    VALUES('$_SESSION[user_id]', '$project_title', '$project_info', '$project_description', '$project_link', '$new_img_name')";
+                    VALUES('$_SESSION[user_id]','$project_title', '$project_info', '$project_description', '$project_link', '$new_img_name')";
     
                     $result = mysqli_query($connection, $sql);
     
@@ -60,11 +61,7 @@ if(isset($_POST['add_skill']) && isset($_FILES['profile']))
         {
             $_SESSION['upload_error'] = "";
             header('location: ../users/add-skill.php');
-        }
-        
-        
-    
-   
+        }  
 }
 
 ?>

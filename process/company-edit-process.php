@@ -15,7 +15,7 @@ if(isset($_POST['update']))
     $city = mysqli_real_escape_string($connection, $_POST['city']);
 
     $sql = "UPDATE employers SET fullname = '$fullname', company = '$company', website = '$website', about_company = '$about_company',
-     phone_number = '$phone_number', county = '$county', city = '$city' WHERE fullname = '$fullname'";
+    phone_number = '$phone_number', county = '$county', city = '$city' WHERE fullname = '$fullname'";
     $result = mysqli_query($connection, $sql);
 
     if(!$result)

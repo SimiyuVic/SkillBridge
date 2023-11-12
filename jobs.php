@@ -47,6 +47,9 @@ session_start();
                   <li class="nav-item ">
                    <a class="nav-link active fw-bold text-light" aria-current="page" href="users/index.php">Dashboard</a>
                   </li>
+                  <li class="nav-item ">
+                   <a class="nav-link active fw-bold text-light" aria-current="page" href="log-out.php">Logout</a>
+                  </li>
 
                   <?php
                 } elseif(isset($_SESSION['company_id'])){
@@ -73,6 +76,42 @@ session_start();
       <div class="row">
         <div class="col-md-12">
           <h3 class="text-center display-4">Latest Vacancies</h3>
+          <?php
+                    if(isset($_SESSION['job_exists'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> You Already applied for this Job. !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['job_exists']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['application_error'])){
+                        ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops </strong> Error while applying try again. !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['application_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['add_project'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Congratulations </strong> That is one more achievement. !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['add_project']);
+                    }
+                ?>
           <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search For Vacancies" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -89,3 +128,6 @@ session_start();
       </div>
     </div>
     <!----Job section ends here--->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
