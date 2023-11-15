@@ -122,12 +122,24 @@ if(!isset($_SESSION['user_id']))
                     if(isset($_SESSION['failed'])){
                         ?>
 
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Oops </strong> Update Failed !
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php
                     unset($_SESSION['falied']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['add_project'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Congratulations </strong> One More Added !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['add_project']);
                     }
                 ?>
                 <?php
@@ -221,7 +233,7 @@ if(!isset($_SESSION['user_id']))
                                         <div class="col-md-3 my-5">
                                           <div class="row">
                                             <div class="col-md-5 my-2">
-                                              <form action="edit-portfolio.php" method="GET">
+                                              <form action="edit-skill.php" method="GET">
                                                 <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
                                                 <input type="submit" value="Edit" class="btn btn-outline-primary">
                                               </form>

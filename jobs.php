@@ -77,7 +77,7 @@ session_start();
         <div class="col-md-12">
           <h3 class="text-center display-4">Latest Vacancies</h3>
           <?php
-                    if(isset($_SESSION['job_exists'])){
+                    if(isset($_SESSION['application_exists'])){
                         ?>
 
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -85,7 +85,7 @@ session_start();
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php
-                    unset($_SESSION['job_exists']);
+                    unset($_SESSION['application_exists']);
                     }
                 ?>
                 <?php

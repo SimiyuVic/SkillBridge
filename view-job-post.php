@@ -5,7 +5,7 @@ session_start();
 
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en"> 
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,7 +91,7 @@ session_start();
                                     <span class="fw-bold text-primary">
                                         <i class="fa-regular fa-circle-check fa-xl"></i> <?php echo $row['designation']; ?> |
                                         <i class="fa-solid fa-location-dot fa-xl"></i> <?php echo $row['county']; ?> |
-                                        <i class="fa-solid fa-calendar-check fa-xl"></i> <?php echo date("d-M-Y", strtotime($row['created_at'])); ?> |
+                                        <i class="fa-solid fa-calendar-check fa-xl"></i> <?php echo date("Y-M-d ", strtotime($row['created_at'])); ?> |
 
                                     </span>
                                 </p>
@@ -113,7 +113,9 @@ session_start();
                                 if(isset($_SESSION['user_id']) && empty($_SESSION['company_id']))
                                 { ?>
                                     <div>
-                                        <a href="process/apply-job-process.php?=<?php echo $row['jobpost_id']; ?>" class="btn btn-outline-primary">Apply Job</a>
+                                      <form action="process/apply-job-process.php?jobpost_id=<?php echo $row['jobpost_id']; ?>" method="POST">
+                                        <input type="submit" class="btn btn-outline-primary" value="Apply Job">
+                                      </form>
                                     </div>
                               <?php  }
                             ?>

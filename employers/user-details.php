@@ -103,61 +103,11 @@ if(!isset($_SESSION['company_id']))
             </div>
             <!-- User Profile Information -->
             <div class="col-md-8">
-            <?php
-                    if(isset($_SESSION['update_success'])){
-                        ?>
-
-                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <strong>Hurray ! </strong> Profile Updated Successfully .!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php
-                    unset($_SESSION['update_success']);
-                    }
-                ?>
+            
                 <!-- Display user information here -->
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Recent Applications</h4>
-                    <p class="lead">Below you will find your recently applied jobs</p>
-                  </div>
-                  <div class="card-body">
-                    <?php
-                     @require_once '../config/config.php';
-                      $sql = "SELECT * FROM vacancies INNER JOIN apply_job_post ON vacancies.jobpost_id=apply_job_post.jobpost_id  INNER JOIN candidates ON candidates.user_id=apply_job_post.user_id WHERE apply_job_post.company_id='$_SESSION[company_id]'";
-                      $result = mysqli_query($connection, $sql);
-                      
-                      if(mysqli_num_rows($result)>0)
-                      {
-                        while($row = mysqli_fetch_assoc($result))
-                        { ?>
-                          <!-----HTML CODE---->
-                          <div class="card my-1 shadow bg-light">
-                            <div class="row">
-                              <div class="col-md-8 my-1">
-                                <h4 class="lead ms-2 fw-bold"><a href="user-details.php?id=<?php echo $row['user_id']; ?>&jobpost_id=<?php echo $row['jobpost_id']; ?>" style="text-decoration: none;"><?php echo $row['job_title'] ?> | <span class="text-success"><?php echo $row['firstname'] ?>   <?php echo $row['lastname'] ?></span></a></h4>
-                                <p class="lead ms-2 text-danger"><?php echo $row['created_at']; ?></p>
-                              </div>
-                              <div class="col-md-4 my-1">
-                                <?php
-                                 if($row['status'] == 0)
-                                 { ?>
-                                  <p class="text-warning my-4 fw-bold">Pending</p>
-                                 <?php } else if($row['status'] == 1)
-                                 { ?>
-                                  <p class="text-danger my-4 fw-bold">Rejected</p>
-                                <?php } else if($row['status'] == 2)
-                                { ?>
-                                  <p class="text-success my-4 fw-bold">Under Review</p>
-                               <?php }
-                                ?>
-                              </div>
-                            </div>
-                          </div>
-                       <?php }
-                      }
-                    ?>
-                  </div>
+                  
+                  <div class="card-body"></div>
                 </div>
             </div>
         </div>

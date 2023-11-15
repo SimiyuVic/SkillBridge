@@ -50,7 +50,7 @@ if(isset($_POST['add_skill']) && isset($_FILES['profile']))
                     }
                     else
                     {
-                        $_SESSION['add_project'] = "";
+                        $_SESSION['add_project'] = ""; 
                         header('location: ../users/create-portfolio.php');
                     }
 

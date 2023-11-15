@@ -135,7 +135,7 @@ if(!isset($_SESSION['user_id']))
                 $currentUser = $_SESSION['user_id'];
                 // Specify the record you want to edit using a WHERE clause
                   $recordId = $_GET['id']; // To get the specific id you want to add 
-                  $sql = "SELECT * FROM portfolio WHERE user_id = '$currentUser' AND portfolio_id = '$recordId'";
+                  $sql = "SELECT *  FROM portfolio WHERE user_id = '$currentUser' AND portfolio_id = '$recordId'";
 
                 $gotResults = mysqli_query($connection, $sql);
                 if($gotResults)
@@ -145,7 +145,7 @@ if(!isset($_SESSION['user_id']))
                     while($row = mysqli_fetch_assoc($gotResults))
                     {
                       ?>
-                     <form action="../process/edit-portfolio-process.php?portfolio_id=<?php echo $row['portfolio_id']; ?>" method="POST" enctype="multipart/form-data">
+                     <form action="../process/edit-skill-process.php?portfolio_id=<?php echo $row['portfolio_id']; ?>" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                           <input type="text" name="project_title" class="form-control" placeholder=" Project Title" value="<?php echo $row['project_title']; ?>"  required>
                         </div>
@@ -162,7 +162,7 @@ if(!isset($_SESSION['user_id']))
                           <label for="profile" class="mb-2 fw-bold">Project Picture</label><br>
                           <img src="../uploads/profile/<?php echo $row['profile']; ?>" class="img-fluid rounded"  alt="Project Image">
                         </div>  
-                        <input type="submit" name="edit_portfolio" class="btn btn-outline-primary" value="EDIT PORTFOLIO">
+                        <input type="submit" name="edit_skill" class="btn btn-outline-primary" value="EDIT PORTFOLIO">
                       </form>
                 <!-- Display user information here -->
                       <?php

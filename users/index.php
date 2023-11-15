@@ -14,7 +14,7 @@ if(!isset($_SESSION['user_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | Home</title>
+    <title>Skill-Bridge | Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -49,9 +49,9 @@ if(!isset($_SESSION['user_id']))
         <div class="row">   
             <!-- User Dashboard -->
             <div class="col-md-4">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
-                    <h4>Welcome, <?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?>!</h4>
+                    <h4><i class="text-success">Welcome</i>, <?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?>!</h4>
                     </div>
                     <ul class="list-group list-group-flush">
                         <style>
@@ -122,13 +122,71 @@ if(!isset($_SESSION['user_id']))
                     unset($_SESSION['update_success']);
                     }
                 ?>
+                <?php
+                    if(isset($_SESSION['applied_success'])){
+                        ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Congratulations ! </strong> Your Application was Submitted .!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php
+                    unset($_SESSION['applied_success']);
+                    }
+                ?>
                 <!-- Display user information here -->
-                <div class="card">
+                <div class="card shadow">
                   <div class="card-header">
                     <h4>Recent Applications</h4>
-                    <p>Below you will find your recently applied jobs</p>
+                    <p class="lead">Below you will find your recently applied jobs</p>
                   </div>
-                  <div class="card-body"></div>
+                  <div class="card-body ">
+                      <!--------Display the applied jobs------->
+                      <?php
+                      @require_once '../config/config.php';
+                      $sql = "SELECT * FROM vacancies INNER JOIN apply_job_post ON vacancies.jobpost_id=apply_job_post.jobpost_id WHERE apply_job_post.user_id='$_SESSION[user_id]'   ORDER BY apply_job_post.created_at DESC";
+                        $result = mysqli_query($connection, $sql);
+
+                        if($result)
+                        {
+                          if(mysqli_num_rows($result)>0)
+                          {
+                            while($row = mysqli_fetch_assoc($result)) 
+                            { ?>
+                              <!------HTML HERE------->
+                              <div class="card my-2 text-danger bg-light shadow">
+                                <div class="row my-2">
+                                  <div class="col-md-8 my-2">
+                                    <h4 class=" ms-3"><a href="../view-job-post.php?id=<?php echo $row['jobpost_id']; ?>" style="text-decoration: none;"><?php echo $row['job_title'] ?></a></h4>
+                                    <p class="ms-3"><?php echo $row['created_at'] ?></p>
+                                  </div>
+                                  <div class="col-md-4 my-4">
+                                    <div class="ms-3">
+                                      <?php
+                                      if($row['status'] == 0) {
+                                        echo '<div class="pull-right"><strong class="text-warning">
+                                        <i class="fa-regular fa-face-smile fa-xl"></i> Pending
+                                        </strong></div>';
+                                      } else if ($row['status'] == 1) {
+                                        echo '<div class="pull-right"><strong class="text-danger">
+                                        <i class="fa-regular fa-face-sad-tear fa-xl"></i> Rejected
+                                        </strong></div>';
+                                      } else if ($row['status'] == 2) {
+                                        echo '<div class="pull-right"><strong class="text-success">
+                                        <i class="fa-regular fa-face-laugh-wink fa-xl"></i> Under Review
+                                        </strong></div>';
+                                      }
+                                      ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                           <?php }
+                          } 
+                        }
+                      ?>
+                  </div>
                 </div>
             </div>
         </div>

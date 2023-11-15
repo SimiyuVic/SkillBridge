@@ -1,62 +1,68 @@
 <?php
+
 session_start();
 
-if (empty($_SESSION['user_id'])) {
-    header("Location: ../index.php");
+if(!isset($_SESSION['user_id']))
+{
+    $_SESSION['must_login'] = "";
+    header('location: ../user-login.php');
     exit();
 }
 
-require_once '../config/config.php';
+@require_once '../config/config.php';
 
-if (isset($_GET)) {
-    $jobpost_id = $_GET['id'];
+if(isset($_GET['jobpost_id']))
+{
+    $jobpost_id = $_GET['jobpost_id'];
+    //Fetching job details
+    $sql = "SELECT company_id FROM vacancies WHERE jobpost_id = '$_GET[jobpost_id]'";
+    $result = mysqli_query($connection, $sql);
 
-    // Prepare a SQL statement to fetch job details
-    $sql = "SELECT company_id FROM vacancies WHERE jobpost_id = ?";
-    $stmt = $connection->prepare($sql);
-    $stmt->bind_param("i", $jobpost_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
+    if($result)
+    {
+        $row = mysqli_fetch_assoc($result);
         $company_id = $row['company_id'];
 
-        // Prepare a SQL statement to check if the user has already applied
-        $sql1 = "SELECT * FROM apply_job_post WHERE user_id = ? AND jobpost_id = ?";
-        $stmt1 = $connection->prepare($sql1);
-        $stmt1->bind_param("ii", $_SESSION['user_id'], $jobpost_id);
-        $stmt1->execute();
-        $result1 = $stmt1->get_result();
-        $stmt1->close();
+        //Checking if user has already applied 
+        $sql1 = "SELECT * FROM apply_job_post WHERE user_id = '$_SESSION[user_id]' AND jobpost_id = '$jobpost_id'";
+        $result1 = mysqli_query($connection, $sql1);
 
-        if ($result1->num_rows == 0) {
-            // Prepare a SQL statement to insert the application
-            $sql2 = "INSERT INTO apply_job_post (jobpost_id, company_id, user_id) VALUES (?, ?, ?)";
-            $stmt2 = $connection->prepare($sql2);
-            $stmt2->bind_param("iii", $jobpost_id, $company_id, $_SESSION['user_id']);
-            if ($stmt2->execute()) {
-                $_SESSION['jobApplySuccess'] = true;
-                $stmt2->close();
-                header("Location: ../users/index.php");
-                exit();
-            } else {
-                echo "Error: " . $stmt2->error;
-                $stmt2->close();
+        if(mysqli_num_rows($result1)==0)
+        {
+            $sql2 = "INSERT INTO apply_job_post(jobpost_id, company_id, user_id) VALUES('$jobpost_id', '$company_id', '$_SESSION[user_id]')";
+            $result2 = mysqli_query($connection, $sql2);
+
+            if($result)
+            {
+                //If successfully applied
+                $_SESSION['applied_success'] = "";
+                header('location: ../users/index.php');
             }
-        } else {
-            header("Location: ../jobs.php");
-            $_SESSION['application_error_2'] = "You have already applied for this job.";
-            exit();
+            else
+            {
+                $_SESSION['apply_fail'] = "";
+                header('location: ../jobs.php');
+            }
         }
-    } else {
-        header("Location: ../jobs.php");
-        $_SESSION['job_exists'] = "The job post does not exist.";
-        exit();
+        else //if job application exists
+        {
+            $_SESSION['application_exists']="";
+            header('location: ../jobs.php');
+        }
+
+
     }
-} else {
-    header("Location: ../jobs.php");
-    $_SESSION['application_error'] = "Invalid job application request.";
-    exit();
+    else
+    {
+        //Job does not exist
+        $_SESSION['application_exists']="";
+        header('location: ../index.php');
+    }
 }
+else 
+{
+    $_SESSION['apply_failed'] = "";
+    header('location: ../jobs.php');
+}
+
+?>
