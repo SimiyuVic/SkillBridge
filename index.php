@@ -1,365 +1,272 @@
-
-<?php
-session_start();
-
-@require_once 'config/config.php';
-
-?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Skill-Bridge | Home</title>
-    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+    integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-       <style>
-          .navbar-brand {
-              font-family: 'Pacifico', cursive; /* Set the font-family to 'Pacifico' or your chosen curly font */
-          }
-      </style>
-
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   </head>
-  <body>
-    <!---Navigatiob Bar Starts-->
-      <nav class="navbar navbar-expand-lg bg-info sticky-top" style="padding: 20px;">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand fw-bold text-light" href="#">Skill-Bridge</a>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              
-             
-
-              <!-------->
-              <?php
-                if(isset($_SESSION['user_id']) || isset($_SESSION['company_id']))
-                {
-                  ?>
-                    <li class="nav-item ">
-                      <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Vacancies</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#employers">Employers</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
-                    </li>
-               <?php } else
-               { ?>
-                    <li class="nav-item ">
-                      <a class="nav-link active fw-bold text-light" aria-current="page" href="jobs.php">Vacancies</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#candidates">Candidates</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#employers">Employers</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="#about-us">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="login.php">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link fw-bold text-light" href="register.php">Sign Up</a>
-                    </li>
-              <?php }
-              ?>
-              <!-------->
-
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
-
-
-    <!---Navigatiob Bar Ends Here-->
-
-<!--Home Page-->
-<style>
-    .wrapper
-      {
-          margin : 50px auto;
-          border-radius: 10px;
-          padding-top: 50px;
-          padding-bottom: 50px;
-          box-shadow: 0 0 40px 2px rgba(37,73, 214, 018);
-      }
-      .feature-box
-      {
-        padding: 30px;
-      }
-      .feature-box h1
-      {
-        margin-top: 20%;
-        color: #c200ff;
-      }
-      .feature-box p
-      {
-        color: #555;
-      }
-      .feature-box a 
-      {
-        text-decoration: none !important;
-        background: #a669ce;
-        border-radius: 20px;
-        padding: 10px 20px;
-        margin-right: 30px;
-        border: 2px solid #a669ce !important;
-        color: #fff;
-      }
-      .btn-one:hover
-      {
-        color: #fff;
-      }
-      .btn-two
-      {
-        background: none !important;
-        color: #a669ce !important;
-      }
-      @media only screen and (max-width:990px)
-      {
-        .feature-box a
-        {
-          padding: 5px 8px ;
-          margin-right: 10px;
-        }
-      }
-  </style>
-<div class="container my-3">
-      <?php
-            if(isset($_SESSION['already_logged']))
-            {
-        ?>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                  <strong>Hello ! </strong> You are already logged in !
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-          <?php
-                unset($_SESSION['already_logged']);
-               }
-        ?>
-        <?php
-            if(isset($_SESSION['account_exists']))
-            {
-        ?>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                  <strong>Hello ! </strong> You have to log-out first !
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-          <?php
-                unset($_SESSION['account_exists']);
-               }
-        ?>
-    <div class="wrapper">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="feature-box">
-                    <h1>Need A Job ?</h1>
-                    <p class="my-5">We are here to help you get a place you will comfortably build your skills overtime,
-                         this will help you scale up your career, <strong>SELECT</strong> what you qualify for and <strong>MAKE</strong> an application today.</p>
-
-                         <?php
-                            // Start a session if not already started
-                            if(isset($_SESSION['user_id']))
-                            {
-                              // A user is logged in, display the "View Profile" and "Available Vacancies" links.
-                              echo '<a href="users/index.php" class="btn-one">View Profile</a>';
-                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
-                            }
-                            elseif(isset($_SESSION['company_id']))
-                            {
-                              echo '<a href="employers/index.php" class="btn-one">View Profile</a>';
-                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
-                            }
-                            else 
-                            {
-                              // No user is logged in, display the "Get Started" link and "Available Vacancies" link.
-                              echo '<a href="register.php" class="btn-one">Get Started</a>';
-                              echo '<a href="jobs.php" class="btn-two">Available Vacancies</a>';
-                            }
-
-                          ?>
-
-                </div>
-            </div>
-            <div class="col-md-6">
-                 <img src="assets/img/bg-home.png" class="img-fluid" alt="...">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Home Page Ends Here-->
-<!---Jobs Section Starts Here--->
-<section id="jobs">
-  <div class="container my-5">
-    <h2 class="text-center text-primary display-4">Latest Vacancies</h2>
-    <?php
-     $sql = "SELECT * FROM vacancies ORDER BY created_at DESC LIMIT 5";
-    $result = mysqli_query($connection, $sql);
-
-    if(mysqli_num_rows($result)>0)
+  <style>
+    .navbar-nav .nav-link
     {
-      while($row = mysqli_fetch_assoc($result))
-      {
-        $sql_statment = "SELECT * FROM employers WHERE company_id = '$row[company_id]'";
-        $result_statement = mysqli_query($connection, $sql_statment);
+        color: white !important;
+    }
+    .navbar-brand
+    {
+        font-size: 29px;
+        font-family: 'caveat', sans-serif;
+        color: white !important;
 
-        if(mysqli_num_rows($result_statement)>0)
-        {
-          while($row_statement = mysqli_fetch_assoc($result_statement))
-          { ?>
-            <div class="container card shadow my-2">
-              <div class="row my-2">
-                <div class="col-md-2">
-                  <img src="assets/img/jobs.jpg" class="img-fluid rounded" alt="job image" style="">  
+    }
+  </style>
+  <!-----Navbar starts here----->
+  <nav class="navbar navbar-expand-lg  bg-warning">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">Skill-Bridge</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav my-3 fw-bold">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#candidates">Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#employers">Employers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up.php">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-----Navbar ends here----->
+
+    <!-----Home page section----->
+    <section id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="display-5 mt-5">
+                        Looking For an Internship or Attachment in your Area of Qualification?
+                    </h3>
+                    <h3 class=" display-5">
+                        Do you need top talent for your Organization?
+                    </h3>
+                    <p class="lead">
+                        Then you came to the right place, we offer a wide pool of jobs for students <br> and fresh graduates as 
+                        well as do a good filtering for the best talent to be <br>recruited by prospective employers.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="#" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-outline-primary btn-lg w-100" role="button">Available Jobs</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
-                  <h4><?php echo $row['job_title']; ?></h4>
-                  <p><span class="fw-bold"><?php echo $row_statement['company']; ?></span> | <span class="fw-bold"><?php echo $row_statement['county']; ?></span> | <span class="text-info fw-bold"><?php echo $row['designation']; ?></span></p>
-                  <a href="view-job-post.php?id=<?php echo $row['jobpost_id']; ?>"><button class="btn btn-outline-primary">View Job</button></a>
+                    <img src="assets/images/bg-home.png" class="img-fluid" alt="...">
                 </div>
-                <div class="col-md-4 text-end">
-                  <p class="lead">KES. <?php echo $row['salary']; ?> /MONTH</p>
-                </div>
-              </div>
             </div>
-        <?php  }
-        }
-      }
-    }
-    ?>
-  </div>
-</section>
+            
+        </div>
+    </section>
 
-<!---Jobs Section ends Here---->
+    <!-----Jobs sections starts here----->
+    
 
-<!-----Candidates Sections---->
-<section id="candidates">
- <div class="container my-5">
-  <h2 class="text-center text-primary display-4">Candidates</h2>
-  <p class="text-center lead">Look no further while searching for a job, <i class="fw-bold text-primary">Skill-Bridge</i>  is here to stramline all that.</p>
-  <div class="row text-center my-5">
-    <div class="col-md-4 my-3">
-      <div class="card shadow">
-         <img src="assets/img/search.jpg" class="card-img-top" alt="search">
-          <div class="card-body">
-            <h3 class="card-text">Search for Jobs Your Qualify .</h3>
-          </div>
-      </div>
-    </div>
-    <div class="col-md-4 my-3">
-      <div class="card shadow">
-         <img src="assets/img/interview.jpg" class="card-img-top" alt="interview">
-          <div class="card-body">
-            <h3 class="card-text">Apply and Get Interviewed .</h3>
-          </div>
-      </div>
-    </div>
-    <div class="col-md-4 my-3">
-      <div class="card shadow">
-         <img src="assets/img/career.jpg" class="card-img-top" alt="career">
-          <div class="card-body">
-            <h3 class="card-text">Build Your Career .</h3>
-          </div>
-      </div>
-    </div>
-  </div>
- </div>
-</section>
+    <!-----Candidates Catalogue starts here----->
+    <section id="candidates">
+        <div class="container my-5">
+            <h3 class="text-center text-muted my-5">
+                Looking for a job or a way to Polish your Skills . . .
+            </h3>
+            <div class="row ms-4">
+               <div class="col-md-3 mb-3">
+                    <div class="card shadow text-center bg-success" style="width: 18rem;">
+                        <div class="card-body">
+                            <h3 class="card-title mb-2"><i class="fas fa-hourglass-half fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Looking for a job can be so daunting and time consuming sometimes, and we understand.
+                            </p>
+                        </div>
+                    </div>
+               </div>
+               <div class="col-md-3 mb-3">
+                    <div class="card shadow text-center bg-info" style="width: 18rem;">
+                        <div class="card-body">
+                            <h3><i class="fas fa-paper-plane fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Send an application to our wide catalogue of jobs Available, in a few easy steps.
+                            </p>
+                        </div>
+                    </div>
+               </div>
+               <div class="col-md-3 mb-3">
+                    <div class="card shadow text-center bg-secondary" style="width: 18rem;">
+                        <div class="card-body">
+                            <h3><i class="fas fa-handshake fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Get selected, schedule an interview and meet your prospective employee.
+                            </p>
+                        </div>
+                    </div>
+               </div>
+               <div class="col-md-3 mb-3">
+                    <div class="card shadow text-center bg-warning" style="width: 18rem;">
+                        <div class="card-body">
+                            <h3><i class="fas fa-seedling fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Hurray ! Get the job , grow your career in your respective field of interest.
+                            </p>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </section>
 
-<!-----Candidates Sections Ends Here---->
+    <!-----Employers Catalogue starts here----->
+    <section id="employers">
+        <div class="container my-5">
+            <h3 class="text-center my-5">
+                In need of some fresh Talent to help Grow your Organization . . .
+            </h3>
+            <div class="row text-center">
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h3><i class="fas fa-user-graduate fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Looking for the best talent in the market, ambitious and goal oriented young persons?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h3><i class="fas fa-user-edit fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                Post jobs and manage your applications in a seamless way, filtering the best you can get.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h3><i class="fas fa-book-reader fa-lg"></i></h3> 
+                            <p class="card-text text-muted">
+                                View applicants portfolio and decide on how to proceed with interviews to get the best for your organization.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h3><i class="fas fa-user-check fa-lg"></i></h3>
+                            <p class="card-text text-muted">
+                                 Recruit the best applicants for your organization, we are certain of the talent at Skill-Bridge 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-----Employers Sections---->
-<section id="employers">
-  <div class="container my-5">
-    <h2 class="text-center text-primary display-4">Employers</h2>
-    <p class="lead text-center">Looking for the Best Talent in the market, We have a whole pool awaiting you .</p>
-    <div class="row text-center">
-  <!-- First column -->
-  <div class="col-md-4 d-flex align-items-stretch my-3">
-    <div class="card shadow">
-      <img src="assets/img/advertise.jpg" class="card-img-top" alt="advertise">
-      <div class="card-body">
-        <h3 class="card-text">Post a Vacancy.</h3>
-      </div>
-    </div>
-  </div>
+    <!-----Contact & About US Section starts here----->
+    <section id="contact my-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="text-muted">
+                        About-Us
+                    </h3>
+                    <p>
+                    Welcome to <i class="text-warning fw-bold">Skill-Bridge</i>, where we are dedicated to transforming your academic journey into
+                     a dynamic professional adventure. At <i class="text-warning fw-bold">Skill-Bridge</i>, we recognize the pivotal role internships
+                      play in shaping careers, and our platform is meticulously crafted to be your compass in 
+                      navigating the landscape of attachment opportunities. We take pride in curating a diverse 
+                      array of experiences from esteemed organizations, ensuring each opportunity is a stepping 
+                      stone for your growth. Our user-friendly interface simplifies the search and application
+                      process, putting the focus on what matters most - your development. <i class="text-warning fw-bold">Skill-Bridge</i> is more 
+                      than a platform; it's a supportive community where students, professionals, and mentors 
+                      converge to share insights and propel each other forward. Join <i class="text-warning fw-bold">Skill-Bridge</i> today and 
+                      embark on a transformative journey that bridges the gap between your potential and the 
+                      possibilities that lie ahead.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="text-muted">
+                        Contact Us
+                    </h3>
+                    <p class="text-muted">
+                        Send us a Message.
+                    </p>
+                    <form action="">
+                        <div class="form-floating mb-3">
+                            <input type="username" class="form-control" id="floatingInput" placeholder="Enter your Name">
+                            <label for="floatingInput">Enter Your Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea">Enter Comments or query . . .</label>
+                        </div>
+                        <input type="submit" class="btn btn-outline-primary mb-5">
+                    </form>
+                    <h3 class="border-bottom"></h3>
+                    <div class="row  my-3">
+                        <p class="fw-bold text-muted">Or Reach us Through.</p>
+                        <div class="col-md-3 text-center">
+                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-x-twitter fa-lg"></i></h3></a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-linkedin fa-lg"></i></h3></a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-facebook fa-lg"></i></h3></a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-instagram fa-lg"></i></h3></a>
+                        </div>
+                    </div>
+                    <p class="fw-bold text-muted">You can also call us on</p>
+                    <p><i class="fa-solid fa-phone fa-lg"></i>   +254-711-535-0987</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-----Contact & About US Section ends here----->
 
-  <!-- Second column -->
-  <div class="col-md-4 d-flex align-items-stretch my-3">
-    <div class="card shadow">
-      <img src="assets/img/track.jpg" class="card-img-top" alt="track">
-      <div class="card-body">
-        <h3 class="card-text">Get help Manage Applicants and Track the applications from  applicants.</h3>
-      </div>
-    </div>
-  </div>
-
-  <!-- Third column -->
-  <div class="col-md-4 d-flex align-items-stretch my-3">
-    <div class="card shadow">
-      <img src="assets/img/hire.jpg" class="card-img-top" alt="hire">
-      <div class="card-body">
-        <h3 class="card-text">Hire The Best.</h3>
-      </div>
-    </div>
-  </div>
-</div>
-
-  </div>
-</section>
-<!-----Employers Sections Ends Here---->
-
-
-<!---Who are we section--->
-<section id="about-us">
-  <div class="container my-4">
-    <h2 class="text-center text-primary display-4">Who are We?</h2>
-    <div class="row text-start">
-      <div class="col-md-6 my-3">
-        <img src="assets/img/about-us.jpg" alt="about-us" class="img-fluid">
-      </div>
-      <div class="col-md-6 my-3">
-        <p class="lead">
-        <i class="fw-bold text-primary">Skill-Bridge</i> is a dynamic and innovative workforce solutions provider dedicated to
-         <i class="text-primary">bridging the gap</i> between exceptional talent 
-        and organizations seeking to thrive in today's ever-evolving professional landscape. We specialize in connecting top-tier 
-        professionals with leading companies, offering a seamless platform where talent meets opportunity.
-        Our mission is to empower both individuals and businesses by fostering mutually beneficial relationships. For job seekers, 
-        <i class="fw-bold text-primary">Skill-Bridge</i> serves as a gateway to meaningful career opportunities, helping them unlock their full potential. For employers, 
-        we are a trusted partner, delivering tailored staffing solutions that drive growth and success. At <i class="fw-bold text-primary">Skill-Bridge</i>, 
-        we are committed to reshaping the world of work, creating a bridge to success for all those who engage with our platform.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-<!---Who are we section Ends here--->
-
-
-
-<footer class="main-footer" style="margin-left: 0px;">
-    <div class="text-center  ">
-      <strong>Copyright &copy; 2023 <a href="index.php">Skill-Bridge</a>.</strong> All rights
-    reserved.
-    </div>
-  </footer>
-
-<script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+    <!----- Footer Section starts here----->
+    <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
+    </body>
 </html>

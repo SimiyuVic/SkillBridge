@@ -1,13 +1,20 @@
 <?php
+
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "skill_bridge";
+$database = "skill-bridge";
 
-$connection = mysqli_connect($servername, $username, $password, $database);
-if(!$connection)
+//Create  a connection
+$connection = new mysqli($servername, $username, $password, $database);
+
+//Check Connection.
+if($connection->connect_error)
 {
-    die("Connection Failed : " . mysqli_error());
+    die("Connection Failed :  " . $connection->connect_error);
 }
+
+//Close database connection
+$connection->close();
 
 ?>
