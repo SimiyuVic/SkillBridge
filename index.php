@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+//Check if user is logged in
+$userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -46,18 +52,27 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#employers">Employers</a>
                     </li>
+                    <?php
+                     if(!$userLoggedIn)
+                     { ?>
+                        <li class="nav-item">
+                             <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="sign-up.php">Sign Up</a>
+                        </li>
+                     <?php }
+                    ?>
+                    
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="sign-up.php">Sign Up</a>
+                        <a class="nav-link" href="#contact">Contact Us</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-----Navbar ends here----->
-
+    <body>
     <!-----Home page section----->
     <section id="home">
         <div class="container">
@@ -75,7 +90,17 @@
                     </p>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <a href="#" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
+                            <?php
+                             if(!$userLoggedIn)
+                             { ?>
+                                <a href="#" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
+                             <?php } 
+                             else 
+                             { ?>
+                                <a href="users/index.php" class="btn btn-warning btn-lg w-100" role="button">View Profile</a>
+                            <?php }
+                            ?>
+                            
                         </div>
                         <div class="col-md-6">
                             <a href="#" class="btn btn-outline-primary btn-lg w-100" role="button">Available Jobs</a>
@@ -196,8 +221,8 @@
     </section>
 
     <!-----Contact & About US Section starts here----->
-    <section id="contact my-5">
-        <div class="container">
+    <section id="contact">
+        <div class="container my-5">
             <div class="row">
                 <div class="col-md-6">
                     <h3 class="text-muted">
@@ -264,7 +289,6 @@
     <!-----Contact & About US Section ends here----->
 
     <!----- Footer Section starts here----->
-    <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
