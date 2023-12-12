@@ -58,7 +58,7 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-4">
                 <?php
                     if(isset($_SESSION['register_success']))
                     { 
@@ -71,7 +71,7 @@ if(!isset($_SESSION['user_id']))
                             unset($_SESSION['register_success']);
                     }
                 ?>
-                <div class="card" style="width: 18rem;">
+                <div class="card">
                     <div class="card-header text-center">
                         <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
                     </div>
@@ -114,7 +114,7 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">2</div>
+            <div class="c0l-md-8"></div>
         </div>
     </div>   
 

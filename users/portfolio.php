@@ -36,6 +36,13 @@ if(!isset($_SESSION['user_id']))
         color: white !important;
 
     }
+    #wordCount {
+      color: #888;
+    }
+    .exceeded 
+    {
+      color: red;
+    }
   </style>
   <!-----Navbar starts here----->
   <nav class="navbar navbar-expand-lg  bg-warning">
@@ -58,20 +65,68 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-4">
                 <?php
-                    if(isset($_SESSION['register_success']))
+                    if(isset($_SESSION['image_size']))
                     { 
                         ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hurray !</strong> Registration successful
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Hey !</strong> File Size Too Big !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['register_success']);
+                            unset($_SESSION['image_size']);
                     }
                 ?>
-                <div class="card" style="width: 18rem;">
+                <?php
+                    if(isset($_SESSION['image_error']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Ooops !</strong> Error While Uploading Image
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['image_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['allowed_extension']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Ooops !</strong> You can only upload JPEG, JPG or PNG file formats.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['allowed_extension']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['skill_added']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Congratulations !</strong> One More Achievement.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['skill_added']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['skill_not_added']))
+                    { 
+                        ?>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Failed to Add Skill, Try again
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['skill_not_added']);
+                    }
+                ?>
+                <div class="card">
                     <div class="card-header text-center">
                         <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
                     </div>
@@ -114,7 +169,166 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">2</div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="text-center">This is what We have on You .</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                         @require_once '../config/config.php';
+                         $stmt = $connection->prepare("SELECT email, phone_number, occupation, study, description, skills FROM users WHERE user_id = ?");
+                         $stmt->bind_param("i", $_SESSION['user_id']);
+                         $stmt->execute();
+                         $result = $stmt->get_result();
+
+                         if(!$result)
+                         {
+                            die("Error executing the query: " . mysqli_error($connection));
+                         }
+                         else 
+                         {
+                            while($row = mysqli_fetch_assoc($result))
+                            { ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><i class="fas fa-envelope fa-lg me-3"></i><?php echo $row['email']; ?></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted"><i class="fas fa-phone-alt fa-lg me-3"></i><?php echo $row['phone_number']; ?></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><i class="fas fa-laptop-house fa-xl me-3"></i><?php echo $row['occupation']; ?></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted"><i class="fas fa-user-graduate fa-xl me-3"></i><?php echo $row['study']; ?></p>
+                                </div>
+                            </div>
+                            <div>
+                                <h5>About You</h5>
+                                <p class="text-muted"><?php echo $row['description']; ?></p>
+                            </div>
+                            <div>
+                                <h5>Your Skills</h5>
+                                <p class="text-muted"><?php echo $row['skills']; ?></p>
+                            </div>
+                            
+                           <?php }
+                         }
+                        ?>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <!-- Button to trigger the modal -->
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                                Add Skill
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <?php
+                             require_once '../config/config.php';
+                             $stmt = $connection->prepare("SELECT project_title, project_link, project_info, project_description, project_image FROM portfolio WHERE user_id = ?");
+                             $stmt->bind_param("i", $_SESSION['user_id']);
+                             $stmt->execute();
+                             $result = $stmt->get_result();
+                             if(!$result)
+                             {
+                                $_SESSION['no_data'] = "";
+                             }
+                             else 
+                             {
+                                while($row = mysqli_fetch_assoc($result))
+                                { ?>
+                                    <div class="card shadow mb-2">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <h5 class="text-center"><?php echo $row['project_title']; ?></h5>
+                                                    <a href="" style="text-decoration: none;"><p class="text-center"><i class="fas fa-globe fa-xl me-3"></i><br><?php echo $row['project_link']; ?></p></a>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5><?php echo $row['project_info']; ?></h5>
+                                                    <p class="text-muted"> <?php echo $row['project_description']; ?> </p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <p>
+                                                        <img src="../uploads/portfolio/<?php echo $row['project_image']; ?>" class="img-fluid rounded"  alt="">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                               <?php }
+                             }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bootstrap Modal for Add Skill Form -->
+                <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addSkillModalLabel">Add Skill</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your form goes here -->
+                                <form action="../process/add-skill-process.php" method="POST" enctype="multipart/form-data">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="project_title"  class="form-control" placeholder="Occupation" required>
+                                        <label for="floatingInput">Project Title</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="project_link"  class="form-control" placeholder="Occupation" required>
+                                        <label for="floatingInput">Project Link</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="project_info"  class="form-control" placeholder="Occupation" required>
+                                        <label for="floatingInput">One Sentence Description</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="textarea" name="project_description" placeholder="describe your Project" required id="floatingTextarea" style="height: 130px;" oninput="countWords()"></textarea>
+                                        <label for="floatingTextarea">Description of your Project max-100 words . . .</label>
+                                        <p id="wordCount" class="fw-bold text-success">Words remaining: <span id="count">70</span></p>
+                                    </div>
+
+                                    <script>
+                                        function countWords() {
+                                            const textarea = document.getElementById('textarea');
+                                            const wordCount = document.getElementById('count');
+                                            const maxWords = 70;
+
+                                            const words = textarea.value.split(/\s+/).filter(function(word) {
+                                                return word.length > 0;
+                                            });
+
+                                            wordCount.textContent = maxWords - words.length;
+
+                                            if (words.length > maxWords) {
+                                                wordCount.classList.remove('text-success');
+                                                wordCount.classList.add('text-danger');
+                                            } else {
+                                                wordCount.classList.remove('text-danger');
+                                                wordCount.classList.add('text-success');
+                                            }
+                                        }
+                                    </script>
+                                    <div class="mb-3">
+                                        <label for="formFileMultiple" class="form-label">Screenshot-Image Of Your Project</label>
+                                        <input class="form-control" name="project_image" type="file" required id="formFileMultiple" multiple>
+                                    </div>
+                                    <button type="submit" name="add_skill" class="btn btn-primary">Save Skill</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>   
 

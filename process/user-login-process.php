@@ -40,7 +40,7 @@ if(isset($_POST['login']))
             $_SESSION['lastname'] = $lastname;
 
             header('location: ../users/index.php');
-            $_SESSION['logged_in'] = "";
+            $_SESSION['login_success'] = "";
             exit();
         }
         else //Incorrect password

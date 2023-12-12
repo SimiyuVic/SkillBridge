@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | Home</title>
+    <title>Skill-Bridge | My-Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -58,7 +58,7 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-4">
                 <?php
                     if(isset($_SESSION['register_success']))
                     { 
@@ -71,7 +71,31 @@ if(!isset($_SESSION['user_id']))
                             unset($_SESSION['register_success']);
                     }
                 ?>
-                <div class="card" style="width: 18rem;">
+                <?php
+                    if(isset($_SESSION['update_success']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Hurray !</strong> Profile Updated Successfully.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['update_success']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['login_success']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Welcome !</strong> <?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['login_success']);
+                    }
+                ?>
+                <div class="card">
                     <div class="card-header text-center">
                         <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
                     </div>
@@ -114,7 +138,73 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">2</div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5>Here is how you have been Fairing</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6 mb-2">
+                                <div class="card shadow" style="height: 100x;">
+                                    <div class="card-body">
+                                        <h5>Applied Jobs</h5>
+                                        <p class="ms-2"><i class="fas fa-clipboard-check  fa-xl"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow" style="height: 100x;">
+                                    <div class="card-body">
+                                        <?php
+                                        //To get number of skills added.
+                                        $user_id = $_SESSION['user_id'];
+                                        require_once '../config/config.php';
+
+                                        //Query to count number of skills added
+                                        $query = "SELECT COUNT(*) AS skillcount FROM portfolio WHERE user_id = ?";
+                                        $stmt = $connection->prepare($query);
+                                        $stmt->bind_param("i", $_SESSION['user_id']);
+                                        $stmt->execute();
+                                        $stmt->bind_result($skillCount);
+                                        $stmt->fetch();
+                                        $stmt->close();
+
+                                        ?>
+                                        <h5> Skills Added</h5>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="ms-2 mt-2"><i class="fas fa-folder-plus fa-xl"></i></p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h3 class="text-primary"><?php echo $skillCount; ?></h3>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="card shadow" style="height: 100x;">
+                                    <div class="card-body">
+                                        <h5>Pending Reviews</h5>
+                                        <p class="ms-2"><i class="fas fa-hourglass-half fa-xl"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow" style="height: 100x;">
+                                    <div class="card-body">
+                                        <h5> Declined </h5>
+                                        <p class="ms-2"><i class="fas fa-sad-tear fa-xl"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>   
 
