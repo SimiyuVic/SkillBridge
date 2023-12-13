@@ -18,7 +18,7 @@ if(isset($_POST['Edit']))
     //Usage of prepared statements to prevent sql injection
     $stmt = $connection->prepare("UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, occupation = ?,
     study = ?, description = ?, skills = ? WHERE user_id = ? ");
-    $stmt->bind_param("sssssssi", $firstname, $lastname, $phone_number, $occupation, $study, $description, $skills, $_SESSION['user_id']);
+    $stmt->bicnd_param("sssssssi", $firstname, $lastname, $phone_number, $occupation, $study, $description, $skills, $_SESSION['user_id']);
 
     if($stmt->execute())
     {

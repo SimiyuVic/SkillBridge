@@ -66,6 +66,42 @@ if(!isset($_SESSION['user_id']))
     <div class="container my-4">
         <div class="row">
             <div class="col-md-4 mb-4">
+            <?php
+                    if(isset($_SESSION['deleted']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Well !</strong> Hope you Add one More Soon.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['deleted']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['update_success']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Hurray !</strong> Update Was Successfull.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['update_success']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['entry_not_found']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Hey !</strong> No entry Was Found.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['entry_not_found']);
+                    }
+                ?>
                 <?php
                     if(isset($_SESSION['image_size']))
                     { 
@@ -76,6 +112,18 @@ if(!isset($_SESSION['user_id']))
                             </div>
                         <?php 
                             unset($_SESSION['image_size']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['data_failure']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Failed to Retrieve data
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['data_failure']);
                     }
                 ?>
                 <?php
@@ -128,7 +176,24 @@ if(!isset($_SESSION['user_id']))
                 ?>
                 <div class="card">
                     <div class="card-header text-center">
-                        <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
+                        <?php
+                        //Getting the current hour
+                            $currentHour = date('G');
+                        //Greeting based on time of the day.
+                        if($currentHour >= 5 && $currentHour < 12)
+                        {
+                            $greeting = "Good Morning";
+                        }
+                        else if($currentHour >=12 && $currentHour < 18)
+                        {
+                            $greeting = "Good Afternoon";
+                        }
+                        else 
+                        {
+                            $greeting = "Good Evening";
+                        }
+                        ?>    
+                        <h5><?php echo $greeting . ', <i>' . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'] . '</i>'; ?></h5>
                     </div>
                     <ul class="list-group list-group-flush">
                         <a href="index.php" style="text-decoration: none;">
@@ -231,13 +296,13 @@ if(!isset($_SESSION['user_id']))
                         <div class="card-body">
                             <?php
                              require_once '../config/config.php';
-                             $stmt = $connection->prepare("SELECT project_title, project_link, project_info, project_description, project_image FROM portfolio WHERE user_id = ?");
+                             $stmt = $connection->prepare("SELECT * FROM portfolio WHERE user_id = ?");
                              $stmt->bind_param("i", $_SESSION['user_id']);
                              $stmt->execute();
                              $result = $stmt->get_result();
                              if(!$result)
                              {
-                                $_SESSION['no_data'] = "";
+                                $_SESSION['data_failure'] = "";
                              }
                              else 
                              {
@@ -249,6 +314,30 @@ if(!isset($_SESSION['user_id']))
                                                 <div class="col-md-3">
                                                     <h5 class="text-center"><?php echo $row['project_title']; ?></h5>
                                                     <a href="" style="text-decoration: none;"><p class="text-center"><i class="fas fa-globe fa-xl me-3"></i><br><?php echo $row['project_link']; ?></p></a>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <form action="edit-skill.php" method="GET">
+                                                                <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
+                                                                <input type="submit" value="Edit" class="btn btn-outline-primary">
+                                                            </form> 
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <form id="deleteForm" action="../process/delete-skill-process.php" method="POST" onsubmit="return confirmDelete()">
+                                                                <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
+                                                                <input type="submit" name="delete_skill" value="Delete" class="btn btn-outline-danger">
+                                                            </form>
+                                                        </div>
+
+                                                        <script>
+                                                            function confirmDelete() {
+                                                                // Display a confirmation dialog
+                                                                var confirmation = confirm("Are you sure you want to delete ?");
+                                                                
+                                                                // If the user clicks "OK," the form will be submitted. If they click "Cancel," the form submission will be canceled.
+                                                                return confirmation;
+                                                            }
+                                                        </script>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h5><?php echo $row['project_info']; ?></h5>

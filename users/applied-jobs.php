@@ -73,7 +73,24 @@ if(!isset($_SESSION['user_id']))
                 ?>
                 <div class="card">
                     <div class="card-header text-center">
-                        <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
+                        <?php
+                        //Getting the current hour
+                            $currentHour = date('G');
+                        //Greeting based on time of the day.
+                        if($currentHour >= 5 && $currentHour < 12)
+                        {
+                            $greeting = "Good Morning";
+                        }
+                        else if($currentHour >=12 && $currentHour < 18)
+                        {
+                            $greeting = "Good Afternoon";
+                        }
+                        else 
+                        {
+                            $greeting = "Good Evening";
+                        }
+                        ?>    
+                        <h5><?php echo $greeting . ', <i>' . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'] . '</i>'; ?></h5>
                     </div>
                     <ul class="list-group list-group-flush">
                         <a href="index.php" style="text-decoration: none;">

@@ -220,6 +220,8 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
         </div>
     </section>
 
+    <!------Testimonials Section---->
+    <!------Testimonials Section Ends Here---->
     <!-----Contact & About US Section starts here----->
     <section id="contact">
         <div class="container my-5">

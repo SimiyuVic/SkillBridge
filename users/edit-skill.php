@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | My-Dashboard</title>
+    <title>Skill-Bridge | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -60,27 +60,15 @@ if(!isset($_SESSION['user_id']))
         <div class="row">
             <div class="col-md-4 mb-4">
                 <?php
-                    if(isset($_SESSION['update_success']))
+                    if(isset($_SESSION['update_fail']))
                     { 
                         ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hurray !</strong> Profile Updated Successfully.
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Failed To Update !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['update_success']);
-                    }
-                ?>
-                <?php
-                    if(isset($_SESSION['login_success']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Welcome !</strong> <?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['login_success']);
+                            unset($_SESSION['update_fail']);
                     }
                 ?>
                 <div class="card">
@@ -143,73 +131,68 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h5>Here is how you have been Fairing</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-md-6 mb-2">
-                                <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
-                                        <h5>Applied Jobs</h5>
-                                        <p class="ms-2"><i class="fas fa-clipboard-check  fa-xl"></i></p>
-                                    </div>
-                                </div>
+            <?php
+                @require_once '../config/config.php';
+                $portfolio_id = $_GET['id'];
+
+                $sql = "SELECT *  FROM portfolio WHERE user_id = ? AND portfolio_id = ?";
+                $stmt = $connection->prepare($sql);
+                $stmt->bind_param("ii", $_SESSION['user_id'], $portfolio_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if(!$result)
+                {
+                    die("Error executing the query: " . mysqli_error($connection));
+                }
+                else
+                {
+                    while($row = mysqli_fetch_assoc($result))
+                    { ?>
+                    <div class="col-md-6">
+                    <form action="../process/edit-skill-process.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="<?php echo $row['portfolio_id']; ?>">
+                            <div class="card-header text-center">
+                                <h5 class="text-muted">Edit Your Project Here</h5>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
-                                        <?php
-                                        //To get number of skills added.
-                                        $user_id = $_SESSION['user_id'];
-                                        require_once '../config/config.php';
-
-                                        //Query to count number of skills added
-                                        $query = "SELECT COUNT(*) AS skillcount FROM portfolio WHERE user_id = ?";
-                                        $stmt = $connection->prepare($query);
-                                        $stmt->bind_param("i", $_SESSION['user_id']);
-                                        $stmt->execute();
-                                        $stmt->bind_result($skillCount);
-                                        $stmt->fetch();
-                                        $stmt->close();
-
-                                        ?>
-                                        <h5> Skills Added</h5>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="ms-2 mt-2"><i class="fas fa-folder-plus fa-xl"></i></p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $skillCount; ?></h3>
-                                            </div>
-                                        </div>  
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="project_title" class="form-control" placeholder="Project Title" value="<?php echo $row['project_title']; ?>" required>
+                                            <label for="floatingInput">Project Title</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="project_link" class="form-control" placeholder="Project Link" value="<?php echo $row['project_link']; ?>" required>
+                                            <label for="floatingInput">Project Link</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="project_info" class="form-control" placeholder="Project info" value="<?php echo $row['project_info']; ?>" required>
+                                            <label for="floatingInput">One Sentence Description</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <textarea class="form-control" name="project_description" placeholder="describe your skills" id="floatingTextarea" style="height: 130px;" required><?php echo $row['project_description']; ?></textarea>
+                                            <label for="floatingTextarea">What Skills do you have ? . . .</label>
+                                        </div>
+                                        <div>
+                                             <img src="../uploads/portfolio/<?php echo $row['project_image']; ?>" class="img-fluid rounded mb-3"  alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        
                                     </div>
                                 </div>
+                                <input type="submit" name="edit_project" value="Update" class="btn btn-outline-primary">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
-                                        <h5>Pending Reviews</h5>
-                                        <p class="ms-2"><i class="fas fa-hourglass-half fa-xl"></i></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
-                                        <h5> Declined </h5>
-                                        <p class="ms-2"><i class="fas fa-sad-tear fa-xl"></i></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </div>
+            <?php }
+            }
+            $stmt->close();
+            $connection->close();
+            ?>
+            
         </div>
     </div>   
 

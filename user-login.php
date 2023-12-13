@@ -104,7 +104,6 @@ session_start();
                                     <label for="floatingInput">Email Address</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="password" name="password" class="form-control" placeholder=" Enter your password">
                                     <label for="floatingInput">Password</label>
                                 </div>
                                 <input type="submit" name="login" value="Login" class="btn btn-outline-primary">

@@ -60,20 +60,73 @@ if(!isset($_SESSION['user_id']))
         <div class="row">
             <div class="col-md-4 mb-4">
                 <?php
-                    if(isset($_SESSION['register_success']))
+                    if(isset($_SESSION['change_success']))
                     { 
                         ?>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hurray !</strong> Registration successful
+                                <strong>Hurray !</strong> You Have Changed Your Password.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['register_success']);
+                            unset($_SESSION['change_success']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['change_fail']))
+                    { 
+                        ?>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Failed To Change Password !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['change_fail']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['wrong_password']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Your Old Password Does not Match !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['wrong_password']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['same_password']))
+                    { 
+                        ?>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> New Password Cannot Be same as Old Password !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['same_password']);
                     }
                 ?>
                 <div class="card">
                     <div class="card-header text-center">
-                        <h5>Welcome, <i><?php echo $_SESSION['firstname']  . '   ' .  $_SESSION['lastname'];  ?></i></h5>
+                        <?php
+                        //Getting the current hour
+                            $currentHour = date('G');
+                        //Greeting based on time of the day.
+                        if($currentHour >= 5 && $currentHour < 12)
+                        {
+                            $greeting = "Good Morning";
+                        }
+                        else if($currentHour >=12 && $currentHour < 18)
+                        {
+                            $greeting = "Good Afternoon";
+                        }
+                        else 
+                        {
+                            $greeting = "Good Evening";
+                        }
+                        ?>    
+                        <h5><?php echo $greeting . ', <i>' . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'] . '</i>'; ?></h5>
                     </div>
                     <ul class="list-group list-group-flush">
                         <a href="index.php" style="text-decoration: none;">
@@ -114,7 +167,49 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="c0l-md-8"></div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-center">Here you can Change Password or Deactivate Account</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5>Change Password</h5>
+                                        <form action="../process/change-password-process.php" method="POST">
+                                            <div class="form-floating mb-3">
+                                                <input type="password" name="old_password" class="form-control" placeholder="Old Password" required>
+                                                <label for="floatingInput">Enter Your Old Password</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="password" name="new_password" class="form-control" placeholder="New Password" required>
+                                                <label for="floatingInput">Enter New Password</label>
+                                            </div>
+                                            <input type="submit" name="change_password" value="Change Password" class="btn btn-outline-info">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5>Deactivate Account</h5>
+                                        <form action="">
+                                            <div class="form-floating mb-3">
+                                                <input type="password" name="study" class="form-control" placeholder="Study Level">
+                                                <label for="floatingInput">Enter Your Email</label>
+                                            </div>
+                                            <input type="submit" value="Deactivate Account" name="deactivate" class="btn btn-outline-danger">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
         </div>
     </div>   
 
