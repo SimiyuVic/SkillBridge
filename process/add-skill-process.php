@@ -45,7 +45,7 @@ if(isset($_POST['add_skill']) && isset($_FILES['project_image']))
 
                 //Prepare sql statements
                 $sql = "INSERT INTO portfolio(user_id, project_title, project_link, project_info, project_description, project_image)
-                VALUE(?, ?, ?, ?, ?, ?)";
+                VALUES(?, ?, ?, ?, ?, ?)";
                 $stmt = $connection->prepare($sql);
                 
                 if($stmt)

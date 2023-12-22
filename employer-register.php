@@ -9,7 +9,7 @@ session_start();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | Home</title>
+    <title>Skill-Bridge | Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -56,15 +56,51 @@ session_start();
             <div class="row justify-content-center">
                 <div class="col-md-8">
                 <?php
-                    if(isset($_SESSION['empty_details']))
+                    if(isset($_SESSION['invalid_email']))
                     { 
                         ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> You should fill all the details
+                                <strong>Oops !</strong> Invalid Email Format
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['empty_details']);
+                            unset($_SESSION['invalid_email']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['image_error']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Error while uploading Image
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['image_error']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['image_size']))
+                    { 
+                        ?>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Logo file is too large. Maximum size allowed: 2MB.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['image_size']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['extension_error']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Invalid logo format. Allowed formats: JPG, JPEG, PNG.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['extension_error']);
                     }
                 ?>
                 <?php
@@ -79,6 +115,18 @@ session_start();
                             unset($_SESSION['email_exists']);
                     }
                 ?>
+                <?php
+                    if(isset($_SESSION['register_fail']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Failed to Register, Try again !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['register_fail']);
+                    }
+                ?>
                 </div>
             </div>
             <div class="card shadow">
@@ -86,46 +134,50 @@ session_start();
                     <h4>Register Here !</h4>
                 </div>
                 <div class="card-body">
-                    <form action="process/user-register-process.php" method="POST">
-                        <div class="row text-center">
+                    <form action="process/employer-register-process.php" method="POST" enctype="multipart/form-data">
+                        <div class="row ">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="firstname" class="form-control" placeholder="FirstName">
-                                    <label for="floatingInput">First Name</label>
+                                    <input type="text" name="username" class="form-control" placeholder="User Name" required>
+                                    <label for="floatingInput">User Name</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="lastname" class="form-control" placeholder="Lastname">
-                                    <label for="floatingInput">Last Name</label>
+                                    <input type="text" name="company_name" class="form-control" placeholder="Company Name" required>
+                                    <label for="floatingInput">Company Name</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="email" name="email" class="form-control" placeholder="Email">
+                                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Email" required>
                                     <label for="floatingInput">Email</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="phone_number" class="form-control" placeholder="Phone">
+                                    <input type="number" name="phone_number" class="form-control" placeholder="Phone" required>
                                     <label for="floatingInput">Phone Number</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="occupation"  class="form-control" placeholder="Occupation">
-                                    <label for="floatingInput">Current Occupation</label>
+                                    <input type="text" name="website"  class="form-control" placeholder="Website" required>
+                                    <label for="floatingInput">Company Website</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="county"  class="form-control" placeholder="County" required>
+                                    <label for="floatingInput">County</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="password" name="password" class="form-control" placeholder="Study Level">
+                                    <input type="text" name="city"  class="form-control" placeholder="City" required>
+                                    <label for="floatingInput">City</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="password" class="form-control" placeholder="Study Level" required>
                                     <label for="floatingInput">Password</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="study" class="form-control" placeholder="Study Level">
-                                    <label for="floatingInput">Level of Study</label>
+                                    <textarea class="form-control" name="description" placeholder="describe your company" id="floatingTextarea" style="height: 130px;" required></textarea>
+                                    <label for="floatingTextarea">A Description of your Company . . .</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-control" name="description" placeholder="describe yourself" id="floatingTextarea" style="height: 130px;"></textarea>
-                                    <label for="floatingTextarea">A little info about You . . .</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-control" name="skills" placeholder="describe your skills" id="floatingTextarea" style="height: 130px;"></textarea>
-                                    <label for="floatingTextarea">What Skills do you have ? . . .</label>
+                                <div class="mb-3">
+                                    <label for="logo" class="form-label fw-bold">Company Logo</label>
+                                    <input class="form-control" name="company_logo" type="file" required>
                                 </div>
                             </div>
                         </div>

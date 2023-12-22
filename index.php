@@ -93,7 +93,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                             <?php
                              if(!$userLoggedIn)
                              { ?>
-                                <a href="#" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
+                                <a href="sign-up.php" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
                              <?php } 
                              else 
                              { ?>
@@ -269,16 +269,16 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     <h3 class="border-bottom"></h3>
                     <div class="row  my-3">
                         <p class="fw-bold text-muted">Or Reach us Through.</p>
-                        <div class="col-md-3 text-center">
+                        <div class="col-3 text-center">
                             <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-x-twitter fa-lg"></i></h3></a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-3 text-center">
                             <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-linkedin fa-lg"></i></h3></a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-3 text-center">
                             <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-facebook fa-lg"></i></h3></a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-3 text-center">
                             <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-instagram fa-lg"></i></h3></a>
                         </div>
                     </div>

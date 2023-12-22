@@ -87,7 +87,7 @@ if(!isset($_SESSION['user_id']))
                     <div class="card-header text-center">
                         <?php
                         //Getting the current hour
-                            $currentHour = date('G');
+                            $currentHour = date('G');   
                         //Greeting based on time of the day.
                         if($currentHour >= 5 && $currentHour < 12)
                         {

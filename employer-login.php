@@ -79,32 +79,20 @@ session_start();
                             unset($_SESSION['wrong_details']);
                     }
                 ?>
-                <?php
-                    if(isset($_SESSION['empty_details']))
-                    { 
-                        ?>
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> Details cannot be empty
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['empty_details']);
-                    }
-                ?>
                     <div class="card shadow">
                         <div class="card-header text-center">
-                            <h5 class="text-muted">
+                            <h5 class="text-muted"> 
                                 Login Here !
                             </h5>
                         </div>
                         <div class="card-body my-5">
-                            <form action="process/user-login-process.php" method="POST">
+                            <form action="process/employer-login-process.php" method="POST">
                                 <div class="form-floating mb-3">
-                                    <input type="email"  name="email" class="form-control" placeholder=" e.g email@example.com">
+                                    <input type="email"  name="email" class="form-control" placeholder=" e.g email@example.com" required>
                                     <label for="floatingInput">Email Address</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                <input type="password"  name="password" class="form-control" placeholder=" Enter Your Password">
+                                <input type="password"  name="password" class="form-control" placeholder=" Enter Your Password" required>
                                     <label for="floatingInput">Password</label>
                                 </div>
                                 <input type="submit" name="login" value="Login" class="btn btn-outline-primary">
