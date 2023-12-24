@@ -60,15 +60,15 @@ if(!isset($_SESSION['user_id']))
         <div class="row">
             <div class="col-md-4 mb-4">
                 <?php
-                    if(isset($_SESSION['register_success']))
+                    if(isset($_SESSION['applied']))
                     { 
                         ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hurray !</strong> Registration successful
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Congratulations !</strong> Job Application Success
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['register_success']);
+                            unset($_SESSION['applied']);
                     }
                 ?>
                 <div class="card">

@@ -15,7 +15,7 @@ if(!isset($_SESSION['company_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | My-Dashboard</title>
+    <title>Skill-Bridge | Posted-Jobs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -93,6 +93,30 @@ if(!isset($_SESSION['company_id']))
                             </div>
                         <?php 
                             unset($_SESSION['unauthorized']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['deleted']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Job Post Deleted !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['deleted']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['failed_delete']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Could not Delete Job Post !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['deleted']);
                     }
                 ?>
                 <?php
@@ -183,7 +207,6 @@ if(!isset($_SESSION['company_id']))
                                     <th scope="col">View Job</th>
                                     <th scope="col">Job Status</th>
                                     <th scope="col">Delete</th>
-                                    <th scope="col">Change Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,14 +242,19 @@ if(!isset($_SESSION['company_id']))
                                                 <p class="<?php echo $textColorClass; ?>"><?php echo ($status == 2) ? 'Open' : 'Closed'; ?></p>
                                             </td>
                                             <td>
-                                                <form action="">
-                                                    <input type="submit" value="Delete" class="btn btn-outline-danger">
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form action="../process/status.php" method="POST">
-                                                    <input type="submit" name="status" value="Change" class="btn btn-outline-info">
-                                                </form>
+                                            <form id="deleteForm" action="../process/delete-job.php?id=<?php echo $row['jobpost_id']; ?>" method="POST">
+                                                <input type="submit" name="delete" value="Delete" class="btn btn-outline-danger" onclick="return confirmDelete();">
+                                            </form>
+
+                                            <script>
+                                                function confirmDelete() {
+                                                    // Display a confirmation dialog
+                                                    var isConfirmed = confirm("Are you sure you want to delete this Job?");
+
+                                                    // If the user confirms, submit the form
+                                                    return isConfirmed;
+                                                }
+                                            </script>
                                             </td>
                                         </tr>
                                 <?php }

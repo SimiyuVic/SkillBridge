@@ -135,6 +135,52 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
             </div>
             <div class="col-md-4">
                 <h3 class="text-center  text-danger">Closing Soon</h3>
+                <?php
+                    require_once 'config/config.php';
+                    $sql = "SELECT company_id, jobpost_id, job_title, designation, expiration_date 
+                    FROM job_post 
+                    WHERE expiration_date <= DATE_ADD(NOW(), INTERVAL 10 DAY) 
+                    ORDER BY expiration_date";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0)
+                    {
+                        while ($row = $result->fetch_assoc())
+                        { ?>
+                        <div class="card mb-2 bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <img src="assets/images/closing.jpg" class="img-thumbnail" alt="...">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <a href="view-job.php?id=<?php echo $row['jobpost_id']; ?>" class="" style="text-decoration: none;">
+                                            <h6 class="text-danger"><?php echo $row['job_title'];?></h6>
+                                            <button class="btn btn-primary"><?php echo $row['designation'];?></button>
+                                        </a>
+                                        
+                                    </div>
+                                    <div class="col-md-4 mb-2 text-danger">
+                                        <h6>
+                                            <?php
+                                                $expirationDate = new DateTime($row['expiration_date']);
+                                                $currentDate = new DateTime();
+                                                $remainingDays = $currentDate->diff($expirationDate)->format('%a');
+                                                echo 'Days Remaining : ' . $remainingDays;
+                                            ?>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                       <?php }
+                    }
+                    else
+                    {
+                        //No jobs closing soon
+                    }
+                ?>
             </div>
         </div>
     </div>

@@ -171,6 +171,10 @@ if(!isset($_SESSION['company_id']))
                                     });
                                 </script>
                             <div class="form-floating my-3">
+                                <input type="text" class="form-control" name="designation" id="floatingInput" placeholder="Designation" required>
+                                <label for="floatingInput">Job Designation (Entry-Level/Internship/Attachment)</label>
+                            </div>
+                            <div class="form-floating my-3">
                                 <input type="text" class="form-control" name="qualification" id="floatingInput" placeholder="Job tittle" required>
                                 <label for="floatingInput">Qualification Level(Degree/Diploma)</label>
                             </div>

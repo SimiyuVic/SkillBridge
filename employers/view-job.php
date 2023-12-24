@@ -165,7 +165,7 @@ ob_end_flush();
                                 else
                                 { ?>
                                     <h5 class="text-primary">
-                                        <i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> |
+                                        <i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary text-light"><?php echo $row['designation']; ?></button>
                                     </h5>
                                     <p class="text-primary">
                                         <i class="fa-solid fa-graduation-cap fa-lg me-3"></i><?php echo $row['qualification']; ?> |
