@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 session_start();
 
 //Check if user is logged in
@@ -9,6 +9,7 @@ if(!isset($_SESSION['company_id']))
     $_SESSION['must_login'] = "";
     exit();
 }
+ob_end_flush();
 ?>
 <!doctype html>
 <html lang="en">
@@ -58,53 +59,17 @@ if(!isset($_SESSION['company_id']))
     <!----Main body content-----> 
     <div class="container my-3">
         <div class="row">
-            <div class="col-md-3 mb-3">
-                <?php
-                    if(isset($_SESSION['create_success']))
+            <div class="col-md-4">
+            <?php
+                    if(isset($_SESSION['login_success']))
                     { 
                         ?>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hello !</strong> Job Created Successfully !
+                                <strong>Welcome !</strong> <?php echo $_SESSION['username'];  ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['create_success']);
-                    }
-                ?>
-                <?php
-                    if(isset($_SESSION['no_job']))
-                    { 
-                        ?>
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> Job Does not Exists
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['no_job']);
-                    }
-                ?>
-                <?php
-                    if(isset($_SESSION['unauthorized']))
-                    { 
-                        ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> Not Authorized to view Selected Job
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['unauthorized']);
-                    }
-                ?>
-                <?php
-                    if(isset($_SESSION['status_success']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hello !</strong> Job Status Updated
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['status_success']);
+                            unset($_SESSION['login_success']);
                     }
                 ?>
                 <div class="card">
@@ -126,7 +91,7 @@ if(!isset($_SESSION['company_id']))
                             $greeting = "Good Evening";
                         }
                         ?>
-                        <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
+                        <h5><?php echo $greeting . ', <i>' .$_SESSION['company_name']. '</i>'; ?></h5>
                     </div>
                         <ul class="list-group list-group-flush">
                             <a href="index.php" style="text-decoration: none;">
@@ -172,76 +137,80 @@ if(!isset($_SESSION['company_id']))
                         </ul> 
                 </div>
             </div>
-            <div class="col-md-9">
-                <div class="card shadow">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header ">
+                        <a href="posted-jobs.php" class="btn btn-outline-primary ml-auto">Back</a>
+                    </div>
                     <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Job Tittle</th>
-                                    <th scope="col">View Job</th>
-                                    <th scope="col">Job Status</th>
-                                    <th scope="col">Delete</th>
-                                    <th scope="col">Change Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                require_once '../config/config.php';
-                                $companyId = $_SESSION['company_id'];
-                                $sql = "SELECT jobpost_id, company_id, job_title, status FROM job_post WHERE company_id = ?";
-                                $stmt = $connection->prepare($sql);
-                                $stmt->bind_param("i", $companyId);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                if($result->num_rows > 0)
+                        <?php
+                            require_once '../config/config.php';
+
+                            $jobpostId = isset($_GET['id']) ? $_GET['id'] : null;
+
+                            $sql = "SELECT * FROM job_post WHERE jobpost_id = ?";
+                            $stmt = $connection->prepare($sql);
+                            $stmt->bind_param("i", $jobpostId);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if($result->num_rows > 0)
+                            {
+                                $row = $result->fetch_assoc();
+                                if($row['company_id'] != $_SESSION['company_id'])
                                 {
-                                    while($row = $result->fetch_assoc())
-                                    { ?>
-                                        <tr>
-                                            <th scope="row">
-                                                <i class="fa-solid fa-chevron-right fa-lg"></i>
-                                            </th>
-                                            <td class="text-info">
-                                                <h6><?php echo $row['job_title']; ?></h6>
-                                            </td>
-                                            <td>
-                                                <a href="view-job.php?id=<?php echo $row['jobpost_id']; ?>">
-                                                    <i class="fa-solid fa-eye fa-lg ms-3"></i>
-                                                </a>
-                                            </td>
-                                            <td class="fw-bold">
-                                                <?php
-                                                $status = $row['status'];
-                                                $textColorClass = ($status == 2) ? 'text-warning' : 'text-danger';
-                                                ?>
-                                                <p class="<?php echo $textColorClass; ?>"><?php echo ($status == 2) ? 'Open' : 'Closed'; ?></p>
-                                            </td>
-                                            <td>
-                                                <form action="">
-                                                    <input type="submit" value="Delete" class="btn btn-outline-danger">
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form action="../process/status.php" method="POST">
-                                                    <input type="submit" name="status" value="Change" class="btn btn-outline-info">
-                                                </form>
-                                            </td>
-                                        </tr>
-                                <?php }
+                                    $_SESSION['unauthorized'] = "";
+                                    echo '<script>window.location.href = "posted-jobs.php";</script>';
+                                    exit();
                                 }
                                 else
-                                {
-                                    $_SESSION['no_jobs'] = "";
-                                    
-                                }
-                                
-                                ?>
-                            </tbody>
-                        </table>
+                                { ?>
+                                    <h5 class="text-primary">
+                                        <i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> |
+                                    </h5>
+                                    <p class="text-primary">
+                                        <i class="fa-solid fa-graduation-cap fa-lg me-3"></i><?php echo $row['qualification']; ?> |
+                                    </p>
+                                    <p class="text-primary">
+                                        <i class="fa-solid fa-money-check fa-lg me-3"></i>KES.  <?php echo $row['expected_salary']; ?> |
+                                    </p>
+                                    <p class="text-warning"> 
+                                    <i class="fa-solid fa-thumbtack fa-lg me-3"></i>
+                                        Job status |
+                                        <?php
+                                        $status = $row['status'];
+                                        $textColorClass = ($status == 2) ? 'text-warning' : 'text-danger';
+                                        echo '<span class="' . $textColorClass . '">';
+                                        echo ($status == 2) ? 'Open' : 'Close';
+                                        echo '</span>';
+                                        ?>
+                                    </p>
+                                    <p class="text-danger fw-bold">
+                                    <i class="fa-solid fa-hourglass-half fa-lg me-3"></i>
+                                        <?php
+                                        // Assuming $row['expiration_date'] contains the expiration date
+                                        $expirationDate = new DateTime($row['expiration_date']);
+                                        $currentDate = new DateTime();
+                                        
+                                        $daysRemaining = $currentDate->diff($expirationDate)->days;
+                                        
+                                        echo '<span class="text-danger">';
+                                        echo 'Days Remaining : ' . $daysRemaining;
+                                        echo '</span>';
+                                        ?>
+                                    </p>
+                                    <p class="lead">
+                                        <?php echo $row['job_description']; ?>
+                                    </p>
+                               <?php }
+                            }
+                            else
+                            {
+                                $_SESSION['no_job'] ="";
+                                echo '<script>window.location.href = "posted-jobs.php";</script>';
+                            }
+                        ?>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
     </div>

@@ -91,16 +91,24 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <?php
-                             if(!$userLoggedIn)
-                             { ?>
-                                <a href="sign-up.php" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
-                             <?php } 
-                             else 
-                             { ?>
+                            if (isset($_SESSION['user_id'])) {
+                                // Regular user is logged in
+                                ?>
                                 <a href="users/index.php" class="btn btn-warning btn-lg w-100" role="button">View Profile</a>
-                            <?php }
+                                <?php
+                            } elseif (isset($_SESSION['company_id'])) {
+                                // Company is logged in
+                                ?>
+                                <a href="employers/index.php" class="btn btn-warning btn-lg w-100" role="button">View Profile</a>
+                                <?php
+                            } else {
+                                // No user is logged in
+                                ?>
+                                <a href="sign-up.php" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
+                                <?php
+                            }
                             ?>
-                            
+
                         </div>
                         <div class="col-md-6">
                             <a href="#" class="btn btn-outline-primary btn-lg w-100" role="button">Available Jobs</a>
@@ -116,6 +124,20 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
     </section>
 
     <!-----Jobs sections starts here----->
+    <div class="container my-5">
+        <h3 class="text-center  border-bottom mb-3">Available Jobs</h3>
+        <div class="row text-center mt-3">
+            <div class="col-md-4">
+                <h3 class="text-center text-warning">Recent Jobs</h3>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-center text-primary">Trending Jobs</h3>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-center  text-danger">Closing Soon</h3>
+            </div>
+        </div>
+    </div>
     
 
     <!-----Candidates Catalogue starts here----->
