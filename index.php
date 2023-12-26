@@ -44,7 +44,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                         <a class="nav-link active" aria-current="page" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Jobs</a>
+                        <a class="nav-link" href="jobs.php">Jobs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#candidates">Candidates</a>
@@ -155,11 +155,12 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                                         <img src="assets/images/closing.jpg" class="img-thumbnail" alt="...">
                                     </div>
                                     <div class="col-md-4 mb-2">
-                                        <a href="view-job.php?id=<?php echo $row['jobpost_id']; ?>" class="" style="text-decoration: none;">
-                                            <h6 class="text-danger"><?php echo $row['job_title'];?></h6>
-                                            <button class="btn btn-primary"><?php echo $row['designation'];?></button>
-                                        </a>
-                                        
+                                        <h5><?php echo $row['job_title']; ?>  <span class="text-primary"><?php echo $row['designation']; ?></span></h5>
+                                        <h5></h5>
+                                        <form action="view-job.php" method="POST">
+                                            <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                            <input type="submit" value="View Job" class="btn btn-danger">
+                                        </form>
                                     </div>
                                     <div class="col-md-4 mb-2 text-danger">
                                         <h6>

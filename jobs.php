@@ -33,14 +33,21 @@ session_start();
   <!-----Navbar starts here----->
   <nav class="navbar navbar-expand-lg  bg-warning">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="../index.php">Skill-Bridge</a>
+            <a class="navbar-brand fw-bold" href="index.php">Skill-Bridge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav my-3 fw-bold">
                     <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
+                    <?php
+                    if(isset($_SESSION['user_id'])) { ?>
+                        <a class="nav-link" href="users/index.php">Dashboard</a>
+                    <?php } elseif(isset($_SESSION['company_id'])) { ?>
+                        <a class="nav-link" href="employers/index.php">Dashboard</a>
+                    <?php } else { ?>
+                        <a class="nav-link" href="sign-up.php">Sign Up</a>
+                    <?php } ?>
                     </li>
                 </ul>
             </div>

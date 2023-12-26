@@ -146,7 +146,7 @@ ob_end_flush();
                         <?php
                             require_once '../config/config.php';
 
-                            $jobpostId = isset($_GET['id']) ? $_GET['id'] : null;
+                            $jobpostId = isset($_POST['jobpost_id']) ? $_POST['jobpost_id'] : null;
 
                             $sql = "SELECT * FROM job_post WHERE jobpost_id = ?";
                             $stmt = $connection->prepare($sql);

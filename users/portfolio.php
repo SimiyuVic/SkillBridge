@@ -65,7 +65,7 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4 mb-4">
+            <div class="col-12 col-lg-3 mb-4">
             <?php
                     if(isset($_SESSION['deleted']))
                     { 
@@ -234,7 +234,7 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-lg-9">
                 <div class="card mb-3">
                     <div class="card-header">
                         <h5 class="text-center">This is what We have on You .</h5>

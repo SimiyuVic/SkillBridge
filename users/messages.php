@@ -58,7 +58,7 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4 mb-4">
+            <div class="col-12 col-lg-3 mb-4">
                 <?php
                     if(isset($_SESSION['register_success']))
                     { 
@@ -131,7 +131,7 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="c0l-md-8"></div>
+            <div class="col-12 col-lg-9"></div>
         </div>
     </div>   
 

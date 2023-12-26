@@ -58,7 +58,7 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4 mb-4">
+            <div class="col-12 col-lg-3 mb-4">
                 <?php
                     if(isset($_SESSION['update_fail']))
                     { 
@@ -148,7 +148,7 @@ if(!isset($_SESSION['user_id']))
                 {
                     while($row = mysqli_fetch_assoc($result))
                     { ?>
-                    <div class="col-md-8">
+                    <div class="col-12 col-lg-9">
                     <form action="../process/edit-profile-process.php" method="POST">
                         <div class="card">
                             <div class="card-header text-center">

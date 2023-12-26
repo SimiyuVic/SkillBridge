@@ -178,6 +178,11 @@ if(!isset($_SESSION['company_id']))
                                     <i class="fas fa-users fa-lg me-3"></i> View Applicants
                                 </li>
                             </a>
+                            <a href="manage-applications.php" style="text-decoration: none;">
+                                <li class="list-group-item">
+                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
+                                </li>
+                            </a>
                             <a href="messages.php" style="text-decoration: none;">
                                 <li class="list-group-item">
                                     <i class="fas fa-comments fa-lg me-3"></i>Messages
@@ -230,9 +235,10 @@ if(!isset($_SESSION['company_id']))
                                                 <h6><?php echo $row['job_title']; ?></h6>
                                             </td>
                                             <td>
-                                                <a href="view-job.php?id=<?php echo $row['jobpost_id']; ?>">
-                                                    <i class="fa-solid fa-eye fa-lg ms-3"></i>
-                                                </a>
+                                                <form action="view-job.php" method="POST">
+                                                    <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                    <input type="submit" value="View Job" class="btn btn-outline-dark">
+                                                </form>
                                             </td>
                                             <td class="fw-bold">
                                                 <?php
@@ -242,7 +248,8 @@ if(!isset($_SESSION['company_id']))
                                                 <p class="<?php echo $textColorClass; ?>"><?php echo ($status == 2) ? 'Open' : 'Closed'; ?></p>
                                             </td>
                                             <td>
-                                            <form id="deleteForm" action="../process/delete-job.php?id=<?php echo $row['jobpost_id']; ?>" method="POST">
+                                            <form id="deleteForm" action="../process/delete-job.php" method="POST">
+                                                <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
                                                 <input type="submit" name="delete" value="Delete" class="btn btn-outline-danger" onclick="return confirmDelete();">
                                             </form>
 

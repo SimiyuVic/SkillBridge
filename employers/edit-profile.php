@@ -58,7 +58,7 @@ if(!isset($_SESSION['company_id']))
     <!----Main body content-----> 
     <div class="container my-3">
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-lg-3 mb-3">
                 <?php
                     if(isset($_SESSION['login_success']))
                     { 
@@ -142,6 +142,11 @@ if(!isset($_SESSION['company_id']))
                                     <i class="fas fa-users fa-lg me-3"></i> View Applicants
                                 </li>
                             </a>
+                            <a href="manage-applications.php" style="text-decoration: none;">
+                                <li class="list-group-item">
+                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
+                                </li>
+                            </a>
                             <a href="messages.php" style="text-decoration: none;">
                                 <li class="list-group-item">
                                     <i class="fas fa-comments fa-lg me-3"></i>Messages
@@ -160,7 +165,7 @@ if(!isset($_SESSION['company_id']))
                         </ul> 
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-lg-9">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="text-center">Edit Your Profile</h5>

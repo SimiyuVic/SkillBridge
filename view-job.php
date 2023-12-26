@@ -33,14 +33,27 @@ session_start();
   <!-----Navbar starts here----->
   <nav class="navbar navbar-expand-lg  bg-warning">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="../index.php">Skill-Bridge</a>
+            <a class="navbar-brand fw-bold" href="index.php">Skill-Bridge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav my-3 fw-bold">
                     <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
+                        <?php
+                            if(isset($_SESSION['company_id']))
+                            { ?>
+                                <a class="nav-link" href="employers/index.php">Dashboard</a>
+                           <?php }
+                           elseif(isset($_SESSION['user_id']))
+                           { ?>
+                            <a class="nav-link" href="users/index.php">Dashboard</a>
+                          <?php }
+                          else
+                          { ?>
+                            <a class="nav-link" href="jobs.php">Jobs</a>
+                         <?php }
+                        ?>
                     </li>
                 </ul>
             </div>
@@ -52,7 +65,7 @@ session_start();
         <div class="row">
         <?php
                     require_once 'config/config.php';
-                    $jobpostId = isset($_GET['id']) ? $_GET['id'] : null;
+                    $jobpostId = isset($_POST['jobpost_id']) ? $_POST['jobpost_id'] : null;
                     $sql = "SELECT job_post.jobpost_id, job_post.company_id, job_post.job_title, job_post.job_description, job_post.designation, job_post.qualification, 
                     job_post.expected_salary, job_post.expiration_date, employers.company_logo 
                     FROM job_post 
@@ -68,9 +81,20 @@ session_start();
                             <div class="col-md-10">
                                 <div class="card">
                                     <div class="card-header">
-                                        <a href="index.php" class="btn btn-outline-primary">Back</a>
-                                    </div>
+                                            <a href="index.php">
+                                                <button class="btn btn-outline-primary">Back</button>
+                                            </a>
+                                        </div>
                                     <div class="card-body">
+                                        <?php 
+                                            if(!isset($_SESSION['user_id']))
+                                            { ?>
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    <strong>Hello !</strong> You Have to Log in to be able to apply to this job !
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                            <?php }
+                                        ?>
                                         <h5 class="text-primary"><i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary"><?php echo $row['job_title']; ?></button></h5>
                                         <p class="text-primary"><i class="fa-solid fa-user-graduate fa-lg me-3"></i><?php echo $row['qualification']; ?> |</p>
                                         <p class="text-primary"><i class="fa-solid fa-wallet fa-xl me-3"></i>KES. <?php echo $row['expected_salary']; ?></p>

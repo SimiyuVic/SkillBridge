@@ -131,6 +131,11 @@ if(!isset($_SESSION['company_id']))
                                     <i class="fas fa-users fa-lg me-3"></i> View Applicants
                                 </li>
                             </a>
+                            <a href="manage-applications.php" style="text-decoration: none;">
+                                <li class="list-group-item">
+                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
+                                </li>
+                            </a>
                             <a href="messages.php" style="text-decoration: none;">
                                 <li class="list-group-item">
                                     <i class="fas fa-comments fa-lg me-3"></i>Messages

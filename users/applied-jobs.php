@@ -58,17 +58,53 @@ if(!isset($_SESSION['user_id']))
     <!----Main body content-----> 
     <div class="container my-4">
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <?php
+            <div class="col-12 col-lg-3 mb-4">
+            <?php
                     if(isset($_SESSION['applied']))
                     { 
                         ?>
                             <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                <strong>Congratulations !</strong> Job Application Success
+                                <strong>Hello !</strong> Application was Successful
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
                             unset($_SESSION['applied']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['no_job']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> You have not applied yet 
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['no_job']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['failed_delete']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Could not Delete Job Post !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['deleted']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['deleted']))
+                    { 
+                        ?>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Job Post Deleted !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['deleted']);
                     }
                 ?>
                 <div class="card">
@@ -131,7 +167,88 @@ if(!isset($_SESSION['user_id']))
                     </ul>
                 </div>
             </div>
-            <div class="c0l-md-8"></div>
+            <div class="col-12 col-lg-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-center">
+                            Here are your Applied Jobs
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Company Name</th>
+                                    <th scope="col">Job Title</th>
+                                    <th scope="col">Job Status</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    require_once '../config/config.php';
+                                    $user_id = $_SESSION['user_id'];
+                                    $sql = "SELECT employers.company_name, job_post.job_title, applied_jobs.aplliedjobs_id, applied_jobs.status
+                                    FROM applied_jobs
+                                    JOIN employers ON applied_jobs.company_id = employers.company_id
+                                    JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
+                                    WHERE applied_jobs.user_id = ?"; 
+                                    $stmt = $connection->prepare($sql);
+                                    $stmt->bind_param("i", $user_id);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                                    if($result->num_rows > 0)
+                                    {
+                                        while ($row = $result->fetch_assoc())
+                                        { ?>
+                                            <tr>
+                                                <th scope="row">
+                                                    <i class="fas fa-chevron-right fa-lg"></i>
+                                                </th>
+                                                <td class="text-info">
+                                                    <?php echo $row['company_name']; ?>
+                                                </td>
+                                                <td class="text-primary">
+                                                    <?php echo $row['job_title']; ?>
+                                                </td>
+                                                <td class="fw-bold">
+                                                    <?php
+                                                    $status = $row['status'];
+                                                    $textColorClass = ($status == 2) ? 'text-info' : (($status == 1) ? 'text-success' : 'text-danger');
+                                                    $statusText = ($status == 2) ? 'Pending' : (($status == 1) ? 'Under Review' : 'Rejected');
+                                                    ?>
+                                                    <p class="<?php echo $textColorClass; ?>"><?php echo $statusText; ?></p>
+                                                </td>
+                                                <td>
+                                                    <form id="deleteForm" action="../process/delete-applied-job.php" method="POST">
+                                                        <input type="hidden" name="aplliedjobs_id" value="<?php echo $row['aplliedjobs_id']; ?>">
+                                                        <input type="submit" name="delete" value="Delete" class="btn btn-outline-danger" onclick="return confirmDelete();">
+                                                    </form>
+                                                    <script>
+                                                        function confirmDelete() {
+                                                            // Display a confirmation dialog
+                                                            var isConfirmed = confirm("Are you sure you want to delete this Job?");
+
+                                                            // If the user confirms, submit the form
+                                                            return isConfirmed;
+                                                        }
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                       <?php }
+                                    }
+                                    else
+                                    {
+                                        $_SESSION['no_job'] = "";
+                                        
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>   
 

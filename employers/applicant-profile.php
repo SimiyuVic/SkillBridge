@@ -15,7 +15,7 @@ if(!isset($_SESSION['company_id']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | My-Dashboard</title>
+    <title>Skill-Bridge | Applicant-Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -59,18 +59,6 @@ if(!isset($_SESSION['company_id']))
     <div class="container my-3">
         <div class="row">
             <div class="col-12 col-lg-3 mb-3">
-            <?php
-                    if(isset($_SESSION['login_success']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Welcome !</strong> <?php echo $_SESSION['username'];  ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['login_success']);
-                    }
-                ?>
                 <div class="card">
                     <div class="card-header">
                     <?php
@@ -118,11 +106,6 @@ if(!isset($_SESSION['company_id']))
                                     <i class="fas fa-users fa-lg me-3"></i> View Applicants
                                 </li>
                             </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-lg me-3"></i> Manage Applications
-                                </li>
-                            </a>
                             <a href="messages.php" style="text-decoration: none;">
                                 <li class="list-group-item">
                                     <i class="fas fa-comments fa-lg me-3"></i>Messages
@@ -142,72 +125,107 @@ if(!isset($_SESSION['company_id']))
                 </div>
             </div>
             <div class="col-12 col-lg-9">
-                <div class="card shadow">
-                    <div class="card-header">
-                        <h5 class="text-center">
-                            A list of Applicants on your Job Posts
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Applicant Name</th>
-                                    <th scope="col">View Profile</th>
-                                    <th scope="col">Job Title</th>
-                                    <th scope="col">Designation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                <?php
+                    require_once '../config/config.php';
+                    $user_id = $_POST['user_id'];
+
+                    $sql = "SELECT users.firstname, users.lastname, users.email, users.phone_number,users.occupation,users.study,users.description, users.skills,
+                    portfolio.project_title, portfolio.project_link, portfolio.project_info, portfolio.project_description, portfolio.project_image
+                    FROM users
+                    LEFT JOIN portfolio ON users.user_id = portfolio.user_id
+                    WHERE users.user_id = ?";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if($result->num_rows > 0)
+                    {
+                        while($row = $result->fetch_assoc())
+                        { ?>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <a href="applicants.php">
+                                        <button class="btn btn-outline-primary">Back</button>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="text-muted"><i class="fas fa-envelope fa-lg me-3"></i><?php echo $row['email']; ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="text-muted"><i class="fas fa-phone-alt fa-lg me-3"></i><?php echo $row['phone_number']; ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="text-muted"><i class="fas fa-laptop-house fa-xl me-3"></i><?php echo $row['occupation']; ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="text-muted"><i class="fas fa-user-graduate fa-xl me-3"></i><?php echo $row['study']; ?></p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5>About</h5>
+                                        <p class="text-muted"><?php echo $row['description']; ?></p>
+                                    </div>
+                                    <div>
+                                        <h5>Skills</h5>
+                                        <p class="text-muted"><?php echo $row['skills']; ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="text-center">
+                                        Projects /Skills include . . .
+                                    </h5>
+                                </div>
                                 <?php
-                                    require_once '../config/config.php';
-                                    $sql = "SELECT users.user_id, users.firstname, users.lastname, job_post.job_title, job_post.designation
-                                    FROM applied_jobs
-                                    JOIN users ON applied_jobs.user_id = users.user_id
-                                    JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
-                                    WHERE applied_jobs.company_id = ?";
-                                    $stmt = $connection->prepare($sql);
-                                    $stmt->bind_param("i", $_SESSION['company_id']);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        { ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <i class="fas fa-chevron-right fa-lg"></i>
-                                                </th>
-                                                <td class="text-primary">
-                                                    <?php echo $row['firstname']; ?>  <?php echo $row['lastname']; ?>
-                                                </td>
-                                                <td>
-                                                    <form action="applicant-profile.php" method="POST">
-                                                        <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
-                                                        <input type="submit" value="Profile" class="btn btn-outline-dark">
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <?php echo $row['job_title']; ?>
-                                                </td>
-                                                <td class="fw-bold text-info">
-                                                    <?php echo $row['designation']; ?>
-                                                </td>
-                                            </tr>
-                                       <?php }
+                                if(!empty($row['project_title']))
+                                { ?>
+                                    <div class="card-body">
+                                        <div class="card shadow">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <h5><?php echo $row['project_title']; ?></h5>
+                                                        <h6 class="text-info"><?php echo $row['project_info']; ?></h6>
+                                                        <p class="text-primary"><?php echo $row['project_link']; ?></p>
+                                                        <img src="../uploads/portfolio/<?php echo $row['project_image']; ?>" alt="Image" class="img-fluid"> 
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <p class="lead"><?php echo $row['project_description']; ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                               <?php }
+                               else 
+                               {
+                                $_SESSION['no_skills'] = "";
+                                
+                                    if(isset($_SESSION['no_skills']))
+                                    { 
+                                        ?>
+                                            <div class="alert alert-success alert-dismissible fade show w-50 my-3 ms-5" role="alert">
+                                                <strong>Hello !</strong> No skills to display from Applicant yet
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        <?php 
+                                            unset($_SESSION['no_skills']);
                                     }
-                                    else
-                                    {
-                                        $_SESSION['no_applicants'];
-                                    }
-                                    $stmt->close();
-                                    $connection->close();
+                               }
                                 ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            </div>
+                        <?php }
+                    }
+                    else 
+                    {
+                        //no profile
+                    }
+                ?>
             </div>
         </div>
     </div>
@@ -217,4 +235,4 @@ if(!isset($_SESSION['company_id']))
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
     </body>
-</html>
+</html> 

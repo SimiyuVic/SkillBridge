@@ -58,7 +58,7 @@ if(!isset($_SESSION['company_id']))
     <!----Main body content-----> 
     <div class="container my-3">
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-lg-3 mb-3">
             <?php
                     if(isset($_SESSION['login_success']))
                     { 
@@ -118,6 +118,11 @@ if(!isset($_SESSION['company_id']))
                                     <i class="fas fa-users fa-lg me-3"></i> View Applicants
                                 </li>
                             </a>
+                            <a href="manage-applications.php" style="text-decoration: none;">
+                                <li class="list-group-item">
+                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
+                                </li>
+                            </a>
                             <a href="messages.php" style="text-decoration: none;">
                                 <li class="list-group-item">
                                     <i class="fas fa-comments fa-lg me-3"></i>Messages
@@ -136,7 +141,7 @@ if(!isset($_SESSION['company_id']))
                         </ul> 
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-lg-9">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="text-center">A glimpse on your Progress So Far</h5>
@@ -148,23 +153,23 @@ if(!isset($_SESSION['company_id']))
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-6">
-                                            <?php
-                                                //To get number of skills added.
-                                                $company_id = $_SESSION['company_id'];
-                                                require_once '../config/config.php';
+                                                <?php
+                                                    //To get number of skills added.
+                                                    $company_id = $_SESSION['company_id'];
+                                                    require_once '../config/config.php';
 
-                                                //Query to count number of skills added
-                                                $query = "SELECT COUNT(*) AS skillcount FROM job_post WHERE company_id = ?";
-                                                $stmt = $connection->prepare($query);
-                                                $stmt->bind_param("i", $_SESSION['company_id']);
-                                                $stmt->execute();
-                                                $stmt->bind_result($skillCount);
-                                                $stmt->fetch();
-                                                $stmt->close();
+                                                    //Query to count number of skills added
+                                                    $query = "SELECT COUNT(*) AS skillcount FROM job_post WHERE company_id = ?";
+                                                    $stmt = $connection->prepare($query);
+                                                    $stmt->bind_param("i", $_SESSION['company_id']);
+                                                    $stmt->execute();
+                                                    $stmt->bind_result($skillCount);
+                                                    $stmt->fetch();
+                                                    $stmt->close();
 
-                                            ?>
-                                                <h5>Posted Jobs</h5>
-                                                <h5><i class="fas fa-folder-open fa-lg me-3"></i> Posted</h5>
+                                                ?>
+                                                    <h5>Posted Jobs</h5>
+                                                    <h5><i class="fas fa-folder-open fa-xl me-3"></i></h5>
                                             </div>
                                             <div class="col-6">
                                                 <h3 class="text-primary"><?php echo $skillCount; ?></h3>
@@ -177,11 +182,26 @@ if(!isset($_SESSION['company_id']))
                                 <div class="card shadow">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-6">
+                                        <div class="col-6">
+                                            <?php
+                                                //To get number of skills added.
+                                                require_once '../config/config.php';
+
+                                                //Query to count number of skills added
+                                                $query = "SELECT COUNT(*) AS jobcount FROM applied_jobs WHERE company_id = ?";
+                                                $stmt = $connection->prepare($query);
+                                                $stmt->bind_param("i", $_SESSION['company_id']);
+                                                $stmt->execute();
+                                                $stmt->bind_result($jobcount);
+                                                $stmt->fetch();
+                                                $stmt->close();
+
+                                            ?>
                                                 <h5>Job Applications</h5>
+                                                <h5><i class="fas fa-question-circle fa-xl"></i></h5>
                                             </div>
                                             <div class="col-6">
-                                                1
+                                                <h3 class="text-primary"><?php echo $jobcount; ?></h3>
                                             </div>
                                         </div>
                                     </div>
