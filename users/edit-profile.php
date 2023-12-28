@@ -74,6 +74,7 @@ if(!isset($_SESSION['user_id']))
                 <div class="card">
                     <div class="card-header text-center">
                         <?php
+                        date_default_timezone_set('Africa/Nairobi');
                         //Getting the current hour
                             $currentHour = date('G');
                         //Greeting based on time of the day.

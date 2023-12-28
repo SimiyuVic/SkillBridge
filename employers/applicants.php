@@ -60,15 +60,63 @@ if(!isset($_SESSION['company_id']))
         <div class="row">
             <div class="col-12 col-lg-3 mb-3">
             <?php
-                    if(isset($_SESSION['login_success']))
+                    if(isset($_SESSION['job_under_review']))
                     { 
                         ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Welcome !</strong> <?php echo $_SESSION['username'];  ?>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Job Status is Already Under Review !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['login_success']);
+                            unset($_SESSION['job_under_review']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['job_under_review_update']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Application Status changed to Under Review !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['job_under_review_update']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['failed_change']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Failed to Change status, Try Again !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['failed_change']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['already_rejected']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Application Status is Already Rejected !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['already_rejected']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['rejected']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Application Status changed to Rejected !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['rejected']);
                     }
                 ?>
                 <div class="card">
@@ -142,6 +190,20 @@ if(!isset($_SESSION['company_id']))
                 </div>
             </div>
             <div class="col-12 col-lg-9">
+            <?php
+                    // Check if the alert has already been shown
+                    if (!isset($_SESSION['dash_info_shown'])) {
+                        $_SESSION['dash_info'] = "";
+                        ?>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <strong>Hello !</strong> Click on View Profile to know more about your Applicant .
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php
+                        // Set the flag to indicate that the alert has been shown
+                        $_SESSION['dash_info_shown'] = true;
+                    }
+                ?>
                 <div class="card shadow">
                     <div class="card-header">
                         <h5 class="text-center">
@@ -149,63 +211,87 @@ if(!isset($_SESSION['company_id']))
                         </h5>
                     </div>
                     <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Applicant Name</th>
-                                    <th scope="col">View Profile</th>
-                                    <th scope="col">Job Title</th>
-                                    <th scope="col">Designation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    require_once '../config/config.php';
-                                    $sql = "SELECT users.user_id, users.firstname, users.lastname, job_post.job_title, job_post.designation
-                                    FROM applied_jobs
-                                    JOIN users ON applied_jobs.user_id = users.user_id
-                                    JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
-                                    WHERE applied_jobs.company_id = ?";
-                                    $stmt = $connection->prepare($sql);
-                                    $stmt->bind_param("i", $_SESSION['company_id']);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        { ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <i class="fas fa-chevron-right fa-lg"></i>
-                                                </th>
-                                                <td class="text-primary">
-                                                    <?php echo $row['firstname']; ?>  <?php echo $row['lastname']; ?>
-                                                </td>
-                                                <td>
+                        <?php
+                            require_once '../config/config.php';
+                            $sql = "SELECT users.user_id, users.firstname, users.lastname, 
+                            job_post.jobpost_id, job_post.job_title, job_post.designation,
+                            applied_jobs.status
+                            FROM applied_jobs
+                            JOIN users ON applied_jobs.user_id = users.user_id
+                            JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
+                            WHERE applied_jobs.company_id = ?";
+
+                            $stmt = $connection->prepare($sql);
+                            $stmt->bind_param("i", $_SESSION['company_id']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if($result->num_rows > 0)
+                            {
+                                while($row = $result->fetch_assoc())
+                                { ?>
+                                    <div class="card mb-1">
+                                        <div class="card-body bg-light">
+                                            <div class="row">
+                                                <div class="col-md-4 mb-1">
+                                                    <h5><?php echo $row['firstname']; ?>  <?php echo $row['lastname']; ?></h5>
                                                     <form action="applicant-profile.php" method="POST">
                                                         <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
-                                                        <input type="submit" value="Profile" class="btn btn-outline-dark">
+                                                        <input type="submit" value="View Profile" class="btn btn-outline-dark">
                                                     </form>
-                                                </td>
-                                                <td>
-                                                    <?php echo $row['job_title']; ?>
-                                                </td>
-                                                <td class="fw-bold text-info">
-                                                    <?php echo $row['designation']; ?>
-                                                </td>
-                                            </tr>
-                                       <?php }
-                                    }
-                                    else
-                                    {
-                                        $_SESSION['no_applicants'];
-                                    }
-                                    $stmt->close();
-                                    $connection->close();
-                                ?>
-                            </tbody>
-                        </table>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <h5>Job Tittle</h5>
+                                                    <h6><?php echo $row['job_title']; ?></h6>
+                                                    <?php
+                                                        $status = $row['status'];
+
+                                                        if ($status === 0) {
+                                                            $statusText = 'Rejected';
+                                                            $statusClass = 'text-danger';
+                                                        } elseif ($status === 1) {
+                                                            $statusText = 'Under Review';
+                                                            $statusClass = 'text-info';
+                                                        } elseif ($status === 2) {
+                                                            $statusText = 'Pending Review';
+                                                            $statusClass = 'text-primary';
+                                                        } else {
+                                                            // Handle other status values if needed
+                                                            $statusText = 'Unknown Status';
+                                                            $statusClass = 'text-secondary';
+                                                        }
+                                                    ?>
+                                                    <h6>Status <span class="<?php echo $statusClass; ?>"><?php echo $statusText; ?></span></h6>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-1">
+                                                            <form action="../process/application-status.php" method="POST">
+                                                                <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>"> 
+                                                                <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                                <input type="submit" name="under_review" value="Mark Under Review" class="btn btn-outline-dark">
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <form action="../process/application-status.php" method="POST">
+                                                                <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>"> 
+                                                                <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                                <input type="submit" name="reject_application" value="Reject Application" class="btn btn-outline-danger">
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>   
+                                        </div>
+                                    </div>
+                                <?php }
+                            }
+                            else
+                            {
+                                $_SESSION['no_applicants'];
+                            }
+                            $stmt->close();
+                            $connection->close();
+                        ?>
                     </div>
                 </div>
             </div>

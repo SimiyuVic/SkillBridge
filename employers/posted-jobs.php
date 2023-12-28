@@ -96,6 +96,30 @@ if(!isset($_SESSION['company_id']))
                     }
                 ?>
                 <?php
+                    if(isset($_SESSION['job_closed']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops !</strong> Job Already Closed !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['job_closed']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['status_update']))
+                    { 
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Hello !</strong> Application of this Job has been Closed !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['status_update']);
+                    }
+                ?>
+                <?php
                     if(isset($_SESSION['deleted']))
                     { 
                         ?>
@@ -202,6 +226,20 @@ if(!isset($_SESSION['company_id']))
                 </div>
             </div>
             <div class="col-md-9">
+                <?php
+                    // Check if the alert has already been shown
+                    if (isset($_SESSION['dash_info_shown'])) {
+                        $_SESSION['dash_info'] = "";
+                        ?>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <strong>Hello !</strong> If you need to close a job application post before duration is expired, click View Job
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php
+                        // Set the flag to indicate that the alert has been shown
+                        //$_SESSION['dash_info_shown'] = true;
+                    }
+                ?>
                 <div class="card shadow">
                     <div class="card-body">
                         <table class="table table-hover">

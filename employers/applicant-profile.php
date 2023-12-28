@@ -125,15 +125,13 @@ if(!isset($_SESSION['company_id']))
                 </div>
             </div>
             <div class="col-12 col-lg-9">
+                <!--------Basic user Info-------->
                 <?php
                     require_once '../config/config.php';
                     $user_id = $_POST['user_id'];
 
-                    $sql = "SELECT users.firstname, users.lastname, users.email, users.phone_number,users.occupation,users.study,users.description, users.skills,
-                    portfolio.project_title, portfolio.project_link, portfolio.project_info, portfolio.project_description, portfolio.project_image
-                    FROM users
-                    LEFT JOIN portfolio ON users.user_id = portfolio.user_id
-                    WHERE users.user_id = ?";
+                    $sql = "SELECT firstname, lastname, email, phone_number,occupation,study,description, skills
+                    FROM users WHERE user_id = ?";
                     $stmt = $connection->prepare($sql);
                     $stmt->bind_param("i", $user_id);
                     $stmt->execute();
@@ -175,57 +173,59 @@ if(!isset($_SESSION['company_id']))
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="text-center">
-                                        Projects /Skills include . . .
-                                    </h5>
-                                </div>
-                                <?php
-                                if(!empty($row['project_title']))
-                                { ?>
-                                    <div class="card-body">
-                                        <div class="card shadow">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <h5><?php echo $row['project_title']; ?></h5>
-                                                        <h6 class="text-info"><?php echo $row['project_info']; ?></h6>
-                                                        <p class="text-primary"><?php echo $row['project_link']; ?></p>
-                                                        <img src="../uploads/portfolio/<?php echo $row['project_image']; ?>" alt="Image" class="img-fluid"> 
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <p class="lead"><?php echo $row['project_description']; ?></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> 
-                               <?php }
-                               else 
-                               {
-                                $_SESSION['no_skills'] = "";
-                                
-                                    if(isset($_SESSION['no_skills']))
-                                    { 
-                                        ?>
-                                            <div class="alert alert-success alert-dismissible fade show w-50 my-3 ms-5" role="alert">
-                                                <strong>Hello !</strong> No skills to display from Applicant yet
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                            </div>
-                                        <?php 
-                                            unset($_SESSION['no_skills']);
-                                    }
-                               }
-                                ?>
-                            </div>
                         <?php }
                     }
                     else 
                     {
                         //no profile
                     }
+                    
                 ?>
+                <!--------Skills Added by user------>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-center">Projects / Skills added . . .</h5>
+                    </div>
+                    <div class="card-body">
+                    <?php
+                        require_once '../config/config.php';
+                        $user_id = $_POST['user_id'];
+                        
+                        $stmt_get_skills = $connection->prepare("SELECT project_title, project_link, project_info, project_description, project_image 
+                        FROM portfolio WHERE user_id = ?");
+                        $stmt_get_skills->bind_param("i", $user_id);
+                        $stmt_get_skills->execute();
+                        $skills_result = $stmt_get_skills->get_result();
+                        if($skills_result->num_rows > 0)
+                        {
+                            while($row = $skills_result->fetch_assoc())
+                            { ?>
+                            <div class="card mb-1">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h5><?php echo $row['project_title']; ?></h5>
+                                            <h6><?php echo $row['project_info']; ?></h6>
+                                            <p class="text-primary"><?php echo $row['project_link']; ?></p>
+                                            <img src="../uploads/portfolio/<?php echo $row['project_image'];?>" class="img-thumbnail rounded mx-auto d-block" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="text-success"><?php echo $row['project_description'];?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php }
+                        }
+                        else
+                        { ?>
+                            <div class="alert alert-info" role="alert">
+                                Applicant has not added a Skill or a Project yet, when it is done it will be displayed Here.
+                            </div>
+                        <?php }
+                    ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

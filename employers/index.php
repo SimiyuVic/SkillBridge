@@ -212,28 +212,56 @@ if(!isset($_SESSION['company_id']))
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
                                     <div class="card-body">
+                                        <?php
+                                        //To get number of jobs applied.
+                                        require_once '../config/config.php';
+
+                                        //Query to count number of jobs applied
+                                        $query = "SELECT COUNT(*) AS jobCount FROM job_post WHERE company_id = ? AND status = 2";
+                                        $stmt = $connection->prepare($query);
+                                        $stmt->bind_param("i", $_SESSION['company_id']);
+                                        $stmt->execute();
+                                        $stmt->bind_result($jobCount);
+                                        $stmt->fetch();
+                                        $stmt->close();
+                                        ?>
+                                        <h5> Open Job Posts</h5>
                                         <div class="row">
                                             <div class="col-6">
-                                                <h5>Received Messages</h5>
+                                                <p class="ms-2 mt-2"><i class="fas fa-lock-open fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                1
+                                                <h3 class="text-primary"><?php echo $jobCount; ?></h3>
                                             </div>
-                                        </div>
+                                        </div>  
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
                                     <div class="card-body">
+                                        <?php
+                                        //To get number of jobs applied.
+                                        require_once '../config/config.php';
+
+                                        //Query to count number of jobs applied
+                                        $query = "SELECT COUNT(*) AS jobCount FROM job_post WHERE company_id = ? AND status = 1";
+                                        $stmt = $connection->prepare($query);
+                                        $stmt->bind_param("i", $_SESSION['company_id']);
+                                        $stmt->execute();
+                                        $stmt->bind_result($jobCount);
+                                        $stmt->fetch();
+                                        $stmt->close();
+                                        ?>
+                                        <h5> Closed Job Posts</h5>
                                         <div class="row">
                                             <div class="col-6">
-                                                <h5>Pending Reviews</h5>
+                                                <p class="ms-2 mt-2"><i class="fas fa-lock fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                1
+                                                <h3 class="text-danger"><?php echo $jobCount; ?></h3>
                                             </div>
-                                        </div>
+                                        </div>  
                                     </div>
                                 </div>
                             </div>

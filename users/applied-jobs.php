@@ -110,6 +110,7 @@ if(!isset($_SESSION['user_id']))
                 <div class="card">
                     <div class="card-header text-center">
                         <?php
+                        date_default_timezone_set('Africa/Nairobi');
                         //Getting the current hour
                             $currentHour = date('G');
                         //Greeting based on time of the day.
@@ -182,14 +183,13 @@ if(!isset($_SESSION['user_id']))
                                     <th scope="col">Company Name</th>
                                     <th scope="col">Job Title</th>
                                     <th scope="col">Job Status</th>
-                                    <th scope="col">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                     require_once '../config/config.php';
                                     $user_id = $_SESSION['user_id'];
-                                    $sql = "SELECT employers.company_name, job_post.job_title, applied_jobs.aplliedjobs_id, applied_jobs.status
+                                    $sql = "SELECT employers.company_name, job_post.job_title, applied_jobs.appliedjobs_id, applied_jobs.status
                                     FROM applied_jobs
                                     JOIN employers ON applied_jobs.company_id = employers.company_id
                                     JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
@@ -215,14 +215,15 @@ if(!isset($_SESSION['user_id']))
                                                 <td class="fw-bold">
                                                     <?php
                                                     $status = $row['status'];
-                                                    $textColorClass = ($status == 2) ? 'text-info' : (($status == 1) ? 'text-success' : 'text-danger');
+                                                    $textColorClass = ($status == 2) ? 'text-info' : (($status == 1) ? 'text-warning' : 'text-danger');
                                                     $statusText = ($status == 2) ? 'Pending' : (($status == 1) ? 'Under Review' : 'Rejected');
                                                     ?>
                                                     <p class="<?php echo $textColorClass; ?>"><?php echo $statusText; ?></p>
                                                 </td>
+                                                <!--------
                                                 <td>
                                                     <form id="deleteForm" action="../process/delete-applied-job.php" method="POST">
-                                                        <input type="hidden" name="aplliedjobs_id" value="<?php echo $row['aplliedjobs_id']; ?>">
+                                                        <input type="hidden" name="aplliedjobs_id" value="<?php //echo $row['aplliedjobs_id']; ?>">
                                                         <input type="submit" name="delete" value="Delete" class="btn btn-outline-danger" onclick="return confirmDelete();">
                                                     </form>
                                                     <script>
@@ -235,6 +236,7 @@ if(!isset($_SESSION['user_id']))
                                                         }
                                                     </script>
                                                 </td>
+                                                ----->
                                             </tr>
                                        <?php }
                                     }

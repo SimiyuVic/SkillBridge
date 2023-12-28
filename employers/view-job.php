@@ -59,19 +59,7 @@ ob_end_flush();
     <!----Main body content-----> 
     <div class="container my-3">
         <div class="row">
-            <div class="col-md-4">
-            <?php
-                    if(isset($_SESSION['login_success']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Welcome !</strong> <?php echo $_SESSION['username'];  ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['login_success']);
-                    }
-                ?>
+            <div class="col-12 col-lg-3 mb-3">
                 <div class="card">
                     <div class="card-header">
                     <?php
@@ -137,7 +125,7 @@ ob_end_flush();
                         </ul> 
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-lg-8">
                 <div class="card">
                     <div class="card-header ">
                         <a href="posted-jobs.php" class="btn btn-outline-primary ml-auto">Back</a>
@@ -180,7 +168,7 @@ ob_end_flush();
                                         $status = $row['status'];
                                         $textColorClass = ($status == 2) ? 'text-warning' : 'text-danger';
                                         echo '<span class="' . $textColorClass . '">';
-                                        echo ($status == 2) ? 'Open' : 'Close';
+                                        echo ($status == 2) ? 'Open' : 'Closed';
                                         echo '</span>';
                                         ?>
                                     </p>
@@ -197,6 +185,17 @@ ob_end_flush();
                                         echo 'Days Remaining : ' . $daysRemaining;
                                         echo '</span>';
                                         ?>
+                                    </p>
+                                    <p>
+                                        <form action="../process/close-jobpost.php" method="POST" onsubmit="return confirmCloseJob()">
+                                            <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                            <input type="submit" name="close_job" value="Close Application" class="btn btn-outline-danger">
+                                        </form>
+                                        <script>
+                                            function confirmCloseJob() {
+                                                return confirm("Are you sure you want to close this job application?");
+                                            }
+                                        </script>
                                     </p>
                                     <p class="lead">
                                         <?php echo $row['job_description']; ?>

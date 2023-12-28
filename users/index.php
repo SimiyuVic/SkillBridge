@@ -86,6 +86,7 @@ if(!isset($_SESSION['user_id']))
                 <div class="card">
                     <div class="card-header text-center">
                         <?php
+                        date_default_timezone_set('Africa/Nairobi');
                         //Getting the current hour
                             $currentHour = date('G');   
                         //Greeting based on time of the day.
@@ -93,7 +94,7 @@ if(!isset($_SESSION['user_id']))
                         {
                             $greeting = "Good Morning";
                         }
-                        else if($currentHour >=12 && $currentHour < 18)
+                        elseif($currentHour >= 13 && $currentHour < 18)
                         {
                             $greeting = "Good Afternoon";
                         }
@@ -152,7 +153,7 @@ if(!isset($_SESSION['user_id']))
                         <div class="row mb-2">
                             <div class="col-md-6 mb-2">
                                 <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
+                                    <div class="card-body text-primary">
                                         <?php
                                         //To get number of jobs applied.
                                         require_once '../config/config.php';
@@ -181,7 +182,7 @@ if(!isset($_SESSION['user_id']))
                             </div>
                             <div class="col-md-6">
                                 <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
+                                    <div class="card-body text-success">
                                         <?php
                                         //To get number of skills added.
                                         require_once '../config/config.php';
@@ -202,7 +203,7 @@ if(!isset($_SESSION['user_id']))
                                                 <p class="ms-2 mt-2"><i class="fas fa-folder-plus fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $skillCount; ?></h3>
+                                                <h3 class="text-success"><?php echo $skillCount; ?></h3>
                                             </div>
                                         </div>  
                                     </div>
@@ -212,27 +213,27 @@ if(!isset($_SESSION['user_id']))
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
+                                    <div class="card-body text-warning">
                                         <?php
-                                        // Get the number of jobs with status 1 (pending)
+                                        // Get the number of jobs with status 1 under Review
                                         require_once '../config/config.php';
 
                                         // Query to count the number of jobs with status 1 (pending)
-                                        $queryPending = "SELECT COUNT(*) AS pendingCount FROM applied_jobs WHERE user_id = ? AND status = 1";
-                                        $stmtPending = $connection->prepare($queryPending);
-                                        $stmtPending->bind_param("i", $_SESSION['user_id']);
-                                        $stmtPending->execute();
-                                        $stmtPending->bind_result($pendingCount);
-                                        $stmtPending->fetch();
-                                        $stmtPending->close();
+                                        $queryReview = "SELECT COUNT(*) AS underReview FROM applied_jobs WHERE user_id = ? AND status = 1";
+                                        $stmtReview = $connection->prepare($queryReview);
+                                        $stmtReview->bind_param("i", $_SESSION['user_id']);
+                                        $stmtReview->execute();
+                                        $stmtReview->bind_result($underReview);
+                                        $stmtReview->fetch();
+                                        $stmtReview->close();
                                         ?>
-                                        <h5>Pending Reviews</h5>
+                                        <h5>Under Reviews</h5>
                                         <div class="row">
                                             <div class="col-6">
-                                                <p class="ms-2 mt-2"><i class="fas fa-hourglass-half fa-xl"></i></p>
+                                                <p class="ms-2 mt-2"><i class="fas fa-smile-wink fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-warning"><?php echo $pendingCount; ?></h3>
+                                                <h3 class="text-warning"><?php echo $underReview; ?></h3>
                                             </div>
                                         </div>  
                                     </div>
@@ -240,12 +241,42 @@ if(!isset($_SESSION['user_id']))
                             </div>
                             <div class="col-md-6">
                                 <div class="card shadow" style="height: 100x;">
-                                    <div class="card-body">
+                                    <div class="card-body text-info">
+                                        <?php
+                                        // Get the number of jobs with status 2 (Pending)
+                                        require_once '../config/config.php';
+
+                                        // Query to count the number of jobs with status 2 (Pending)
+                                        $queryPending = "SELECT COUNT(*) AS declinedCount FROM applied_jobs WHERE user_id = ? AND status = 2";
+                                        $stmtPending = $connection->prepare($queryPending);
+                                        $stmtPending->bind_param("i", $_SESSION['user_id']);
+                                        $stmtPending->execute();
+                                        $stmtPending->bind_result($declinedCount);
+                                        $stmtPending->fetch();
+                                        $stmtPending->close();
+                                        ?>
+                                        <h5>Pending Review</h5>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="ms-2 mt-2"><i class="fas fa-hourglass-half fa-xl"></i></p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h3 class="text-info"><?php echo $declinedCount; ?></h3>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="card shadow" style="height: 100x;">
+                                    <div class="card-body text-danger">
                                         <?php
                                         // Get the number of jobs with status 0 (declined)
                                         require_once '../config/config.php';
 
-                                        // Query to count the number of jobs with status 0 (declined)
+                                        // Query to count the number of jobs with status 1 (pending)
                                         $queryDeclined = "SELECT COUNT(*) AS declinedCount FROM applied_jobs WHERE user_id = ? AND status = 0";
                                         $stmtDeclined = $connection->prepare($queryDeclined);
                                         $stmtDeclined->bind_param("i", $_SESSION['user_id']);
@@ -265,6 +296,9 @@ if(!isset($_SESSION['user_id']))
                                         </div>  
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!------To add something else Later----->
                             </div>
                         </div>
                     </div>

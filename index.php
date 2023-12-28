@@ -137,17 +137,56 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                 <h3 class="text-center  text-danger">Closing Soon</h3>
                 <?php
                     require_once 'config/config.php';
-                    $sql = "SELECT company_id, jobpost_id, job_title, designation, expiration_date 
-                    FROM job_post 
-                    WHERE expiration_date <= DATE_ADD(NOW(), INTERVAL 10 DAY) 
-                    ORDER BY expiration_date";
+
+                    function updateJobStatus($connection, $jobId) {
+                        $updateQuery = "UPDATE job_post SET status = 1 WHERE jobpost_id = ?";
+                        $updateStmt = $connection->prepare($updateQuery);
+                        $updateStmt->bind_param('i', $jobId);
+                        $updateStmt->execute();
+
+                        $updateStmt->close();
+                    }
+
+                    function displayRemainingTime($row) {
+                        $expirationDate = new DateTime($row['expiration_date']);
+                        $currentDate = new DateTime();
+                        $interval = $currentDate->diff($expirationDate);
+
+                        if ($interval->days < 1) {
+                            if ($interval->h >= 1) {
+                                return 'Hours Remaining: ' . $interval->h;
+                            } elseif ($interval->i >= 1) {
+                                return 'Minutes Remaining: ' . $interval->i;
+                            } else {
+                                // If the duration is completed, remove silently
+                                return '';
+                            }
+                        } else {
+                            return 'Days Remaining: ' . $interval->days;
+                        }
+                    }
+
+                    $sql = "SELECT company_id, jobpost_id, job_title, designation, expiration_date, status
+                            FROM job_post 
+                            WHERE expiration_date <= DATE_ADD(NOW(), INTERVAL 5 DAY) 
+                            ORDER BY expiration_date";
+
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    if ($result->num_rows > 0)
-                    {
-                        while ($row = $result->fetch_assoc())
-                        { ?>
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            if ($row['status'] == 2) {
+                                $currentDate = new DateTime();
+                                $expirationDate = new DateTime($row['expiration_date']);
+
+                                if ($currentDate >= $expirationDate) {
+                                    updateJobStatus($connection, $row['jobpost_id']);
+                                    continue;
+                                }
+                        // Display the card structure
+                        ?>
                         <div class="card mb-2 bg-light">
                             <div class="card-body">
                                 <div class="row">
@@ -163,25 +202,19 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                                         </form>
                                     </div>
                                     <div class="col-md-4 mb-2 text-danger">
-                                        <h6>
-                                            <?php
-                                                $expirationDate = new DateTime($row['expiration_date']);
-                                                $currentDate = new DateTime();
-                                                $remainingDays = $currentDate->diff($expirationDate)->format('%a');
-                                                echo 'Days Remaining : ' . $remainingDays;
-                                            ?>
-                                        </h6>
+                                        <h6><?php echo displayRemainingTime($row); ?></h6>
                                     </div>
                                 </div>
                             </div> 
                         </div>
-                       <?php }
-                    }
-                    else
-                    {
-                        //No jobs closing soon
-                    }
-                ?>
+                <?php
+        }
+    }
+} else {
+    // No jobs closing soon
+}
+?>
+
             </div>
         </div>
     </div>
