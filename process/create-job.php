@@ -17,6 +17,7 @@ if (isset($_POST['create_job']))
     $job_description = $_POST['job_description'];
     $designation = $_POST['designation'];
     $qualification = $_POST['qualification'];
+    $location = $_POST['location'];
     $expected_salary = $_POST['expected_salary'];
     $duration = $_POST['duration'];
 
@@ -31,13 +32,13 @@ if (isset($_POST['create_job']))
         $currentDate = date('Y-m-d H:i:s');
         $expirationDate = date('Y-m-d H:i:s', strtotime($currentDate . " +$duration days"));
 
-        $sql = "INSERT INTO job_post(company_id, job_title, job_description, designation, qualification, expected_salary, expiration_date) 
-        VALUES(?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO job_post(company_id, job_title, job_description, designation, qualification, location, expected_salary, expiration_date) 
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $connection->prepare($sql);
 
         if ($stmt) 
         {
-            $stmt->bind_param("issssss", $_SESSION['company_id'], $job_title, $job_description, $designation,  $qualification, $expected_salary, $expirationDate);
+            $stmt->bind_param("isssssss", $_SESSION['company_id'], $job_title, $job_description, $designation,  $qualification, $location, $expected_salary, $expirationDate);
             
             if ($stmt->execute()) 
             {

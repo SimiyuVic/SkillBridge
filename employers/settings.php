@@ -92,53 +92,7 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-lg me-3"></i> Manage Applications
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                    <?php include 'side-bar.html'; ?> 
                 </div>
             </div>
             <div class="col-12 col-lg-9">2</div>

@@ -80,48 +80,7 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                     <?php include 'side-bar.html'; ?>
                 </div>
             </div>
             <div class="col-12 col-lg-9">
@@ -171,6 +130,9 @@ if(!isset($_SESSION['company_id']))
                                         <h5>Skills</h5>
                                         <p class="text-muted"><?php echo $row['skills']; ?></p>
                                     </div>
+                                    <form action="" method="POST">
+                                        <input type="submit" value="Download Resume" class="btn btn-warning">
+                                    </form>
                                 </div>
                             </div>
                         <?php }
@@ -206,7 +168,52 @@ if(!isset($_SESSION['company_id']))
                                         <div class="col-md-4">
                                             <h5><?php echo $row['project_title']; ?></h5>
                                             <h6><?php echo $row['project_info']; ?></h6>
-                                            <p class="text-primary"><?php echo $row['project_link']; ?></p>
+                                            <!-- Add a span to wrap the project link and an icon for copy -->
+                                        <p class="text-primary project-link-container">
+                                            <?php echo $row['project_link']; ?>
+                                            <i class="fa-regular fa-copy fa-lg ms-2 copy-icon"></i>
+                                        </p>
+                                        <!-- Message to display when link is copied -->
+                                        <div id="copyMessage" class="text-success d-none">Copied Link</div>
+
+                                        <!-- Add the following script to enable copy functionality -->
+                                        <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            // Get the project link container, copy icon, and message element
+                                            var projectLinkContainer = document.querySelector('.project-link-container');
+                                            var copyIcon = document.querySelector('.copy-icon');
+                                            var copyMessage = document.getElementById('copyMessage');
+
+                                            // Add a click event listener to the project link container
+                                            projectLinkContainer.addEventListener('click', function() {
+                                                // Create a temporary input element
+                                                var tempInput = document.createElement('input');
+                                                tempInput.value = projectLinkContainer.textContent;
+                                                document.body.appendChild(tempInput);
+
+                                                // Select the text in the input
+                                                tempInput.select();
+                                                tempInput.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                                // Copy the text to the clipboard
+                                                document.execCommand('copy');
+
+                                                // Remove the temporary input element
+                                                document.body.removeChild(tempInput);
+
+                                                // Display the "Copied Link" message
+                                                copyMessage.classList.remove('d-none');
+
+                                                // Optionally, provide some visual feedback to the user
+                                                copyIcon.classList.add('text-success'); // Change color to indicate success
+                                                setTimeout(function() {
+                                                    copyIcon.classList.remove('text-success'); // Reset the color after 2 seconds
+                                                    copyMessage.classList.add('d-none'); // Hide the message after 2 seconds
+                                                }, 2000);
+                                            });
+                                        });
+                                        </script>
+
                                             <img src="../uploads/portfolio/<?php echo $row['project_image'];?>" class="img-thumbnail rounded mx-auto d-block" alt="...">
                                         </div>
                                         <div class="col-md-8">

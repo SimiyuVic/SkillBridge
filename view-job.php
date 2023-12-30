@@ -66,7 +66,7 @@ session_start();
         <?php
                     require_once 'config/config.php';
                     $jobpostId = isset($_POST['jobpost_id']) ? $_POST['jobpost_id'] : null;
-                    $sql = "SELECT job_post.jobpost_id, job_post.company_id, job_post.job_title, job_post.job_description, job_post.designation, job_post.qualification, 
+                    $sql = "SELECT job_post.jobpost_id, job_post.company_id, job_post.job_title, job_post.job_description, job_post.designation, job_post.qualification,job_post.location, 
                     job_post.expected_salary, job_post.expiration_date, employers.company_logo 
                     FROM job_post 
                     JOIN employers ON job_post.company_id = employers.company_id WHERE job_post.jobpost_id = ?";
@@ -78,7 +78,7 @@ session_start();
                     {
                         while ($row = $result->fetch_assoc())
                         { ?>
-                            <div class="col-md-10">
+                            <div class="col-md-10 mb-3">
                                 <div class="card">
                                     <div class="card-header">
                                             <a href="index.php">
@@ -95,9 +95,9 @@ session_start();
                                                 </div>
                                             <?php }
                                         ?>
-                                        <h5 class="text-primary"><i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary"><?php echo $row['job_title']; ?></button></h5>
+                                        <h5 class="text-primary"><i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary"><?php echo $row['designation']; ?></button> | <i class="fa-solid fa-location-dot fa-lg ms-2 me-3"></i><?php echo $row['location']; ?></h5>
                                         <p class="text-primary"><i class="fa-solid fa-user-graduate fa-lg me-3"></i><?php echo $row['qualification']; ?> |</p>
-                                        <p class="text-primary"><i class="fa-solid fa-wallet fa-xl me-3"></i>KES. <?php echo $row['expected_salary']; ?></p>
+                                        <p class="text-primary"><i class="fa-solid fa-wallet fa-xl me-3"></i>KES. <?php echo $row['expected_salary']; ?> |</p>
                                         <p class="text-danger fw-bold">
                                             <i class="fa-solid fa-hourglass-half fa-xl me-3"></i>
                                             <?php

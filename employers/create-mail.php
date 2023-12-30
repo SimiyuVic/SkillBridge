@@ -59,29 +59,29 @@ if(!isset($_SESSION['company_id']))
     <!----Main body content-----> 
     <div class="container my-3">
         <div class="row">
-            <div class="col-md-3 mb-3">
-                <?php
-                    if(isset($_SESSION['empty_description']))
-                    { 
-                        ?>
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> Job Descripton is Empty !
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['empty_description']);
-                    }
-                ?>
-                <?php
-                    if(isset($_SESSION['create_fail']))
+            <div class="col-12 col-lg-3 mb-3">
+            <?php
+                    if(isset($_SESSION['empty_content']))
                     { 
                         ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> Failed to Create Job, Try again !
+                                <strong>Oops </strong> Message Content can not be Empty !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['create_fail']);
+                            unset($_SESSION['empty_content']);
+                    }
+                ?>
+                <?php
+                    if(isset($_SESSION['send_failed']))
+                    { 
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Oops </strong> Failed to Send Message !
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                            unset($_SESSION['send_failed']);
                     }
                 ?>
                 <div class="card">
@@ -105,22 +105,52 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <?php include 'side-bar.html'; ?>
+                    <?php include 'side-bar.html'; ?> 
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-12 col-lg-7">
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="text-center">Create A Job Post</h5>
-                    </div>
-                    <form action="../process/create-job.php" method="POST">
-                        <div class="card-body">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="job_title" id="floatingInput" placeholder="Job tittle" required>
-                                <label for="floatingInput">Job Tittle</label>
+                    <div class="card-body">
+                        <form action="../process/send-message.php" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Compose New Message</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-primary fw-bold">Choose Applicant to Message</p>
+                                    <select name="user_id" class="form-control mb-3">
+                                        <?php
+                                        require_once '../config/config.php';
+                                        $company_id = $_SESSION['company_id'];
+                                        $sql = "SELECT * FROM applied_jobs 
+                                        INNER JOIN users ON applied_jobs.user_id=users.user_id 
+                                        WHERE applied_jobs.company_id= ? 
+                                        AND applied_jobs.status='1'";
+                                        $stmt = $connection->prepare($sql);
+                                        $stmt->bind_param("i", $company_id);
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+                                            if($result->num_rows > 0)
+                                            {
+                                                while ($row = $result->fetch_assoc())
+                                                {
+                                                    echo '<option value="'.$row['user_id'].'">'.$row['firstname'].' '.$row['lastname'].'</option>';
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-floating">
-                                <textarea class="form-control" name="job_description" placeholder="Job Description Here" id="floatingTextarea"></textarea>
+                            <div class="form-floating mb-3">
+                                <input type="text" name="message_subject" class="form-control" id="floatingInput" placeholder="Subject" required>
+                                <label for="floatingInput">Subject</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" name="message_content" placeholder="Type Message Content Here . . ." id="floatingTextarea"></textarea>
                             </div>
                                 <script>
                                     tinymce.init({
@@ -129,41 +159,16 @@ if(!isset($_SESSION['company_id']))
                                         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                                     });
                                 </script>
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" name="designation" id="floatingInput" placeholder="Designation" required>
-                                <label for="floatingInput">Job Designation (Entry-Level/Internship/Attachment)</label>
-                            </div>
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" name="qualification" id="floatingInput" placeholder="Job tittle" required>
-                                <label for="floatingInput">Qualification Level(Degree/Diploma)</label>
-                            </div>
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" name="location" id="floatingInput" placeholder="Job location" required>
-                                <label for="floatingInput">Location (County/ City)</label>
-                            </div>
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" name="expected_salary" id="expectedSalary" placeholder="Enter expected salary" oninput="formatSalary(this)">
-                                <label for="floatingInput">Salary</label>
-                                <script>
-                                    function formatSalary(input) {
-                                        // Remove non-numeric characters
-                                        let value = input.value.replace(/[^0-9]/g, '');
-
-                                        // Add commas every three digits from the right
-                                        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-                                        // Set the formatted value back to the input
-                                        input.value = value;
-                                    }
-                                </script>
-                            </div>
-                            <div class="form-floating my-3">
-                                <input type="number" class="form-control" name="duration" min="1" id="floatingInput" placeholder="Duration" required>
-                                <label for="floatingInput">Job Post Duration (in days):</label>
-                            </div>
-                            <input type="submit" value="Create Job" class="btn btn-outline-primary" name="create_job">
-                        </div>
-                    </form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="messages.php" class="btn btn-outline-dark">Discard</a>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <input type="submit" name="send_message" value="Send Message" class="btn btn-outline-primary">
+                                </div>
+                            </div>    
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

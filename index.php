@@ -111,7 +111,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
 
                         </div>
                         <div class="col-md-6">
-                            <a href="#" class="btn btn-outline-primary btn-lg w-100" role="button">Available Jobs</a>
+                            <a href="jobs.php" class="btn btn-outline-primary btn-lg w-100" role="button">Available Jobs</a>
                         </div>
                     </div>
                 </div>

@@ -9,28 +9,41 @@ if (!isset($_SESSION['company_id'])) {
 
 require_once '../config/config.php';
 
-if(isset($_POST['delete']))
-{
+if (isset($_POST['delete'])) {
     $jobpost_id = $_POST['jobpost_id'];
     $company_id = $_SESSION['company_id'];
-    
-    if (!empty($jobpost_id) && is_numeric($jobpost_id))
-    {
-        $sql = "DELETE FROM job_post WHERE jobpost_id = ? AND company_id = ?";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ii", $jobpost_id, $company_id);
-        if($stmt->execute())
-        {
+
+    if (!empty($jobpost_id) && is_numeric($jobpost_id)) {
+        // Start a transaction
+        $connection->begin_transaction();
+
+        try {
+            // Delete from applied_jobs
+            $deleteAppliedJobsSql = "DELETE FROM applied_jobs WHERE jobpost_id = ? AND company_id = ?";
+            $deleteAppliedJobsStmt = $connection->prepare($deleteAppliedJobsSql);
+            $deleteAppliedJobsStmt->bind_param("ii", $jobpost_id, $company_id);
+            $deleteAppliedJobsStmt->execute();
+
+            // Delete from job_post
+            $deleteJobPostSql = "DELETE FROM job_post WHERE jobpost_id = ? AND company_id = ?";
+            $deleteJobPostStmt = $connection->prepare($deleteJobPostSql);
+            $deleteJobPostStmt->bind_param("ii", $jobpost_id, $company_id);
+            $deleteJobPostStmt->execute();
+
+            // Commit the transaction
+            $connection->commit();
+
             $_SESSION['deleted'] = "";
             header('location: ../employers/posted-jobs.php');
-        }
-        else
-        {
+        } catch (Exception $e) {
+            // An error occurred, rollback the transaction
+            $connection->rollback();
             $_SESSION['failed_delete'] = "";
             header('location: ../employers/posted-jobs.php');
+        } finally {
+            // Close the connection
+            $connection->close();
         }
-        $stmt->close();
     }
 }
-$connection->close();
 ?>

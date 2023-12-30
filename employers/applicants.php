@@ -140,53 +140,7 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-lg me-3"></i> Manage Applications
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                    <?php include 'side-bar.html'; ?>
                 </div>
             </div>
             <div class="col-12 col-lg-9">
@@ -196,7 +150,7 @@ if(!isset($_SESSION['company_id']))
                         $_SESSION['dash_info'] = "";
                         ?>
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <strong>Hello !</strong> Click on View Profile to know more about your Applicant .
+                            <strong>Hello !</strong> Click on View Profile to know more about your Applicant
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <?php
@@ -225,21 +179,25 @@ if(!isset($_SESSION['company_id']))
                             $stmt->bind_param("i", $_SESSION['company_id']);
                             $stmt->execute();
                             $result = $stmt->get_result();
+
+                            $_SESSION['no_applicants'] = true;
+
                             if($result->num_rows > 0)
                             {
+                                unset($_SESSION['no_applicants']);
                                 while($row = $result->fetch_assoc())
                                 { ?>
                                     <div class="card mb-1">
                                         <div class="card-body bg-light">
                                             <div class="row">
-                                                <div class="col-md-4 mb-1">
+                                                <div class="col-6 col-lg-4 mb-1">
                                                     <h5><?php echo $row['firstname']; ?>  <?php echo $row['lastname']; ?></h5>
                                                     <form action="applicant-profile.php" method="POST">
                                                         <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
                                                         <input type="submit" value="View Profile" class="btn btn-outline-dark">
                                                     </form>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-6 col-lg-3">
                                                     <h5>Job Tittle</h5>
                                                     <h6><?php echo $row['job_title']; ?></h6>
                                                     <?php
@@ -264,19 +222,28 @@ if(!isset($_SESSION['company_id']))
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="row">
-                                                        <div class="col-md-6 mb-1">
+                                                        <div class="col-6 col-lg-6 mb-1">
                                                             <form action="../process/application-status.php" method="POST">
                                                                 <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>"> 
                                                                 <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
-                                                                <input type="submit" name="under_review" value="Mark Under Review" class="btn btn-outline-dark">
+                                                                <input type="submit" name="under_review" value="Mark Under Review" class="btn btn-info">
                                                             </form>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-6 col-lg-6">
                                                             <form action="../process/application-status.php" method="POST">
                                                                 <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>"> 
                                                                 <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
-                                                                <input type="submit" name="reject_application" value="Reject Application" class="btn btn-outline-danger">
+                                                                <input type="submit" name="reject_application" value="Reject Application" class="btn btn-danger" onclick="return confirmDelete();">
                                                             </form>
+                                                            <script>
+                                                                function confirmDelete() {
+                                                                    // Display a confirmation dialog
+                                                                    var isConfirmed = confirm("Are you sure you want to reject this Application?");
+
+                                                                    // If the user confirms, submit the form
+                                                                    return isConfirmed;
+                                                                }
+                                                            </script>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -292,6 +259,15 @@ if(!isset($_SESSION['company_id']))
                             $stmt->close();
                             $connection->close();
                         ?>
+                        <?php
+                                if(isset($_SESSION['no_applicants']))
+                                { ?>
+                                    <div class="alert alert-info" role="alert">
+                                        Job Applicants will be visible here only after your job posts have been applied on,
+                                         if none is displayed be patient.
+                                    </div>
+                               <?php }
+                            ?>
                     </div>
                 </div>
             </div>

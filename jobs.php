@@ -55,31 +55,62 @@ session_start();
     </nav>
     <!-----Navbar ends here----->
     <body>
-        <div class="container mt-3">
-        <?php
-            if(isset($_SESSION['job_exists']))
-            { 
-                ?>
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Hey !</strong> You Already Applied to this Job, here is More to choose from !
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="container-fluid mt-3">
+            <?php
+                if(isset($_SESSION['job_exists']))
+                { 
+                    ?>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Hey !</strong> You Already Applied to this Job, here is More to choose from !
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                        unset($_SESSION['job_exists']);
+                }
+            ?>
+            <?php
+                if(isset($_SESSION['apply_failed']))
+                { 
+                    ?>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <strong>Hey !</strong> Job Application Failed 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                        unset($_SESSION['apply_failed']);
+                }
+            ?>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="ms-2">
+                        <h5 class="text-muted">
+                            Latest jobs abd Vacancies for Students, recent Graduates and Entry level trainees
+                        </h5>
+                        <p class="lead">
+                            We have a wide range of employers seeking bright and amazing talent, make sure your portfolio 
+                            is well set, your information is correct and continue learning to increase your chance of success.
+                            We offer a platform but you are the controller.
+                        </p>
+                        <div class="card">
+                            <div class="card-body">
+                                <input class="form-control mb-4" id="containerSearch" type="text" placeholder="Search By Job Title">
+                                <input class="form-control mb-4" id="containerSearch" type="text" placeholder="Search By Location">
+                                <input class="form-control mb-4" id="containerSearch" type="text" placeholder="Search By Qualification /Field of Study">
+                            </div>
+                        </div>
                     </div>
-                <?php 
-                    unset($_SESSION['job_exists']);
-            }
-        ?>
-        <?php
-            if(isset($_SESSION['apply_failed']))
-            { 
-                ?>
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <strong>Hey !</strong> Job Application Failed 
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php 
-                    unset($_SESSION['apply_failed']);
-            }
-        ?>
+                </div>
+                <div class="col-md-7">
+                    <section>
+                        <?php
+                            $sql = "SELECT employers.company_name, employers.description, employers.company_logo,
+                            job_post.job_title, job_post."
+                        ?>
+                    </section>
+                </div>
+            </div>
+
+  
         </div>
     <!----- Footer Section starts here----->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 

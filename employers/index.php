@@ -92,53 +92,7 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                    <?php include 'side-bar.html'; ?> 
                 </div>
             </div>
             <div class="col-12 col-lg-9">
@@ -150,29 +104,29 @@ if(!isset($_SESSION['company_id']))
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body">
+                                    <div class="card-body text-success">
                                         <div class="row">
                                             <div class="col-6">
                                                 <?php
-                                                    //To get number of skills added.
+                                                    //To get number of poasted jobs.
                                                     $company_id = $_SESSION['company_id'];
                                                     require_once '../config/config.php';
 
-                                                    //Query to count number of skills added
-                                                    $query = "SELECT COUNT(*) AS skillcount FROM job_post WHERE company_id = ?";
-                                                    $stmt = $connection->prepare($query);
-                                                    $stmt->bind_param("i", $_SESSION['company_id']);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($skillCount);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
+                                                    //Query to count number of poasted jobs
+                                                    $query_posted_jobs = "SELECT COUNT(*) AS postedJobs FROM job_post WHERE company_id = ?";
+                                                    $stmt_posted_jobs = $connection->prepare($query_posted_jobs);
+                                                    $stmt_posted_jobs->bind_param("i", $_SESSION['company_id']);
+                                                    $stmt_posted_jobs->execute();
+                                                    $stmt_posted_jobs->bind_result($postedJobs);
+                                                    $stmt_posted_jobs->fetch();
+                                                    $stmt_posted_jobs->close();
 
                                                 ?>
                                                     <h5>Posted Jobs</h5>
                                                     <h5><i class="fas fa-folder-open fa-xl me-3"></i></h5>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $skillCount; ?></h3>
+                                                <h3 class="text-success"><?php echo $postedJobs; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -180,28 +134,28 @@ if(!isset($_SESSION['company_id']))
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body">
+                                    <div class="card-body text-primary">
                                         <div class="row">
                                         <div class="col-6">
                                             <?php
-                                                //To get number of skills added.
+                                                //To get number of Job Applications
                                                 require_once '../config/config.php';
 
-                                                //Query to count number of skills added
-                                                $query = "SELECT COUNT(*) AS jobcount FROM applied_jobs WHERE company_id = ?";
-                                                $stmt = $connection->prepare($query);
-                                                $stmt->bind_param("i", $_SESSION['company_id']);
-                                                $stmt->execute();
-                                                $stmt->bind_result($jobcount);
-                                                $stmt->fetch();
-                                                $stmt->close();
+                                                //Query to count number of Job Applications
+                                                $query_applications = "SELECT COUNT(*) AS jobApplications FROM applied_jobs WHERE company_id = ?";
+                                                $stmt_job_applications = $connection->prepare($query_applications);
+                                                $stmt_job_applications->bind_param("i", $_SESSION['company_id']);
+                                                $stmt_job_applications->execute();
+                                                $stmt_job_applications->bind_result($jobApplications);
+                                                $stmt_job_applications->fetch();
+                                                $stmt_job_applications->close();
 
                                             ?>
                                                 <h5>Job Applications</h5>
                                                 <h5><i class="fas fa-question-circle fa-xl"></i></h5>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $jobcount; ?></h3>
+                                                <h3 class="text-primary"><?php echo $jobApplications; ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -211,19 +165,19 @@ if(!isset($_SESSION['company_id']))
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body">
+                                    <div class="card-body text-warning">
                                         <?php
-                                        //To get number of jobs applied.
+                                        //To get number of Open Jobs.
                                         require_once '../config/config.php';
 
-                                        //Query to count number of jobs applied
-                                        $query = "SELECT COUNT(*) AS jobCount FROM job_post WHERE company_id = ? AND status = 2";
-                                        $stmt = $connection->prepare($query);
-                                        $stmt->bind_param("i", $_SESSION['company_id']);
-                                        $stmt->execute();
-                                        $stmt->bind_result($jobCount);
-                                        $stmt->fetch();
-                                        $stmt->close();
+                                        //Query to count number of Open Jobs
+                                        $query_open_jobs = "SELECT COUNT(*) AS openJobs FROM job_post WHERE company_id = ? AND status = 2";
+                                        $stmt_open_jobs = $connection->prepare($query_open_jobs);
+                                        $stmt_open_jobs->bind_param("i", $_SESSION['company_id']);
+                                        $stmt_open_jobs->execute();
+                                        $stmt_open_jobs->bind_result($openJobs);
+                                        $stmt_open_jobs->fetch();
+                                        $stmt_open_jobs->close();
                                         ?>
                                         <h5> Open Job Posts</h5>
                                         <div class="row">
@@ -231,7 +185,7 @@ if(!isset($_SESSION['company_id']))
                                                 <p class="ms-2 mt-2"><i class="fas fa-lock-open fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $jobCount; ?></h3>
+                                                <h3 class="text-warning"><?php echo $openJobs; ?></h3>
                                             </div>
                                         </div>  
                                     </div>
@@ -239,19 +193,19 @@ if(!isset($_SESSION['company_id']))
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body">
+                                    <div class="card-body text-danger">
                                         <?php
-                                        //To get number of jobs applied.
+                                        //To get number of Closed Jobs
                                         require_once '../config/config.php';
 
-                                        //Query to count number of jobs applied
-                                        $query = "SELECT COUNT(*) AS jobCount FROM job_post WHERE company_id = ? AND status = 1";
-                                        $stmt = $connection->prepare($query);
-                                        $stmt->bind_param("i", $_SESSION['company_id']);
-                                        $stmt->execute();
-                                        $stmt->bind_result($jobCount);
-                                        $stmt->fetch();
-                                        $stmt->close();
+                                        //Query to count number of Closed Jobs
+                                        $query_closed_jobs = "SELECT COUNT(*) AS closedJobs FROM job_post WHERE company_id = ? AND status = 1";
+                                        $stmt_closed_jobs = $connection->prepare($query_closed_jobs);
+                                        $stmt_closed_jobs->bind_param("i", $_SESSION['company_id']);
+                                        $stmt_closed_jobs->execute();
+                                        $stmt_closed_jobs->bind_result($closedJobs);
+                                        $stmt_closed_jobs->fetch();
+                                        $stmt_closed_jobs->close();
                                         ?>
                                         <h5> Closed Job Posts</h5>
                                         <div class="row">
@@ -259,7 +213,7 @@ if(!isset($_SESSION['company_id']))
                                                 <p class="ms-2 mt-2"><i class="fas fa-lock fa-xl"></i></p>
                                             </div>
                                             <div class="col-6">
-                                                <h3 class="text-danger"><?php echo $jobCount; ?></h3>
+                                                <h3 class="text-danger"><?php echo $closedJobs; ?></h3>
                                             </div>
                                         </div>  
                                     </div>

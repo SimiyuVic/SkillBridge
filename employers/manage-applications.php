@@ -23,6 +23,7 @@ if(!isset($_SESSION['company_id']))
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   </head>
   <style>
     .navbar-nav .nav-link
@@ -92,56 +93,119 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-lg me-3"></i> Manage Applications
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                    <?php include 'side-bar.html'; ?> 
                 </div>
             </div>
-            <div class="col-12 col-lg-9">2</div>
+            <div class="col-12 col-lg-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-center">
+                            Search Through a list of your Applicants
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!------Search function with filter by name or Job title----->
+                        <div class="container">
+                            <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search by Applicant Name / Email or Job title . . .">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Applicant Name</th>
+                                        <th scope="col">Job Title</th>
+                                        <th scope="col">Applicant Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    <?php 
+                                        require_once '../config/config.php';
+                                        $sql = "SELECT users.user_id, users.firstname, users.lastname,users.email, 
+                                        job_post.jobpost_id, job_post.job_title, job_post.designation,
+                                        applied_jobs.status
+                                        FROM applied_jobs
+                                        JOIN users ON applied_jobs.user_id = users.user_id
+                                        JOIN job_post ON applied_jobs.jobpost_id = job_post.jobpost_id
+                                        WHERE applied_jobs.company_id = ? AND applied_jobs.status = 1";
+
+                                        $stmt = $connection->prepare($sql);
+                                        $stmt->bind_param("i", $_SESSION['company_id']);
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+
+                                        $_SESSION['no_applicants'] = true;
+                                        
+                                        if($result->num_rows > 0)
+                                        {
+                                            unset($_SESSION['no_applicants']);
+
+                                            while($row = $result->fetch_assoc())
+                                            { ?>
+                                            <tr>
+                                                <th scope="row">
+                                                    <i class="fas fa-chevron-right fa-lg"></i>
+                                                </th>
+                                                <td>
+                                                    <h6 class="text-primary"><?php echo $row['firstname']; ?>  <?php echo $row['lastname']; ?></h6>
+                                                    <form action="applicant-profile.php" method="POST">
+                                                        <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
+                                                        <input type="submit" value="View Profile" class="btn btn-outline-dark">
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <h6 class="text-primary"><?php echo $row['job_title']; ?></h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="text-primary"><?php echo $row['email']; ?></h6>
+                                                </td>
+                                            </tr>
+                                            <?php }
+                                        }
+                                        else
+                                        { 
+                                           $_SESSION['no_applicants'];
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <!-- Info message for no results -->
+                            <div id="noResults" class="alert alert-info" role="alert" style="display: none;">
+                                No results found.
+                            </div>
+                            <?php
+                                if(isset($_SESSION['no_applicants']))
+                                { ?>
+                                    <div class="alert alert-info" role="alert">
+                                        Only Job Applications with status Under Review will be visible here !
+                                        To do that click on View Applicants and select your preffered candidates
+                                    </div>
+                               <?php }
+                            ?>
+                            <!-- Add the JavaScript code here -->
+                            <script>
+                                $(document).ready(function(){
+                                    $("#tableSearch").on("keyup", function() {
+                                        var value = $(this).val().toLowerCase();
+                                        var found = false;
+
+                                        $("#myTable tr").filter(function() {
+                                            var rowText = $(this).text().toLowerCase();
+                                            var isRowVisible = rowText.indexOf(value) > -1;
+                                            $(this).toggle(isRowVisible);
+
+                                            if (isRowVisible) {
+                                                found = true;
+                                            }
+                                        });
+
+                                        // Display or hide the info message based on search results
+                                        $("#noResults").toggle(!found);
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </body>

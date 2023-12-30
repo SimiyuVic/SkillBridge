@@ -176,70 +176,15 @@ if(!isset($_SESSION['company_id']))
                         ?>
                         <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
                     </div>
-                        <ul class="list-group list-group-flush">
-                            <a href="index.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-tachometer-alt fa-lg me-3"></i> Dashboard
-                                </li>
-                            </a>
-                            <a href="edit-profile.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-user-edit fa-lg me-3"></i> Edit Profile
-                                </li>
-                            </a>
-                            <a href="posted-jobs.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-open fa-lg me-3"></i> Posted Jobs
-                                </li>
-                            </a>
-                            <a href="create-job.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fas fa-folder-plus fa-lg me-3"></i> Create Job
-                                </li>
-                            </a>
-                            <a href="applicants.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-users fa-lg me-3"></i> View Applicants
-                                </li>
-                            </a>
-                            <a href="manage-applications.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                <i class="fa-solid fa-people-roof fa-xl me-3"></i> Manage Applications
-                                </li>
-                            </a>
-                            <a href="messages.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-comments fa-lg me-3"></i>Messages
-                                </li>
-                            </a>
-                            <a href="settings.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-cog fa-lg me-3"></i> Settings
-                                </li>
-                            </a>
-                            <a href="../process/log-out.php" style="text-decoration: none;">
-                                <li class="list-group-item">
-                                    <i class="fas fa-sign-out-alt fa-lg me-3"></i> Log Out
-                                </li>
-                            </a>
-                        </ul> 
+                    <?php include 'side-bar.html'; ?> 
                 </div>
             </div>
             <div class="col-md-9">
-                <?php
-                    // Check if the alert has already been shown
-                    if (isset($_SESSION['dash_info_shown'])) {
-                        $_SESSION['dash_info'] = "";
-                        ?>
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <strong>Hello !</strong> If you need to close a job application post before duration is expired, click View Job
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        <?php
-                        // Set the flag to indicate that the alert has been shown
-                        //$_SESSION['dash_info_shown'] = true;
-                    }
-                ?>
+                <!-------Dashboard Info ------>
+                <div class="alert alert-info" role="alert">
+                    If you need to close a Job Application before expiraion date click View Job
+                </div>
+                <!-------Dashboard Info ------>
                 <div class="card shadow">
                     <div class="card-body">
                         <table class="table table-hover">
