@@ -1,60 +1,5 @@
-<?php
-
-session_start();
-
-//Check if user is logged in
-if(!isset($_SESSION['company_id']))
-{
-    header('location: ../login.php');
-    $_SESSION['must_login'] = "";
-    exit();
-}
-?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | My-Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
-    integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script src="https://cdn.tiny.cloud/1/oyox4lvrma6uzyriloy2t3ljls4asn3ce7fg90wdu2uups41/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-  </head>
-  <style>
-    .navbar-nav .nav-link
-    {
-        color: white !important;
-    }
-    .navbar-brand
-    {
-        font-size: 29px;
-        font-family: 'caveat', sans-serif;
-        color: white !important;
-
-    }
-  </style>
-  <!-----Navbar starts here----->
-  <nav class="navbar navbar-expand-lg  bg-warning">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="../index.php">Skill-Bridge</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav my-3 fw-bold">
-                    <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-----Navbar starts here----->
+    <?php include 'header.php'; ?>
     <!-----Navbar ends here----->
     <body>
     <!----Main body content-----> 
@@ -81,7 +26,7 @@ if(!isset($_SESSION['company_id']))
                             $greeting = "Good Evening";
                         }
                         ?>
-                        <h5><?php echo $greeting . ', <i>' . $_SESSION['company_name'] . '</i>'; ?></h5>
+                        <h5><?php echo $greeting . ', <i>' . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'] . '</i>'; ?></h5>
                     </div>
                     <?php include 'side-bar.html'; ?> 
                 </div>
@@ -97,10 +42,10 @@ if(!isset($_SESSION['company_id']))
                                     FROM messages
                                     INNER JOIN employers ON employers.company_id = messages.company_id
                                     LEFT JOIN users ON users.user_id = messages.user_id
-                                    WHERE messages.message_id = ? AND messages.company_id = ?";
+                                    WHERE messages.message_id = ? AND messages.user_id = ?";
 
                             $stmt = $connection->prepare($sql);
-                            $stmt->bind_param("ii", $message_id, $_SESSION['company_id']);
+                            $stmt->bind_param("ii", $message_id, $_SESSION['user_id']);
                             $stmt->execute();
                             $result = $stmt->get_result();
                             if ($result->num_rows > 0) {
@@ -152,10 +97,10 @@ if(!isset($_SESSION['company_id']))
                                                         LEFT JOIN
                                                             employers ON reply_messages.sender = 'company' AND reply_messages.user_id = employers.company_id
                                                         WHERE 
-                                                            reply_messages.message_id = ? AND reply_messages.company_id = ?";
+                                                            reply_messages.message_id = ? AND reply_messages.user_id = ?";
 
                                             $stmt_reply = $connection->prepare($sql_reply);
-                                            $stmt_reply->bind_param("ii", $message_id, $_SESSION['company_id']);
+                                            $stmt_reply->bind_param("ii", $message_id, $_SESSION['user_id']);
 
                                             if ($stmt_reply->execute()) {
                                                 $result_reply = $stmt_reply->get_result();
@@ -171,7 +116,7 @@ if(!isset($_SESSION['company_id']))
                                                                     if ($row_reply['sender'] == 'company') { ?>
                                                                         <p class="text-primary fw-bold">Company Message<i class="fa-solid fa-circle-info fa-lg ms-2"></i></p>
                                                                     <?php } elseif ($row_reply['sender'] == 'user') { ?>
-                                                                        <p class="text-warning fw-bold">Applicant Message<i class="fa-solid fa-lightbulb fa-lg ms-2"></i></p>
+                                                                        <p class="text-warning fw-bold">Your Message<i class="fa-solid fa-lightbulb fa-lg ms-2"></i></p>
                                                                     <?php }
                                                                     ?>
                                                                 </p>
@@ -206,9 +151,9 @@ if(!isset($_SESSION['company_id']))
                                             <h5>
                                                 Send Reply
                                             </h5>
-                                            <form action="../process/reply-message.php" method="POST">
+                                            <form action="../process/user-replies.php" method="POST">
                                                 <input type="hidden" name="message_id" value="<?php echo $row['message_id']; ?>">
-                                                <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
+                                                <input type="hidden" name="company_id" value="<?php echo $row['company_id']; ?>">
                                                 <div class="form-floating mb-3">
                                                     <textarea class="form-control" name="reply_message_content" placeholder="Type Message Content Here . . ." id="floatingTextarea"></textarea>
                                                 </div>
@@ -219,7 +164,7 @@ if(!isset($_SESSION['company_id']))
                                                         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                                                     });
                                                 </script>
-                                                <input type="submit" name="reply_message" class="btn btn-outline-primary" value="Reply">
+                                                <input type="submit" name="user_reply_message" class="btn btn-outline-primary" value="Reply">
                                             </form>
                                         </div>
                                     </div>

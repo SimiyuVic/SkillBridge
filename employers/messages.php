@@ -72,6 +72,42 @@ if(!isset($_SESSION['company_id']))
                             unset($_SESSION['message_send']);
                     }
                 ?>
+                <?php
+                if(isset($_SESSION['failed_reply']))
+                { 
+                    ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Oops !</strong> Failed to send Reply !
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                        unset($_SESSION['failed_reply']);
+                }
+            ?>
+            <?php
+                if(isset($_SESSION['empty_reply']))
+                { 
+                    ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Oops !</strong> Cannot send Empty reply !
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                        unset($_SESSION['empty_reply']);
+                }
+            ?>
+            <?php
+                if(isset($_SESSION['reply_sent']))
+                { 
+                    ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Hello !</strong> Your reply has been sent !
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                        unset($_SESSION['reply_sent']);
+                }
+            ?>
                 <div class="card">
                     <div class="card-header">
                     <?php
@@ -126,9 +162,10 @@ if(!isset($_SESSION['company_id']))
                                     // Assuming you have a database connection established
 
                                     // Select firstname and lastname from the users table
-                                    $sql = "SELECT users.firstname, users.lastname, messages.message_id, messages.message_subject, messages.created_at 
+                                    $sql = "SELECT users.firstname, users.lastname, 
+                                    messages.message_id, messages.message_subject, messages.created_at 
                                     FROM users
-                                    INNER JOIN messages ON users.user_id = messages.user_id
+                                    INNER JOIN messages ON users.user_id = messages.user_id 
                                     ORDER BY messages.created_at DESC";
 
                                     $result = $connection->query($sql);
@@ -171,7 +208,7 @@ if(!isset($_SESSION['company_id']))
                             </tbody>
                         </table>
                          <!-- Info message for no results -->
-                         <div id="noResults" class="alert alert-info" role="alert" style="display: none;">
+                            <div id="noResults" class="alert alert-info" role="alert" style="display: none;">
                                 No results found.
                             </div>
                             <?php

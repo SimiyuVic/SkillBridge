@@ -112,7 +112,7 @@ ob_end_flush();
                                 else
                                 { ?>
                                     <h5 class="text-primary">
-                                        <i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary text-light"><?php echo $row['designation']; ?></button>
+                                        <i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary text-light"><?php echo $row['designation']; ?></button> | <?php echo $row['location']; ?>
                                     </h5>
                                     <p class="text-primary">
                                         <i class="fa-solid fa-graduation-cap fa-lg me-3"></i><?php echo $row['qualification']; ?> |
@@ -131,43 +131,47 @@ ob_end_flush();
                                         echo '</span>';
                                         ?>
                                     </p>
-                                    <p class="text-danger fw-bold">
-                                        <i class="fa-solid fa-hourglass-half fa-lg me-3"></i>
-                                        <?php
-                                        // Assuming $row['expiration_date'] contains the expiration date
-                                        $expirationDate = new DateTime($row['expiration_date']);
-                                        $currentDate = new DateTime();
-                                        
-                                        $interval = $currentDate->diff($expirationDate);
-                                        $daysRemaining = $interval->days;
-                                        $hoursRemaining = $interval->h;
+                                    <?php
+                                        if($row['status'] != 1)
+                                        { ?>
+                                        <p class="text-danger fw-bold">
+                                            <i class="fa-solid fa-hourglass-half fa-lg me-3"></i>
+                                            <?php
+                                            // Assuming $row['expiration_date'] contains the expiration date
+                                            $expirationDate = new DateTime($row['expiration_date']);
+                                            $currentDate = new DateTime();
+                                            
+                                            $interval = $currentDate->diff($expirationDate);
+                                            $daysRemaining = $interval->days;
+                                            $hoursRemaining = $interval->h;
 
-                                        echo '<span class="text-danger">';
-                                        
-                                        if ($daysRemaining >= 1) {
-                                            echo 'Days Remaining: ' . $daysRemaining;
-                                        } elseif ($hoursRemaining >= 1) {
-                                            echo 'Hours Remaining: ' . $hoursRemaining;
-                                        } else {
-                                            // If neither days nor hours are greater than or equal to 1, display minutes
-                                            echo 'Minutes Remaining: ' . $interval->i;
-                                        }
-                                        
-                                        echo '</span>';
-                                        ?>
-                                    </p>
-
-                                    <p>
-                                        <form action="../process/close-jobpost.php" method="POST" onsubmit="return confirmCloseJob()">
-                                            <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
-                                            <input type="submit" name="close_job" value="Close Application" class="btn btn-outline-danger">
-                                        </form>
-                                        <script>
-                                            function confirmCloseJob() {
-                                                return confirm("Are you sure you want to close this job application?");
+                                            echo '<span class="text-danger">';
+                                            
+                                            if ($daysRemaining >= 1) {
+                                                echo 'Days Remaining: ' . $daysRemaining;
+                                            } elseif ($hoursRemaining >= 1) {
+                                                echo 'Hours Remaining: ' . $hoursRemaining;
+                                            } else {
+                                                // If neither days nor hours are greater than or equal to 1, display minutes
+                                                echo 'Minutes Remaining: ' . $interval->i;
                                             }
-                                        </script>
-                                    </p>
+                                            
+                                            echo '</span>';
+                                            ?>
+                                        </p>
+                                        <p>
+                                            <form action="../process/close-jobpost.php" method="POST" onsubmit="return confirmCloseJob()">
+                                                <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                <input type="submit" name="close_job" value="Close Application" class="btn btn-outline-danger">
+                                            </form>
+                                            <script>
+                                                function confirmCloseJob() {
+                                                    return confirm("Are you sure you want to close this job application?");
+                                                }
+                                            </script>
+                                        </p>
+                                        <?php }
+                                    ?>
                                     <p class="lead">
                                         <?php echo $row['job_description']; ?>
                                     </p>

@@ -129,6 +129,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
         <div class="row text-center mt-3">
             <div class="col-md-4">
                 <h3 class="text-center text-warning">Recent Jobs</h3>
+                
             </div>
             <div class="col-md-4">
                 <h3 class="text-center text-primary">Trending Jobs</h3>
@@ -138,7 +139,8 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                 <?php
                     require_once 'config/config.php';
 
-                    function updateJobStatus($connection, $jobId) {
+                    function updateJobStatus($connection, $jobId) 
+                    {
                         $updateQuery = "UPDATE job_post SET status = 1 WHERE jobpost_id = ?";
                         $updateStmt = $connection->prepare($updateQuery);
                         $updateStmt->bind_param('i', $jobId);
@@ -147,7 +149,8 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                         $updateStmt->close();
                     }
 
-                    function displayRemainingTime($row) {
+                    function displayRemainingTime($row) 
+                    {
                         $expirationDate = new DateTime($row['expiration_date']);
                         $currentDate = new DateTime();
                         $interval = $currentDate->diff($expirationDate);
@@ -175,13 +178,17 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     $stmt->execute();
                     $result = $stmt->get_result();
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            if ($row['status'] == 2) {
+                    if ($result->num_rows > 0) 
+                    {
+                        while ($row = $result->fetch_assoc()) 
+                        {
+                            if ($row['status'] == 2) 
+                            {
                                 $currentDate = new DateTime();
                                 $expirationDate = new DateTime($row['expiration_date']);
 
-                                if ($currentDate >= $expirationDate) {
+                                if ($currentDate >= $expirationDate) 
+                                {
                                     updateJobStatus($connection, $row['jobpost_id']);
                                     continue;
                                 }
@@ -210,7 +217,8 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                 <?php
         }
     }
-} else {
+} 
+else {
     // No jobs closing soon
 }
 ?>
