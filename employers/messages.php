@@ -165,12 +165,16 @@ if(!isset($_SESSION['company_id']))
                                     $sql = "SELECT users.firstname, users.lastname, 
                                     messages.message_id, messages.message_subject, messages.created_at 
                                     FROM users
-                                    INNER JOIN messages ON users.user_id = messages.user_id 
+                                    INNER JOIN messages ON users.user_id = messages.user_id
+                                    INNER JOIN employers ON employers.company_id = messages.company_id
+                                    WHERE employers.company_id = ?
                                     ORDER BY messages.created_at DESC";
+                                    $stmt = $connection->prepare($sql);
+                                    $stmt->bind_param('i', $_SESSION['company_id']);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
 
-                                    $result = $connection->query($sql);
-
-                                    if ($result) 
+                                    if ($result->num_rows > 0) 
                                     {
                                         // Fetch the result as an associative array
                                         while ($row = $result->fetch_assoc()) 
@@ -190,16 +194,17 @@ if(!isset($_SESSION['company_id']))
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <?php echo date('Y-m-d h:i A', strtotime($row['created_at'])); ?>
+                                                    <?php echo date('Y-m-d h:i a', strtotime($row['created_at'])); ?>
                                                 </td>
                                             </tr>
                                        <?php }
 
                                         // Free the result set
                                         $result->free_result();
-                                    } else 
+                                    } 
+                                    else 
                                     {
-                                        $_SESSION['no_message'] = "";
+                                        $_SESSION['no_message'] = "No messages to display yet, send a message to an applicant first!";
                                     }
 
                                     // Close the database connection
@@ -211,14 +216,6 @@ if(!isset($_SESSION['company_id']))
                             <div id="noResults" class="alert alert-info" role="alert" style="display: none;">
                                 No results found.
                             </div>
-                            <?php
-                                if(isset($_SESSION['no_message']))
-                                { ?>
-                                    <div class="alert alert-info" role="alert">
-                                        No messages to display yet, send a message to an applicant first !
-                                    </div>
-                               <?php }
-                            ?>
                             <!-- Add the JavaScript code here -->
                             <script>
                                 $(document).ready(function(){

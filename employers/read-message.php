@@ -123,7 +123,7 @@ if(!isset($_SESSION['company_id']))
                                                     </p>
                                                 </div>
                                             </div>
-                                            <p>
+                                            <p class="mt-2">
                                                 <?php echo $row['message_content']; ?>
                                             </p>
                                             <!-------------The replies messages------------->

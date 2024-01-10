@@ -30,6 +30,13 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
         color: white !important;
 
     }
+    /* Custom CSS for the hover effect */
+    .card:hover 
+    {
+      transform: scale(1.035);
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
   </style>
   <!-----Navbar starts here----->
   <nav class="navbar navbar-expand-lg  bg-warning">
@@ -125,16 +132,81 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
 
     <!-----Jobs sections starts here----->
     <div class="container my-5">
-        <h3 class="text-center  border-bottom mb-3">Available Jobs</h3>
+        <h3 class="text-center text-light mb-3 bg-warning rounded-pill p-2">Available Jobs</h3>
         <div class="row text-center mt-3">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h3 class="text-center text-warning">Recent Jobs</h3>
-                
+                <?php
+                    require_once 'config/config.php';
+
+                    function displayRemainingDays($row) 
+                    {
+                        $expirationDate = new DateTime($row['expiration_date']);
+                        $currentDate = new DateTime();
+                        $interval = $currentDate->diff($expirationDate);
+
+                        if ($interval->days < 1) {
+                            // If the duration is less than a day, return 0 days
+                            return 'Days Remaining: 0';
+                        } else {
+                            return 'Days Remaining: ' . $interval->days;
+                        }
+                    }
+
+                    $sql = "SELECT company_id, jobpost_id, job_title, designation, expiration_date, status
+                            FROM job_post 
+                            WHERE status = 2
+                            ORDER BY created_at DESC";
+
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) 
+                    {
+                        while ($row = $result->fetch_assoc()) 
+                        {
+                            $currentDate = new DateTime();
+                            $expirationDate = new DateTime($row['expiration_date']);
+                            $interval = $currentDate->diff($expirationDate);
+
+                            if ($interval->days >= 5) {
+                                // Display the card structure for jobs with more than 5 days duration
+                                ?>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-1">
+                                                <span class="text-light bg-warning rounded-pill p-2">NEW-JOBS</span>
+                                                <h5 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h5>
+                                                <h5 class="text-warning"><?php echo displayRemainingTime($row); ?></h5>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <h5><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
+                                                <form action="view-job.php" method="POST">
+                                                    <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                    <input type="submit" value="View Job" class="btn btn-warning">
+                                                </form>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <?php
+                            }
+                        }
+                    } 
+                    else {
+                        // No jobs available
+                    }
+                    ?>
             </div>
+            <!----
             <div class="col-md-4">
                 <h3 class="text-center text-primary">Trending Jobs</h3>
             </div>
-            <div class="col-md-4">
+            ----->
+            <div class="col-md-6">
                 <h3 class="text-center  text-danger">Closing Soon</h3>
                 <?php
                     require_once 'config/config.php';
@@ -192,42 +264,41 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                                     updateJobStatus($connection, $row['jobpost_id']);
                                     continue;
                                 }
-                        // Display the card structure
-                        ?>
-                        <div class="card mb-2 bg-light">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4 mb-2">
-                                        <img src="assets/images/closing.jpg" class="img-thumbnail" alt="...">
+                                // Display the card structure
+                                ?>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-1">
+                                                    <span class="text-light bg-danger  rounded-pill p-2">CLOSING-SOON</span>
+                                                     <h5 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h5>
+                                                    <h5 class="text-danger"><?php echo displayRemainingTime($row); ?></h5>
+                                                </div>
+                                                <div class="col-md-6 mb-2">
+                                                    <h5><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
+                                                    <form action="view-job.php" method="POST">
+                                                        <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
+                                                        <input type="submit" value="View Job" class="btn btn-danger">
+                                                    </form>  
+                                                </div>
+                                            </div>
+                                        </div> 
                                     </div>
-                                    <div class="col-md-4 mb-2">
-                                        <h5><?php echo $row['job_title']; ?>  <span class="text-primary"><?php echo $row['designation']; ?></span></h5>
-                                        <h5></h5>
-                                        <form action="view-job.php" method="POST">
-                                            <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
-                                            <input type="submit" value="View Job" class="btn btn-danger">
-                                        </form>
-                                    </div>
-                                    <div class="col-md-4 mb-2 text-danger">
-                                        <h6><?php echo displayRemainingTime($row); ?></h6>
-                                    </div>
-                                </div>
-                            </div> 
+                                <?php
+                            }
+                        }
+                    } 
+                    else 
+                    { ?>
+                        <div class="alert alert-warning" role="alert">
+                            A simple warning alert—check it out!
                         </div>
-                <?php
-        }
-    }
-} 
-else {
-    // No jobs closing soon
-}
-?>
+                   <?php }
+                    ?>
 
             </div>
         </div>
     </div>
-    
-
     <!-----Candidates Catalogue starts here----->
     <section id="candidates">
         <div class="container my-5">
@@ -236,7 +307,7 @@ else {
             </h3>
             <div class="row ms-4">
                <div class="col-md-3 mb-3">
-                    <div class="card shadow text-center bg-success" style="width: 18rem;">
+                    <div class="card shadow text-center bg-success">
                         <div class="card-body">
                             <h3 class="card-title mb-2"><i class="fas fa-hourglass-half fa-lg"></i></h3>
                             <p class="card-text text-muted">
@@ -246,7 +317,7 @@ else {
                     </div>
                </div>
                <div class="col-md-3 mb-3">
-                    <div class="card shadow text-center bg-info" style="width: 18rem;">
+                    <div class="card shadow text-center bg-info">
                         <div class="card-body">
                             <h3><i class="fas fa-paper-plane fa-lg"></i></h3>
                             <p class="card-text text-muted">
@@ -256,7 +327,7 @@ else {
                     </div>
                </div>
                <div class="col-md-3 mb-3">
-                    <div class="card shadow text-center bg-secondary" style="width: 18rem;">
+                    <div class="card shadow text-center bg-secondary">
                         <div class="card-body">
                             <h3><i class="fas fa-handshake fa-lg"></i></h3>
                             <p class="card-text text-muted">
@@ -266,7 +337,7 @@ else {
                     </div>
                </div>
                <div class="col-md-3 mb-3">
-                    <div class="card shadow text-center bg-warning" style="width: 18rem;">
+                    <div class="card shadow text-center bg-warning">
                         <div class="card-body">
                             <h3><i class="fas fa-seedling fa-lg"></i></h3>
                             <p class="card-text text-muted">
@@ -376,33 +447,10 @@ else {
                         </div>
                         <input type="submit" class="btn btn-outline-primary mb-5">
                     </form>
-                    <h3 class="border-bottom"></h3>
-                    <div class="row  my-3">
-                        <p class="fw-bold text-muted">Or Reach us Through.</p>
-                        <div class="col-3 text-center">
-                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-x-twitter fa-lg"></i></h3></a>
-                        </div>
-                        <div class="col-3 text-center">
-                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-linkedin fa-lg"></i></h3></a>
-                        </div>
-                        <div class="col-3 text-center">
-                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-facebook fa-lg"></i></h3></a>
-                        </div>
-                        <div class="col-3 text-center">
-                            <a href="" class="" style="text-decoration: none;"><h3><i class="fa-brands fa-instagram fa-lg"></i></h3></a>
-                        </div>
-                    </div>
-                    <p class="fw-bold text-muted">You can also call us on</p>
-                    <p><i class="fa-solid fa-phone fa-lg"></i>   +254-711-535-0987</p>
                 </div>
             </div>
         </div>
     </section>
     <!-----Contact & About US Section ends here----->
 
-    <!----- Footer Section starts here----->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
-    </body>
-</html>
+    <?php include 'footer.php'; ?>

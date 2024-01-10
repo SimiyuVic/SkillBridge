@@ -80,21 +80,29 @@ session_start();
                         { ?>
                             <div class="col-md-10 mb-3">
                                 <div class="card">
-                                    <div class="card-header">
-                                            <a href="index.php">
-                                                <button class="btn btn-outline-primary">Back</button>
-                                            </a>
-                                        </div>
                                     <div class="card-body">
-                                        <?php 
-                                            if(!isset($_SESSION['user_id']))
-                                            { ?>
-                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                    <strong>Hello !</strong> You Have to Log in to be able to apply to this job !
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                </div>
-                                            <?php }
-                                        ?>
+                                    <?php
+                                        if (!isset($_SESSION['user_id'])) 
+                                        {
+                                            ?>
+                                            <div id="warning-alert" class="alert alert-danger" role="alert">
+                                                Hello, to apply to this job, you have to be logged in as a user!
+                                            </div>
+                                            <script>
+                                                // JavaScript code to fade out the alert after 5 seconds
+                                                setTimeout(function() {
+                                                    document.getElementById('warning-alert').style.transition = "opacity 3s";
+                                                    document.getElementById('warning-alert').style.opacity = 0;
+                                                }, 5000);
+
+                                                // Set the session variable to indicate that the warning has been shown
+                                                setTimeout(function() {
+                                                }, 5000);
+                                            </script>
+                                            <?php
+                                        }
+                                    ?>
+
                                         <h5 class="text-primary"><i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary"><?php echo $row['designation']; ?></button> | <i class="fa-solid fa-location-dot fa-lg ms-2 me-3"></i><?php echo $row['location']; ?></h5>
                                         <p class="text-primary"><i class="fa-solid fa-user-graduate fa-lg me-3"></i><?php echo $row['qualification']; ?> |</p>
                                         <p class="text-primary"><i class="fa-solid fa-wallet fa-xl me-3"></i>KES. <?php echo $row['expected_salary']; ?> |</p>
@@ -138,9 +146,4 @@ session_start();
                 ?>
         </div>
     </div>
-    <!----- Footer Section starts here----->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
-    </body>
-</html>
+    <?php include 'footer.php'; ?>

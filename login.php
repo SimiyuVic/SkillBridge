@@ -53,18 +53,34 @@ session_start();
         <div class="container my-5">
             <div class="row justify-content-center">
                 <div class="col-md-7">
-                <?php
-                    if(isset($_SESSION['must_login']))
-                    { 
+                    <?php
+                            if (isset($_SESSION['must_login'])) { 
                         ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Oops !</strong> You Have to Login Or Register First
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                                <div id="login-alert" class="alert alert-danger" role="alert">
+                                    You have to Login or Register First before accessing the page requested!
+                                </div>
+
+                                <script>
+                                    // JavaScript code to fade out the alert after 5 seconds
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var loginAlert = document.getElementById('login-alert');
+
+                                        // Add 'fade' class after a short delay to trigger the fade effect
+                                        setTimeout(function() {
+                                            loginAlert.style.transition = 'opacity 3s';
+                                            loginAlert.style.opacity = 0;
+                                        }, 5000);
+
+                                        // Remove the alert after the animation duration (1000 milliseconds in this example)
+                                        setTimeout(function() {
+                                            loginAlert.style.display = 'none';
+                                        }, 6000); // 5000 (fade out duration) + 1000 (initial delay)
+                                    });
+                                </script>
                         <?php 
-                            unset($_SESSION['must_login']);
-                    }
-                ?>
+                                unset($_SESSION['must_login']);
+                            }
+                    ?>
                 </div>
             </div>
             <div class="row">
@@ -93,8 +109,4 @@ session_start();
         
     </body>
  <!----- Footer Section starts here----->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
-    </body>
-</html>   
+ <?php include 'footer.php'; ?>   
