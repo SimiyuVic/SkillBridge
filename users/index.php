@@ -31,6 +31,34 @@
                             unset($_SESSION['login_success']);
                     }
                 ?>
+                <?php
+                    if (isset($_SESSION['already_logged'])) { 
+                ?>
+                    <div id="login-alert" class="alert alert-danger" role="alert">
+                        <strong>Hey !</strong> <?php echo $_SESSION['lastname'];  ?> You can not perform this operation while Logged in !
+                    </div>
+
+                    <script>
+                        // JavaScript code to fade out the alert after 5 seconds
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var loginAlert = document.getElementById('login-alert');
+
+                            // Add 'fade' class after a short delay to trigger the fade effect
+                            setTimeout(function() {
+                                loginAlert.style.transition = 'opacity 3s';
+                                loginAlert.style.opacity = 0;
+                            }, 5000);
+
+                            // Remove the alert after the animation duration (1000 milliseconds in this example)
+                            setTimeout(function() {
+                                loginAlert.style.display = 'none';
+                            }, 6000); // 5000 (fade out duration) + 1000 (initial delay)
+                        });
+                    </script>
+                <?php 
+                        unset($_SESSION['already_logged']);
+                    }
+                ?>
                 <div class="card">
                     <div class="card-header text-center">
                         <?php

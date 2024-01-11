@@ -1,6 +1,16 @@
 <?php
 session_start();
-?>
+
+if (isset($_SESSION['company_id'])) {
+    $_SESSION['already_logged'] = true;
+    header('location: employers/index.php');
+} elseif (isset($_SESSION['user_id'])) {
+    $_SESSION['already_logged'] = true;
+    // You may redirect to a different location for users, e.g., 'users/index.php'
+    header('location: users/index.php');
+}
+else
+{ ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -26,6 +36,12 @@ session_start();
         font-family: 'caveat', sans-serif;
         color: white !important;
 
+    }
+    .card:hover 
+    {
+      transform: scale(1.035);
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
   </style>
   <!-----Navbar starts here----->
@@ -110,3 +126,5 @@ session_start();
     </body>
  <!----- Footer Section starts here----->
  <?php include 'footer.php'; ?>   
+ <?php }
+?>

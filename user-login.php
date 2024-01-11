@@ -1,8 +1,16 @@
 <?php
-
 session_start();
 
-?>
+if (isset($_SESSION['company_id'])) {
+    $_SESSION['already_logged'] = true;
+    header('location: employers/index.php');
+} elseif (isset($_SESSION['user_id'])) {
+    $_SESSION['already_logged'] = true;
+    // You may redirect to a different location for users, e.g., 'users/index.php'
+    header('location: users/index.php');
+}
+else
+{ ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -121,4 +129,6 @@ session_start();
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
     </body>
-</html>    
+</html>  
+<?php }
+?>   

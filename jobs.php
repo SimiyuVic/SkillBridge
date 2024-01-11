@@ -56,7 +56,7 @@ session_start();
                         </li>
                     <?php } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">Sign Up</a>
+                            <a class="nav-link" href="login.php">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="sign-up.php">Sign Up</a>
