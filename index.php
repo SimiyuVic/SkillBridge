@@ -156,7 +156,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     $sql = "SELECT company_id, jobpost_id, job_title, designation, expiration_date, status
                             FROM job_post 
                             WHERE status = 2
-                            ORDER BY created_at DESC";
+                            ORDER BY expiration_date DESC";
 
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
@@ -177,12 +177,12 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6 mb-1">
-                                                <span class="text-light bg-warning rounded-pill p-2">NEW-JOBS</span>
-                                                <h5 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h5>
-                                                <h5 class="text-warning"><?php echo displayRemainingTime($row); ?></h5>
+                                                <span class="text-light bg-warning rounded-pill p-1">NEW-JOBS</span>
+                                                <h6 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h6>
+                                                <h6 class="text-warning"><?php echo displayRemainingTime($row); ?></h6>
                                             </div>
                                             <div class="col-md-6 mb-2">
-                                                <h5><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
+                                                <h6><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h6>
                                                 <form action="view-job.php" method="POST">
                                                     <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
                                                     <input type="submit" value="View Job" class="btn btn-warning">
@@ -270,12 +270,12 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-6 mb-1">
-                                                    <span class="text-light bg-danger  rounded-pill p-2">CLOSING-SOON</span>
-                                                     <h5 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h5>
-                                                    <h5 class="text-danger"><?php echo displayRemainingTime($row); ?></h5>
+                                                    <span class="text-light bg-danger  rounded-pill p-1">CLOSING-SOON</span>
+                                                     <h6 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h6>
+                                                    <h6 class="text-danger"><?php echo displayRemainingTime($row); ?></h6>
                                                 </div>
                                                 <div class="col-md-6 mb-2">
-                                                    <h5><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
+                                                    <h6><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h6>
                                                     <form action="view-job.php" method="POST">
                                                         <input type="hidden" name="jobpost_id" value="<?php echo $row['jobpost_id']; ?>">
                                                         <input type="submit" value="View Job" class="btn btn-danger">

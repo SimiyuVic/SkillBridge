@@ -42,12 +42,15 @@
                 </div>
             </div>
             <div class="col-12 col-lg-9">
+                <div class="alert alert-warning" role="alert">
+                    You can choose to Update your Password, or Change logo or De-activate your Account !
+                </div>
                 <div class="card">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card-body">
                                 <h5>Change Password</h5>
-                                <form action="" method="POST">
+                                <form action="../process/employerChangePassword.php" method="POST" class="mb-3">
                                     <div class="form-floating mb-3">
                                         <input type="password" name="old_password" class="form-control" placeholder="Password">
                                         <label for="floatingInput">Old Password</label>
@@ -56,8 +59,38 @@
                                         <input type="password" name="new_password" class="form-control" placeholder="Password">
                                         <label for="floatingInput">New Password</label>
                                     </div>
-                                    <input type="submit" value="Change-Password" name="change_password" class="btn btn-outline-primary">
+                                    <input type="submit" value="Change Password" name="change_password" class="btn btn-outline-primary">
                                 </form>
+                                <?php
+                                    require_once '../config/config.php';
+                                    $sql = "SELECT company_logo FROM employers WHERE company_id = ?";
+                                    $stmt = $connection->prepare($sql);
+                                    $stmt->bind_param("i", $_SESSION['company_id']);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                                    if($row = $result->fetch_assoc())
+                                    { ?>
+                                        <div class="card-body">
+                                            <img src="../uploads/company_logo/<?php echo $row['company_logo']; ?>" class="img-thumbnail rounded-circle" alt="Company Logo" style="width: 200px; height: 200px;">
+                                        </div>
+                                        <h5>Edit Logo</h5>
+                                        <form action="" method="POST">
+                                            <div class="mb-3">
+                                                <label for="formFile" class="form-label">Select New Logo</label>
+                                                <input class="form-control" type="file" id="formFile">
+                                            </div>
+                                            <input type="submit" value="Upload" name="upload_pic" class="btn btn-outline-warning">
+                                        </form>
+                                   <?php }
+                                    else
+                                    { ?>
+                                        <div class="alert alert-warning" role="alert">
+                                            No company Logo to display !
+                                        </div>
+                                    <?php }
+                                    $stmt->close();
+                                    $connection->close();
+                                ?>
                             </div>
                         </div>
                         <div class="col-md-6">

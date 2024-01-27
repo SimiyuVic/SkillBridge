@@ -128,7 +128,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="floatingTextarea" class="form-label text-muted fw-bold">Company Logo</label><br>
-                                                <img src="../uploads/company_logo/<?php echo $row['company_logo']; ?>" alt="Image" class="img-fluid">  
+                                                <img src="../uploads/company_logo/<?php echo $row['company_logo']; ?>" class="img-thumbnail rounded-circle" alt="Company Logo" style="width: 200px; height: 200px;">
                                             </div>
                                         </div>
                                     </div>

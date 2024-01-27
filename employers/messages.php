@@ -83,7 +83,7 @@
                         <div class="row mb-2">
                             <div class="col-md-6">MailBox</div>
                             <div class="col-md-6 text-end">
-                                <a href="create-mail.php" class="btn btn-warning text-light"><i class="fa-solid fa-message fa-lg me-2"></i>Create </a>
+                                <a href="create-mail.php" class="btn btn-warning text-light"><i class="fa-solid fa-message fa-lg me-2"></i>Create Message</a>
                             </div>
                         </div>
                         <div class="row">

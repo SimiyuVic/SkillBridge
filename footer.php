@@ -39,7 +39,7 @@
         //Getting the current year 
             $currentYear = date('Y');
         ?>
-        <h5 class="text-center text-success my-3">&copy; <?php echo $currentYear ?> Skill-Bridge. All rights reserved.</h5>
+        <h5 class="text-center text-success my-3">&copy; <?php echo $currentYear ?> <a href="index.php" style="text-decoration: none;">Skill-Bridge.</a> All rights reserved.</h5>
     </div>
     <div class="mb-5">
         .

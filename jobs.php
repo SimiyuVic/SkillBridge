@@ -8,7 +8,7 @@ session_start();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skill-Bridge | Posted-Jobs</title>
+    <title>Skill-Bridge | Jobs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
     integrity="sha512-mQ93GR66o7D/EVEqUp0BqL45PQa24a6LZQ2Hb4cZ2z0x0vfFSzBvKv0ATs2DSh9efIt2uc5bBO1RoQ1HhehD5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -160,7 +160,7 @@ session_start();
                                                 <div class="col-md-9">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                        <h5 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h5>
+                                                        <h6 class="text-success mt-2"><i class="fas fa-info-circle fa-lg me-1"></i><?php echo $row['designation']; ?></h6>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <form action="view-job.php" method="POST">
@@ -169,7 +169,7 @@ session_start();
                                                             </form>
                                                         </div>
                                                     </div>
-                                                    <h5><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
+                                                    <h6><span class="text-primary"><i class="far fa-check-circle fa-lg me-1"></i><?php echo $row['job_title']; ?></span></h5>
                                                     <div class="bg-light">
                                                         <div class="card-body">
                                                             <?php $jobDescription = substr($row['job_description'], 0, 250); ?>
