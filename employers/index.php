@@ -77,119 +77,127 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body text-success">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <?php
-                                                    //To get number of poasted jobs.
-                                                    $company_id = $_SESSION['company_id'];
-                                                    require_once '../config/config.php';
+                                    <a href="open-jobs.php" style="text-decoration: none;">
+                                        <div class="card-body text-success">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <?php
+                                                        //To get number of poasted jobs.
+                                                        $company_id = $_SESSION['company_id'];
+                                                        require_once '../config/config.php';
 
-                                                    //Query to count number of poasted jobs
-                                                    $query_posted_jobs = "SELECT COUNT(*) AS postedJobs FROM job_post WHERE company_id = ?";
-                                                    $stmt_posted_jobs = $connection->prepare($query_posted_jobs);
-                                                    $stmt_posted_jobs->bind_param("i", $_SESSION['company_id']);
-                                                    $stmt_posted_jobs->execute();
-                                                    $stmt_posted_jobs->bind_result($postedJobs);
-                                                    $stmt_posted_jobs->fetch();
-                                                    $stmt_posted_jobs->close();
+                                                        //Query to count number of poasted jobs
+                                                        $query_posted_jobs = "SELECT COUNT(*) AS postedJobs FROM job_post WHERE company_id = ?";
+                                                        $stmt_posted_jobs = $connection->prepare($query_posted_jobs);
+                                                        $stmt_posted_jobs->bind_param("i", $_SESSION['company_id']);
+                                                        $stmt_posted_jobs->execute();
+                                                        $stmt_posted_jobs->bind_result($postedJobs);
+                                                        $stmt_posted_jobs->fetch();
+                                                        $stmt_posted_jobs->close();
 
-                                                ?>
-                                                    <h5>Posted Jobs</h5>
-                                                    <h5><i class="fas fa-folder-open fa-xl me-3"></i></h5>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-success"><?php echo $postedJobs; ?></h3>
+                                                    ?>
+                                                        <h5>Posted Jobs</h5>
+                                                        <h5><i class="fas fa-folder-open fa-xl me-3"></i></h5>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h3 class="text-success"><?php echo $postedJobs; ?></h3>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body text-primary">
-                                        <div class="row">
-                                        <div class="col-6">
-                                            <?php
-                                                //To get number of Job Applications
-                                                require_once '../config/config.php';
+                                    <a href="applicants.php" style="text-decoration: none;">
+                                        <div class="card-body text-primary">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <?php
+                                                        //To get number of Job Applications
+                                                        require_once '../config/config.php';
 
-                                                //Query to count number of Job Applications
-                                                $query_applications = "SELECT COUNT(*) AS jobApplications FROM applied_jobs WHERE company_id = ?";
-                                                $stmt_job_applications = $connection->prepare($query_applications);
-                                                $stmt_job_applications->bind_param("i", $_SESSION['company_id']);
-                                                $stmt_job_applications->execute();
-                                                $stmt_job_applications->bind_result($jobApplications);
-                                                $stmt_job_applications->fetch();
-                                                $stmt_job_applications->close();
+                                                        //Query to count number of Job Applications
+                                                        $query_applications = "SELECT COUNT(*) AS jobApplications FROM applied_jobs WHERE company_id = ?";
+                                                        $stmt_job_applications = $connection->prepare($query_applications);
+                                                        $stmt_job_applications->bind_param("i", $_SESSION['company_id']);
+                                                        $stmt_job_applications->execute();
+                                                        $stmt_job_applications->bind_result($jobApplications);
+                                                        $stmt_job_applications->fetch();
+                                                        $stmt_job_applications->close();
 
-                                            ?>
-                                                <h5>Job Applications</h5>
-                                                <h5><i class="fas fa-question-circle fa-xl"></i></h5>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-primary"><?php echo $jobApplications; ?></h3>
+                                                    ?>
+                                                        <h5>Job Applications</h5>
+                                                        <h5><i class="fas fa-question-circle fa-xl"></i></h5>
+                                                    </div>
+                                                <div class="col-6">
+                                                    <h3 class="text-primary"><?php echo $jobApplications; ?></h3>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body text-warning">
-                                        <?php
-                                        //To get number of Open Jobs.
-                                        require_once '../config/config.php';
+                                    <a href="open-jobs.php" style="text-decoration: none;">
+                                        <div class="card-body text-warning">
+                                            <?php
+                                            //To get number of Open Jobs.
+                                            require_once '../config/config.php';
 
-                                        //Query to count number of Open Jobs
-                                        $query_open_jobs = "SELECT COUNT(*) AS openJobs FROM job_post WHERE company_id = ? AND status = 2";
-                                        $stmt_open_jobs = $connection->prepare($query_open_jobs);
-                                        $stmt_open_jobs->bind_param("i", $_SESSION['company_id']);
-                                        $stmt_open_jobs->execute();
-                                        $stmt_open_jobs->bind_result($openJobs);
-                                        $stmt_open_jobs->fetch();
-                                        $stmt_open_jobs->close();
-                                        ?>
-                                        <h5> Open Job Posts</h5>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="ms-2 mt-2"><i class="fas fa-lock-open fa-xl"></i></p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-warning"><?php echo $openJobs; ?></h3>
-                                            </div>
-                                        </div>  
-                                    </div>
+                                            //Query to count number of Open Jobs
+                                            $query_open_jobs = "SELECT COUNT(*) AS openJobs FROM job_post WHERE company_id = ? AND status = 2";
+                                            $stmt_open_jobs = $connection->prepare($query_open_jobs);
+                                            $stmt_open_jobs->bind_param("i", $_SESSION['company_id']);
+                                            $stmt_open_jobs->execute();
+                                            $stmt_open_jobs->bind_result($openJobs);
+                                            $stmt_open_jobs->fetch();
+                                            $stmt_open_jobs->close();
+                                            ?>
+                                            <h5> Open Job Posts</h5>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="ms-2 mt-2"><i class="fas fa-lock-open fa-xl"></i></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h3 class="text-warning"><?php echo $openJobs; ?></h3>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="card shadow">
-                                    <div class="card-body text-danger">
-                                        <?php
-                                        //To get number of Closed Jobs
-                                        require_once '../config/config.php';
+                                    <a href="closed-jobs.php"  style="text-decoration: none;">
+                                        <div class="card-body text-danger">
+                                            <?php
+                                            //To get number of Closed Jobs
+                                            require_once '../config/config.php';
 
-                                        //Query to count number of Closed Jobs
-                                        $query_closed_jobs = "SELECT COUNT(*) AS closedJobs FROM job_post WHERE company_id = ? AND status = 1";
-                                        $stmt_closed_jobs = $connection->prepare($query_closed_jobs);
-                                        $stmt_closed_jobs->bind_param("i", $_SESSION['company_id']);
-                                        $stmt_closed_jobs->execute();
-                                        $stmt_closed_jobs->bind_result($closedJobs);
-                                        $stmt_closed_jobs->fetch();
-                                        $stmt_closed_jobs->close();
-                                        ?>
-                                        <h5> Closed Job Posts</h5>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="ms-2 mt-2"><i class="fas fa-lock fa-xl"></i></p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-danger"><?php echo $closedJobs; ?></h3>
-                                            </div>
-                                        </div>  
-                                    </div>
+                                            //Query to count number of Closed Jobs
+                                            $query_closed_jobs = "SELECT COUNT(*) AS closedJobs FROM job_post WHERE company_id = ? AND status = 1";
+                                            $stmt_closed_jobs = $connection->prepare($query_closed_jobs);
+                                            $stmt_closed_jobs->bind_param("i", $_SESSION['company_id']);
+                                            $stmt_closed_jobs->execute();
+                                            $stmt_closed_jobs->bind_result($closedJobs);
+                                            $stmt_closed_jobs->fetch();
+                                            $stmt_closed_jobs->close();
+                                            ?>
+                                            <h5> Closed Job Posts</h5>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="ms-2 mt-2"><i class="fas fa-lock fa-xl"></i></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h3 class="text-danger"><?php echo $closedJobs; ?></h3>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

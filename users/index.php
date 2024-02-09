@@ -122,31 +122,33 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="card shadow" style="height: 100x;">
+                                <a href="portfolio.php" style="text-decoration: none;">
                                     <div class="card-body text-success">
-                                        <?php
-                                        //To get number of skills added.
-                                        require_once '../config/config.php';
+                                            <?php
+                                            //To get number of skills added.
+                                            require_once '../config/config.php';
 
-                                        //Query to count number of skills added
-                                        $query = "SELECT COUNT(*) AS skillcount FROM portfolio WHERE user_id = ?";
-                                        $stmt = $connection->prepare($query);
-                                        $stmt->bind_param("i", $_SESSION['user_id']);
-                                        $stmt->execute();
-                                        $stmt->bind_result($skillCount);
-                                        $stmt->fetch();
-                                        $stmt->close();
+                                            //Query to count number of skills added
+                                            $query = "SELECT COUNT(*) AS skillcount FROM portfolio WHERE user_id = ?";
+                                            $stmt = $connection->prepare($query);
+                                            $stmt->bind_param("i", $_SESSION['user_id']);
+                                            $stmt->execute();
+                                            $stmt->bind_result($skillCount);
+                                            $stmt->fetch();
+                                            $stmt->close();
 
-                                        ?>
-                                        <h5> Skills Added</h5>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="ms-2 mt-2"><i class="fas fa-folder-plus fa-xl"></i></p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h3 class="text-success"><?php echo $skillCount; ?></h3>
-                                            </div>
-                                        </div>  
-                                    </div>
+                                            ?>
+                                            <h5> Skills Added</h5>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="ms-2 mt-2"><i class="fas fa-folder-plus fa-xl"></i></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h3 class="text-success"><?php echo $skillCount; ?></h3>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +181,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-2">
                                 <div class="card shadow" style="height: 100x;">
                                     <div class="card-body text-info">
                                         <?php
@@ -225,7 +227,7 @@
                                         $stmtDeclined->fetch();
                                         $stmtDeclined->close();
                                         ?>
-                                        <h5>Declined Jobs</h5>
+                                        <h5>Declined Applications</h5>
                                         <div class="row">
                                             <div class="col-6">
                                                 <p class="ms-2 mt-2"><i class="fas fa-sad-tear fa-xl"></i></p>

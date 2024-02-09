@@ -86,7 +86,7 @@ session_start();
                                         {
                                             ?>
                                             <div id="warning-alert" class="alert alert-danger" role="alert">
-                                                Hello, to apply to this job, you have to be logged in as a user!
+                                                Hello, to apply to this job, you have to be logged in as a Applicant!
                                             </div>
                                             <script>
                                                 // JavaScript code to fade out the alert after 5 seconds

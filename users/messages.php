@@ -31,18 +31,6 @@
                         unset($_SESSION['reply_sent']);
                 }
             ?>
-            <?php
-                    if(isset($_SESSION['message_send']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hello !</strong> Message has been sent Successfully !
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['message_send']);
-                    }
-                ?>
                 <?php
                 if(isset($_SESSION['failed_reply']))
                 { 

@@ -23,7 +23,7 @@ if(isset($_POST['reply_message']))
         if($stmt->execute())
         {
             $_SESSION['reply_sent'] = "";
-            header('location: ../employers/messages.php'); 
+            header('location: ../employers/read-message.php?message_id=' . $message_id); 
         }
         else
         {

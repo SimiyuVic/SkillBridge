@@ -33,12 +33,12 @@ if(isset($_POST['close_job']))
         if($stmt_update_status->execute())
         {
             $_SESSION['status_update'] = "";
-            header('location: ../employers/posted-jobs.php');
+            header('location: ../employers/closed-jobs.php');
         }
         else
         {
             $_SESSION['status_update_fail'] = "";
-            header('location: ../employers/posted-jobs.php');
+            header('location: ../employers/open-jobs.php');
         }
         $stmt_update_status->close();
     }

@@ -43,7 +43,7 @@ if (isset($_POST['create_job']))
             if ($stmt->execute()) 
             {
                 $_SESSION['create_success'] = "";
-                header('location: ../employers/posted-jobs.php');
+                header('location: ../employers/open-jobs.php');
             } 
             else 
             {

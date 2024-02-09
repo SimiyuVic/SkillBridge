@@ -196,9 +196,11 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                             }
                         }
                     } 
-                    else {
-                        // No jobs available
-                    }
+                    else { ?>
+                        <div class="alert alert-warning" role="alert">
+                            No Recently posted jobs, check <a href="jobs.php" class="">Jobs </a> section for updated list !
+                        </div>
+                   <?php }
                     ?>
             </div>
             <!----
@@ -290,8 +292,8 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     } 
                     else 
                     { ?>
-                        <div class="alert alert-warning" role="alert">
-                            A simple warning alert—check it out!
+                        <div class="alert alert-danger" role="alert">
+                            No Jobs closing soon, check <a href="jobs.php"> Jobs </a> section for updated list !
                         </div>
                    <?php }
                     ?>

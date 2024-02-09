@@ -146,7 +146,7 @@
                                 <?php
                                 require_once '../config/config.php';
                                 $companyId = $_SESSION['company_id'];
-                                $sql = "SELECT jobpost_id, company_id, job_title, status FROM job_post WHERE company_id = ?";
+                                $sql = "SELECT jobpost_id, company_id, job_title, status FROM job_post WHERE company_id = ? AND status = 2";
                                 $stmt = $connection->prepare($sql);
                                 $stmt->bind_param("i", $companyId);
                                 $stmt->execute();

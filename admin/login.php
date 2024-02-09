@@ -1,13 +1,9 @@
 <?php
 session_start();
 
-if (isset($_SESSION['company_id'])) {
+if (isset($_SESSION['admin_id'])) {
     $_SESSION['already_logged'] = true;
-    header('location: employers/index.php');
-} elseif (isset($_SESSION['user_id'])) {
-    $_SESSION['already_logged'] = true;
-    // You may redirect to a different location for users, e.g., 'users/index.php'
-    header('location: users/index.php');
+    header('location: index.php');
 }
 else
 { ?>
@@ -51,27 +47,15 @@ else
             <div class="row justify-content-center">
                 <div class="col-md-8">
                 <?php
-                    if(isset($_SESSION['register_success']))
-                    { 
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Hurray !</strong> Registration successful
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php 
-                            unset($_SESSION['register_success']);
-                    }
-                ?>
-                 <?php
-                    if(isset($_SESSION['wrong_details']))
+                    if(isset($_SESSION['wrong_password']))
                     { 
                         ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Hey !</strong> Wrong Email or Password
+                                <strong>Oops !</strong> You have entered Wrong Password !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php 
-                            unset($_SESSION['wrong_details']);
+                            unset($_SESSION['wrong_password']);
                     }
                 ?>
                 <?php
@@ -93,14 +77,13 @@ else
                             </h5>
                         </div>
                         <div class="card-body my-5">
-                            <form action="../process/login-process.php" method="POST">
-                                <input type="hidden" name="userType" value="admin">
+                            <form action="../process/adminLogin.php" method="POST">
                                 <div class="form-floating mb-3">
-                                    <input type="email"  name="admin_email" class="form-control" placeholder=" e.g email@example.com">
+                                    <input type="email"  name="admin_email" class="form-control" placeholder=" e.g email@example.com" required>
                                     <label for="floatingInput">Email Address</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                <input type="password"  name="password" class="form-control" placeholder=" Enter Your Password">
+                                <input type="password"  name="admin_password" class="form-control" placeholder=" Enter Your Password" required  >
                                     <label for="floatingInput">Password</label>
                                 </div>
                                 <input type="submit" name="login" value="Login" class="btn btn-outline-primary">
