@@ -127,7 +127,7 @@
             <div class="col-md-9">
                 <!-------Dashboard Info ------>
                 <div class="alert alert-info" role="alert">
-                    If you need to close a Job Application before expiraion date click View Job
+                    If you need to close a Job Application before expiration date click View Job
                 </div>
                 <!-------Dashboard Info ------>
                 <div class="card shadow">

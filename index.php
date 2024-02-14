@@ -85,6 +85,28 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
+                <?php
+if (isset($_SESSION['contact_success'])) {
+    ?>
+    <div id="warning-alert" class="alert alert-primary mt-3" role="alert">
+        Hello, Message successfully sent, You will be contacted shortly !
+    </div>
+    <script>
+        // JavaScript code to fade out the alert after 5 seconds
+        setTimeout(function() {
+            document.getElementById('warning-alert').style.transition = "opacity 3s";
+            document.getElementById('warning-alert').style.opacity = 0;
+        }, 5000);
+
+        // Unset the session variable to prevent the message from showing again
+        setTimeout(function() {
+            <?php // unset($_SESSION['contact_success']); ?>
+        }, 5000);
+    </script>
+    <?php
+}
+?>
+
                     <h3 class="display-5 mt-5">
                         Looking For an Internship or Attachment in your Area of Qualification?
                     </h3>
@@ -434,20 +456,20 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
                     <p class="text-muted">
                         Send us a Message.
                     </p>
-                    <form action="">
+                    <form action="process/contact-form-process.php" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="username" class="form-control" id="floatingInput" placeholder="Enter your Name">
+                            <input type="text" name="sender_name" class="form-control" id="floatingInput" placeholder="Enter your Name" required>
                             <label for="floatingInput">Enter Your Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <input type="email" name="sender_email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                             <label for="floatingInput">Email address</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                            <textarea class="form-control" name="sender_query" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
                             <label for="floatingTextarea">Enter Comments or query . . .</label>
                         </div>
-                        <input type="submit" class="btn btn-outline-primary mb-5">
+                        <input type="submit" name="contact" class="btn btn-outline-primary mb-5">
                     </form>
                 </div>
             </div>
