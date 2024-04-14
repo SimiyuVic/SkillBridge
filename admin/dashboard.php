@@ -4,7 +4,24 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <h5>Hello, Admin</h5>
+                    <?php
+                        //Getting the current hour
+                            $currentHour = date('G');
+                        //Greeting based on time of the day.
+                        if($currentHour >= 5 && $currentHour < 12)
+                        {
+                            $greeting = "Good Morning";
+                        }
+                        else if($currentHour >=12 && $currentHour < 17)
+                        {
+                            $greeting = "Good Afternoon";
+                        }
+                        else 
+                        {
+                            $greeting = "Good Evening";
+                        }
+                        ?>
+                        <h5><?php echo $greeting . ', <i>' . $_SESSION['username'] . '</i>'; ?></h5>
                 </div>
                 <?php include 'side-bar.html'; ?>
             </div>
@@ -12,17 +29,17 @@
         <div class="col-md-9">
             <div class="container my-2">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                            <div class="card shadow">
                             <div class="card-body">
                                 <h5>Active Companies</h5>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <h5 class="text-primary">
                                             <i class="fas fa-building fa-xl"></i>
                                         </h5>
                                     </div>
-                                    <div class="col-md-6 text-center">
+                                    <div class="col-6 text-center">
                                         <h3>
                                             <?php
                                                 @require_once '../config/config.php';
@@ -51,12 +68,12 @@
                             <div class="card-body">
                                     <h5>Pending Company Verification </h5>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-6">
                                             <h5 class="text-primary">
                                                 <i class="fas fa-hand-holding-water fa-xl"></i>
                                             </h5>
                                         </div>
-                                        <div class="col-md-6 text-center">
+                                        <div class="col-6 text-center">
                                             <h3>
                                                 <?php
                                                     @require_once '../config/config.php';
@@ -82,17 +99,17 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                            <div class="card shadow">
                             <div class="card-body">
                                 <h5>Registered Candidates</h5>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <h5 class="text-primary">
                                             <i class="fas fa-user-check fa-xl"></i>
                                         </h5>
                                     </div>
-                                    <div class="col-md-6 text-center">
+                                    <div class="col-6 text-center">
                                         <h3>
                                             <?php
                                                 @require_once '../config/config.php';
@@ -121,12 +138,12 @@
                             <div class="card-body">
                                     <h5>Pending Candidates Verification </h5>
                                     <div class="row">
-                                        <div class="col-md">
+                                        <div class="col-6">
                                             <h5 class="text-primary">
                                                 <i class="fas fa-hand-holding-water fa-xl"></i>
                                             </h5>
                                         </div>
-                                        <div class="col-md text-center">
+                                        <div class="col-6 text-center">
                                             <h3>
                                                 <?php
                                                     @require_once '../config/config.php';
@@ -152,17 +169,17 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                            <div class="card shadow">
                             <div class="card-body">
                                 <h5>Total Job Posts</h5>
                                 <div class="row">
-                                    <div class="col-md">
+                                    <div class="col-6">
                                         <h5 class="text-primary">
                                             <i class="fas fa-layer-group fa-xl"></i>
                                         </h5>
                                     </div>
-                                    <div class="col-md text-center">
+                                    <div class="col-6 text-center">
                                         <h3>
                                             <?php
                                                 @require_once '../config/config.php';
@@ -191,12 +208,12 @@
                             <div class="card-body">
                                     <h5>Total Applications</h5>
                                     <div class="row">
-                                        <div class="col-md">
+                                        <div class="col-6">
                                             <h5 class="text-primary">
                                                 <i class="fas fa-search fa-xl"></i>
                                             </h5>
                                         </div>
-                                        <div class="col-md text-center">
+                                        <div class="col-6 text-center">
                                             <h3>
                                                 <?php
                                                     @require_once '../config/config.php';

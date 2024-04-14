@@ -14,7 +14,7 @@ if(isset($_POST['Login']))
     //execute
     $stmt->execute();
     //Bind results
-    $stmt->bind_result($username, $email, $hashed_password);
+    $stmt->bind_result($admin_id, $username, $hashed_password);
     //Fetch results
     $stmt->fetch();
     //Verify password

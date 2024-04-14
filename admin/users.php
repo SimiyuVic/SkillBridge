@@ -24,16 +24,16 @@
         <div class="col-md-9 mt-3">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="text-center">List Of Companies / Employers Registered</h5>
+                    <h5 class="text-center">List Of Registered Users</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive-sm table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Company</th>
-                                <th scope="col">Creator</th>
+                                <th scope="col">User-Name</th>
                                 <th scope="col" class="d-none d-sm-table-cell">Email</th>
+                                <th scope="col" class="d-none d-sm-table-cell">Occupation</th>
                                 <th scope="col" class="d-none d-sm-table-cell">Status</th>
                                 <th scope="col">Profile</th>
                             </tr>
@@ -47,7 +47,7 @@
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
                             $offset = ($page - 1) * $limit;
 
-                            $query = "SELECT company_id, username, company_name, email, status FROM employers LIMIT ?, ?";
+                            $query = "SELECT user_id, firstname, lastname, email, occupation, status FROM users LIMIT ?, ?";
                             $stmt = $connection->prepare($query);
                             $stmt->bind_param("ii", $offset, $limit);
                             $stmt->execute();
@@ -59,13 +59,13 @@
                                     <tr>
                                         <th scope="row"><i class="fa-solid fa-chevron-right fa-lg"></i></th>
                                         <td>
-                                            <?php echo $row['company_name']; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['username']; ?>
+                                            <?php echo $row['firstname'] .' '.  $row['lastname']; ?>
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             <?php echo $row['email']; ?>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">
+                                            <?php echo $row['occupation']; ?>
                                         </td>
                                         <td class="fw-bold d-none d-sm-table-cell">
                                             <?php
@@ -76,8 +76,8 @@
                                             <p class="<?php echo $textColorClass; ?>"><?php echo $statusText; ?></p>
                                         </td>
                                         <td>
-                                            <form action="company-profile.php" method="POST">
-                                                <input type="hidden" name="company_id" value="<?php echo $row['company_id']; ?>">
+                                            <form action="applicant-profile.php" method="POST">
+                                                <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
                                                 <input type="submit" value="Open" class="btn btn-outline-primary">
                                             </form>
                                         </td>
@@ -90,7 +90,7 @@
                     <!-- Pagination Links -->
                     <div class="pagination mt-3">
                         <?php
-                        $query = "SELECT COUNT(*) as total FROM employers";
+                        $query = "SELECT COUNT(*) as total FROM users";
                         $stmt = $connection->prepare($query);
                         $stmt->execute();
                         $result = $stmt->get_result();

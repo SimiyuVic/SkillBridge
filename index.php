@@ -2,7 +2,7 @@
 session_start();
 
 //Check if user is logged in
-$userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']);
+$userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']) || isset($_SESSION['admin_id']);
 ?>
 <!doctype html>
 <html lang="en">
@@ -119,7 +119,7 @@ if (isset($_SESSION['contact_success'])) {
                     </p>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <?php
+                        <?php
                             if (isset($_SESSION['user_id'])) {
                                 // Regular user is logged in
                                 ?>
@@ -130,13 +130,19 @@ if (isset($_SESSION['contact_success'])) {
                                 ?>
                                 <a href="employers/index.php" class="btn btn-warning btn-lg w-100" role="button">View Profile</a>
                                 <?php
+                            } elseif (isset($_SESSION['admin_id'])) {
+                                // Admin is logged in
+                                ?>
+                                <a href="admin/dashboard.php" class="btn btn-warning btn-lg w-100" role="button">Admin Dashboard</a>
+                                <?php
                             } else {
                                 // No user is logged in
                                 ?>
                                 <a href="sign-up.php" class="btn btn-outline-warning btn-lg w-100" role="button">Get Started</a>
                                 <?php
                             }
-                            ?>
+                        ?>
+
 
                         </div>
                         <div class="col-md-6">
