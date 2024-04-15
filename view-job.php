@@ -102,7 +102,9 @@ session_start();
                                             <?php
                                         }
                                     ?>
-
+                                        <a href="index.php">
+                                            <button class="btn btn-outline-primary my-2">Back</button>
+                                        </a>
                                         <h5 class="text-primary"><i class="fa-solid fa-briefcase fa-lg me-3"></i><?php echo $row['job_title']; ?> | <button class="btn btn-primary"><?php echo $row['designation']; ?></button> | <i class="fa-solid fa-location-dot fa-lg ms-2 me-3"></i><?php echo $row['location']; ?></h5>
                                         <p class="text-primary"><i class="fa-solid fa-user-graduate fa-lg me-3"></i><?php echo $row['qualification']; ?> |</p>
                                         <p class="text-primary"><i class="fa-solid fa-wallet fa-xl me-3"></i>KES. <?php echo $row['expected_salary']; ?> |</p>
@@ -135,7 +137,6 @@ session_start();
                                 <div class="card">
                                     <img src="uploads/company_logo/<?php echo $row['company_logo'];?>" class="img-thumbnail" alt="...">
                                 </div>
-                                <a href="" class="btn btn-outline-dark mt-3">Company Profile</a>
                             </div>
                        <?php }
                     }

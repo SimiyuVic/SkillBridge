@@ -79,7 +79,7 @@ if(!isset($_SESSION['admin_id']))
                     require_once '../config/config.php';
                     $user_id = $_POST['user_id'];
 
-                    $sql = "SELECT firstname, lastname, email, phone_number,occupation,study,description, skills
+                    $sql = "SELECT firstname, lastname, email, phone_number,occupation,study,description, skills, status
                     FROM users WHERE user_id = ?";
                     $stmt = $connection->prepare($sql);
                     $stmt->bind_param("i", $user_id);
@@ -122,6 +122,22 @@ if(!isset($_SESSION['admin_id']))
                                         <h5>
                                             Account Status 
                                         </h5>
+                                        <?php
+                                            if($row['status'] ==1)
+                                            { ?>
+                                               <h5 class="text-success">Active <i class="fas fa-check-circle fa-lg ms-1"></i></h5> 
+                                               <form action="">
+                                                    <input type="submit" value="De-Activate" class="btn btn-outline-danger">
+                                                </form>
+                                            <?php }
+                                            else 
+                                            { ?>
+                                                <h5 class="text-danger">Un Active <i class="fas fa-exclamation-triangle fa-lg ms-1"></i></h5> 
+                                                <form action="">
+                                                    <input type="submit" value="Activate" class="btn btn-outline-success">
+                                                </form>
+                                            <?php }
+                                        ?>
                                     </div>
                                 </div>
                             </div>

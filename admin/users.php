@@ -27,6 +27,14 @@
                     <h5 class="text-center">List Of Registered Users</h5>
                 </div>
                 <div class="card-body">
+                    <!-- Search Form -->
+                    <form action="" method="GET" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search by User Name" name="search">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+
                     <table class="table table-responsive-sm table-striped">
                         <thead>
                             <tr>
@@ -47,9 +55,13 @@
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
                             $offset = ($page - 1) * $limit;
 
-                            $query = "SELECT user_id, firstname, lastname, email, occupation, status FROM users LIMIT ?, ?";
+                            // Search Query
+                            $search = isset($_GET['search']) ? $_GET['search'] : '';
+                            $query = "SELECT user_id, firstname, lastname, email, occupation, status FROM users 
+                                WHERE CONCAT(firstname, ' ', lastname) LIKE ? LIMIT ?, ?";
                             $stmt = $connection->prepare($query);
-                            $stmt->bind_param("ii", $offset, $limit);
+                            $searchParam = "%" . $search . "%";
+                            $stmt->bind_param("sii", $searchParam, $offset, $limit);
                             $stmt->execute();
                             $result = $stmt->get_result();
                             $stmt->close();
@@ -124,6 +136,6 @@
 <!----- Footer Section starts here----->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
 </body>
 </html>

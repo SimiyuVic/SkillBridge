@@ -27,6 +27,14 @@
                     <h5 class="text-center">List Of Companies / Employers Registered</h5>
                 </div>
                 <div class="card-body">
+                    <!-- Search Form -->
+                    <form action="" method="GET" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search by Company Name or Creator" name="search">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+
                     <table class="table table-responsive-sm table-striped">
                         <thead>
                             <tr>
@@ -47,9 +55,15 @@
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
                             $offset = ($page - 1) * $limit;
 
-                            $query = "SELECT company_id, username, company_name, email, status FROM employers LIMIT ?, ?";
+                            // Search Query
+                            $search = isset($_GET['search']) ? $_GET['search'] : '';
+                            $searchParam = "%" . $search . "%";
+
+                            $query = "SELECT company_id, username, company_name, email, status FROM employers
+                                WHERE company_name LIKE ? OR username LIKE ?
+                                LIMIT ?, ?";
                             $stmt = $connection->prepare($query);
-                            $stmt->bind_param("ii", $offset, $limit);
+                            $stmt->bind_param("ssii", $searchParam, $searchParam, $offset, $limit);
                             $stmt->execute();
                             $result = $stmt->get_result();
                             $stmt->close();
@@ -124,6 +138,6 @@
 <!----- Footer Section starts here----->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/6fff7c638d.js" crossorigin="anonymous"></script>
 </body>
 </html>
