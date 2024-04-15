@@ -1,12 +1,38 @@
 <?php
-
 session_start();
 
-//Check if user is logged in
-if(!isset($_SESSION['admin_id']))
-{
+// Check if user is logged in
+if (!isset($_SESSION['admin_id'])) {
     header('location: ../login.php');
     $_SESSION['must_login'] = "";
+    exit();
+}
+
+require_once '../config/config.php';
+
+// Function to update user status
+function updateUserStatus($company_id, $status)
+{
+    global $connection;
+    $stmt = $connection->prepare("UPDATE employers SET status = ? WHERE company_id = ?");
+    $stmt->bind_param("ii", $status, $company_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+if (isset($_POST['activate'])) {
+    $company_id = $_POST['company_id'];
+    updateUserStatus($company_id, 1); // Activate user
+    header("Location: employers.php");
+    $_SESSION['activated'] = "";
+    exit();
+}
+
+if (isset($_POST['deactivate'])) {
+    $company_id = $_POST['company_id'];
+    updateUserStatus($company_id, 0); // Deactivate user
+    header("Location: employers.php");
+    $_SESSION['de-activated'] = "";
     exit();
 }
 ?>
@@ -79,7 +105,7 @@ if(!isset($_SESSION['admin_id']))
                     require_once '../config/config.php';
                     $company_id = $_POST['company_id'];
 
-                    $sql = "SELECT username, company_name, email, phone_number, website, county, company_logo, description
+                    $sql = "SELECT username, company_name, email, phone_number, website, county, company_logo, description, status
                     FROM employers WHERE company_id = ?";
                     $stmt = $connection->prepare($sql);
                     $stmt->bind_param("i", $company_id);
@@ -115,6 +141,23 @@ if(!isset($_SESSION['admin_id']))
                                     <div>
                                         <h5>About</h5>
                                         <p class="text-muted"><?php echo $row['description']; ?></p>
+                                        <h5>
+                                            Account Status
+                                        </h5>
+                                        <?php
+                                        if ($row['status'] == 1) { ?>
+                                            <h5 class="text-success">Active <i class="fas fa-check-circle fa-lg ms-1"></i></h5>
+                                            <form action="" method="POST">
+                                                <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
+                                                <input type="submit" name="deactivate" value="De-Activate" class="btn btn-outline-danger">
+                                            </form>
+                                        <?php } else { ?>
+                                            <h5 class="text-danger">Un Active <i class="fas fa-exclamation-triangle fa-lg ms-1"></i></h5>
+                                            <form action="" method="POST">
+                                                <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
+                                                <input type="submit" name="activate" value="Activate" class="btn btn-outline-success">
+                                            </form>
+                                        <?php } ?>
                                     </div>
                                     <div class="mb-3">
                                         <label for="floatingTextarea" class="form-label text-muted fw-bold">Company Logo</label><br>

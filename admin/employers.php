@@ -2,6 +2,26 @@
 <div class="container my-4">
     <div class="row">
         <div class="col-md-3">
+            <?php
+                if(isset($_SESSION['activated']))
+                { ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Done !</strong> Employer Account Activated!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php unset($_SESSION['activated']);
+                 }
+            ?>
+            <?php
+                if(isset($_SESSION['de-activated']))
+                { ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops !</strong> Employer Account  Deactivated!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php  unset($_SESSION['de-activated']);
+                }
+            ?>
             <div class="card">
                 <div class="card-header">
                     <?php
