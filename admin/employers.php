@@ -36,7 +36,7 @@
                         $greeting = "Good Evening";
                     }
                     ?>
-                    <h5><?php echo $greeting . ', <i>' . $_SESSION['username'] . '</i>'; ?></h5>
+                    <h5><?php echo $greeting . ', <i>' . $_SESSION['admin_name'] . '</i>'; ?></h5>
                 </div>
                 <?php include 'side-bar.html'; ?>
             </div>

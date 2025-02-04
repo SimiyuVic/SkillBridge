@@ -72,7 +72,7 @@ $userLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['company_id']) ||
                     ?>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact Us</a>
+                        <a class="btn bg-success text-light fw-bold" href="#contact">Contact Us</a>
                     </li>
                 </ul>
             </div>

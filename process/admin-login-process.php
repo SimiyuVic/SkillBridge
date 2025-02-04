@@ -9,12 +9,12 @@ if(isset($_POST['Login']))
     $password = $_POST['password'];
 
     //Prepate statement
-    $stmt = $connection->prepare("SELECT admin_id, username, password FROM administrator WHERE email = ?");
+    $stmt = $connection->prepare("SELECT admin_id, admin_name, password FROM administrator WHERE email = ?");
     $stmt->bind_param("s", $email);
     //execute
     $stmt->execute();
     //Bind results
-    $stmt->bind_result($admin_id, $username, $hashed_password);
+    $stmt->bind_result($admin_id, $admin_name, $hashed_password);
     //Fetch results
     $stmt->fetch();
     //Verify password
@@ -22,7 +22,7 @@ if(isset($_POST['Login']))
     {
         //Correct password
         $_SESSION['admin_id'] = $admin_id;
-        $_SESSION['username'] = $username;
+        $_SESSION['admin_name'] = $admin_name;
 
         header('Location: ../admin/dashboard.php');
         $_SESSION['login_success'] = "";
